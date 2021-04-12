@@ -1,0 +1,41 @@
+version: '3'
+
+tasks:
+  test:
+    cmds:
+    - go test -v -cover ./...
+
+  # postgres tests are currently failing due to issues
+  # with the seed.sql file.
+  test-postgres:
+    env:
+      DATABASE_DRIVER: postgres
+      DATABASE_CONFIG: host=localhost user=postgres password=postgres dbname=postgres sslmode=disable
+      GO111MODULE: 'on'
+    cmds:
+      - cmd: docker kill postgres
+        ignore_error: true
+        silent: false
+      - silent: false
+        cmd: >
+          docker run
+          -p 5432:5432
+          --env POSTGRES_PASSWORD=postgres
+          --env POSTGRES_USER=postgres
+          --name postgres
+          --detach
+          --rm
+          postgres:9-alpine
+      - cmd: go test -v -cover github.com/tphoney/musicscan/internal/store/database
+      - cmd: docker kill postgres
+        silent: true
+
+  docker-build:
+    cmds:
+    - docker build -t tphoney/musicscan:linux-amd64 -f docker/Dockerfile .
+
+  docker-build-all:
+    cmds:
+    - docker build -t tphoney/musicscan:linux-amd64 -f docker/Dockerfile .
+    - docker build -t tphoney/musicscan:linux-arm64 -f docker/Dockerfile.linux.arm64 .
+    - docker build -t tphoney/musicscan:linux-arm   -f docker/Dockerfile.linux.arm .
