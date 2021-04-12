@@ -1,0 +1,22 @@
+{
+	"name": "my-app",
+	"scripts": {
+		"start": "wmr",
+		"serve": "wmr",
+		"build": "wmr build --out=dist/files",
+		"format": "prettier --use-tabs --write public/**"
+	},
+	"alias": {
+		"react": "preact/compat",
+		"react-dom": "preact/compat"
+	},
+	"dependencies": {
+		"preact": "^10.5.13",
+		"swr": "^0.5.4",
+		"wouter": "^2.7.4"
+	},
+	"devDependencies": {
+		"prettier": "2.2.1",
+		"wmr": "1.4.1"
+	}
+}
