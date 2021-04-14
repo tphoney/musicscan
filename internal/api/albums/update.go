@@ -21,7 +21,6 @@ import (
 // requests to update the object details.
 func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		projectID, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -39,7 +38,6 @@ func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.Handl
 				Debugln("cannot parse artist id")
 			return
 		}
-
 		albumID, err := strconv.ParseInt(chi.URLParam(r, "album"), 10, 64)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -48,7 +46,6 @@ func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.Handl
 				Debugln("cannot parse album id")
 			return
 		}
-
 		in := new(types.AlbumInput)
 		err = json.NewDecoder(r.Body).Decode(in)
 		if err != nil {
@@ -61,7 +58,6 @@ func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.Handl
 				Debugln("cannot unmarshal json request")
 			return
 		}
-
 		artist, err := artists.Find(r.Context(), artistID)
 		if err != nil {
 			render.NotFound(w, err)
@@ -102,10 +98,10 @@ func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.Handl
 			return
 		}
 
-		if in.Name.IsZero() == false {
+		if !in.Name.IsZero() {
 			album.Name = in.Name.String
 		}
-		if in.Desc.IsZero() == false {
+		if !in.Name.IsZero() {
 			album.Desc = in.Desc.String
 		}
 

@@ -10,11 +10,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/tphoney/musicscan/internal/api/render"
 	"github.com/tphoney/musicscan/internal/logger"
 	"github.com/tphoney/musicscan/internal/store"
 	"github.com/tphoney/musicscan/types"
-	"github.com/go-chi/chi"
 )
 
 // HandleCreate returns an http.HandlerFunc that creates
@@ -71,7 +71,7 @@ func HandleCreate(artists store.ArtistStore, albums store.AlbumStore) http.Handl
 		}
 
 		album := &types.Album{
-			Artist:     artist.ID,
+			Artist:  artist.ID,
 			Name:    in.Name.String,
 			Desc:    in.Desc.String,
 			Created: time.Now().Unix(),

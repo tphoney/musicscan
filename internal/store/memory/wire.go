@@ -5,8 +5,8 @@
 package memory
 
 import (
-	"github.com/tphoney/musicscan/internal/store"
 	"github.com/google/wire"
+	"github.com/tphoney/musicscan/internal/store"
 )
 
 // WireSet provides a wire set for this package

@@ -25,7 +25,6 @@ func HandleUpdate(
 	members store.MemberStore,
 ) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		in := new(types.MembershipInput)
 		err := json.NewDecoder(r.Body).Decode(in)
 		if err != nil {

@@ -46,9 +46,8 @@ func (s *UserStore) FindKey(ctx context.Context, key string) (*types.User, error
 	id, err := strconv.ParseInt(key, 10, 64)
 	if err == nil {
 		return s.Find(ctx, id)
-	} else {
-		return s.FindEmail(ctx, key)
 	}
+	return s.FindEmail(ctx, key)
 }
 
 // FindToken finds the user by token.
@@ -70,7 +69,7 @@ func (s *UserStore) List(ctx context.Context, opts types.Params) ([]*types.User,
 func (s *UserStore) Create(ctx context.Context, user *types.User) error {
 	query := userInsert
 
-	if s.db.DriverName() == "postgres" {
+	if s.db.DriverName() == POSTGRESSTRING {
 		query = userInsertPg
 	}
 
@@ -79,7 +78,7 @@ func (s *UserStore) Create(ctx context.Context, user *types.User) error {
 		return err
 	}
 
-	if s.db.DriverName() == "postgres" {
+	if s.db.DriverName() == POSTGRESSTRING {
 		return s.db.QueryRow(query, arg...).Scan(&user.ID)
 	}
 

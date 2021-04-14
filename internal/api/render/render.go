@@ -84,5 +84,5 @@ func JSON(w http.ResponseWriter, v interface{}, status int) {
 	if indent {
 		enc.SetIndent("", "  ")
 	}
-	enc.Encode(v)
+	_ = enc.Encode(v)
 }

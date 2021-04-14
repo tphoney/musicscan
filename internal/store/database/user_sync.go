@@ -15,8 +15,8 @@ import (
 var _ store.UserStore = (*UserStoreSync)(nil)
 
 // NewUserStoreSync returns a new UserStoreSync.
-func NewUserStoreSync(store *UserStore) *UserStoreSync {
-	return &UserStoreSync{store}
+func NewUserStoreSync(str *UserStore) *UserStoreSync {
+	return &UserStoreSync{str}
 }
 
 // UserStoreSync synronizes read and write access to the

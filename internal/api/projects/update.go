@@ -52,10 +52,10 @@ func HandleUpdate(projects store.ProjectStore) http.HandlerFunc {
 			return
 		}
 
-		if in.Name.IsZero() == false {
+		if !in.Name.IsZero() {
 			project.Name = in.Name.String
 		}
-		if in.Desc.IsZero() == false {
+		if !in.Desc.IsZero() {
 			project.Desc = in.Desc.String
 		}
 

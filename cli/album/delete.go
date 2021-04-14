@@ -11,8 +11,8 @@ import (
 )
 
 type deleteCommand struct {
-	proj int64
-	artist  int64
+	proj   int64
+	artist int64
 	album  int64
 }
 

@@ -8,8 +8,8 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/tphoney/musicscan/cli/util"
 	"github.com/drone/funcmap"
+	"github.com/tphoney/musicscan/cli/util"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )

@@ -28,7 +28,6 @@ type userCreateInput struct {
 // to create the named user account in the system.
 func HandleCreate(users store.UserStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		in := new(userCreateInput)
 		err := json.NewDecoder(r.Body).Decode(in)
 		if err != nil {

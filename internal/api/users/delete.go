@@ -36,7 +36,6 @@ func HandleDelete(users store.UserStore) http.HandlerFunc {
 				WithField("id", user.ID).
 				WithField("email", user.Email).
 				Errorf("cannot delete user")
-
 		} else {
 			w.WriteHeader(http.StatusNoContent)
 		}

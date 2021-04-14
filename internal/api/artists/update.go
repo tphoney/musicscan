@@ -70,10 +70,10 @@ func HandleUpdate(artists store.ArtistStore) http.HandlerFunc {
 			return
 		}
 
-		if in.Name.IsZero() == false {
+		if !in.Name.IsZero() {
 			artist.Name = in.Name.String
 		}
-		if in.Desc.IsZero() == false {
+		if !in.Desc.IsZero() {
 			artist.Desc = in.Desc.String
 		}
 

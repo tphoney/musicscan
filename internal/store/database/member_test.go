@@ -19,7 +19,7 @@ func TestMembershipFind(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -48,7 +48,7 @@ func TestMembershipList(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -80,7 +80,7 @@ func TestMembershipCreate(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -90,7 +90,7 @@ func TestMembershipCreate(t *testing.T) {
 		User:    2,
 		Role:    enum.RoleAdmin,
 	}
-	if err := store.Create(noContext, create); err != nil {
+	if err = store.Create(noContext, create); err != nil {
 		t.Error(err)
 		return
 	}
@@ -113,7 +113,7 @@ func TestMembershipUpdate(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -158,7 +158,7 @@ func TestMembershipDelete(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}

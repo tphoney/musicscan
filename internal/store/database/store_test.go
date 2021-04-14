@@ -34,11 +34,11 @@ func connect() (*sqlx.DB, error) {
 
 // seed seed the database state.
 func seed(db *sqlx.DB) error {
-	db.Exec("TRUNCATE TABLE albums")
-	db.Exec("TRUNCATE TABLE artists")
-	db.Exec("TRUNCATE TABLE members")
-	db.Exec("TRUNCATE TABLE projects")
-	db.Exec("TRUNCATE TABLE users")
+	_, _ = db.Exec("TRUNCATE TABLE albums")
+	_, _ = db.Exec("TRUNCATE TABLE artists")
+	_, _ = db.Exec("TRUNCATE TABLE members")
+	_, _ = db.Exec("TRUNCATE TABLE projects")
+	_, _ = db.Exec("TRUNCATE TABLE users")
 
 	out, err := ioutil.ReadFile("testdata/seed.sql")
 	if err != nil {

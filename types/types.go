@@ -33,7 +33,7 @@ type (
 	// Album stores album details.
 	Album struct {
 		ID      int64  `db:"album_id"      json:"id"`
-		Artist     int64  `db:"album_artist_id"  json:"-"`
+		Artist  int64  `db:"album_artist_id"  json:"-"`
 		Name    string `db:"album_name"    json:"name"`
 		Desc    string `db:"album_desc"    json:"desc"`
 		Created int64  `db:"album_created" json:"created"`

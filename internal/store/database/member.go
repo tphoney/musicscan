@@ -27,7 +27,7 @@ type MemberStore struct {
 }
 
 // Find finds the member by project and user id.
-func (s *MemberStore) Find(ctx context.Context, project int64, user int64) (*types.Member, error) {
+func (s *MemberStore) Find(ctx context.Context, project, user int64) (*types.Member, error) {
 	dst := new(types.Member)
 	err := s.db.Get(dst, memberSelect, project, user)
 	return dst, err

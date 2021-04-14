@@ -15,8 +15,8 @@ import (
 var _ store.MemberStore = (*MemberStoreSync)(nil)
 
 // NewMemberStoreSync returns a new MemberStoreSync.
-func NewMemberStoreSync(store *MemberStore) *MemberStoreSync {
-	return &MemberStoreSync{store}
+func NewMemberStoreSync(str *MemberStore) *MemberStoreSync {
+	return &MemberStoreSync{str}
 }
 
 // MemberStoreSync synronizes read and write access to the
@@ -25,7 +25,7 @@ func NewMemberStoreSync(store *MemberStore) *MemberStoreSync {
 type MemberStoreSync struct{ *MemberStore }
 
 // Find finds the member by project and user id.
-func (s *MemberStoreSync) Find(ctx context.Context, project int64, user int64) (*types.Member, error) {
+func (s *MemberStoreSync) Find(ctx context.Context, project, user int64) (*types.Member, error) {
 	mutex.RLock()
 	defer mutex.RUnlock()
 	return s.MemberStore.Find(ctx, project, user)

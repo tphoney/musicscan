@@ -15,8 +15,8 @@ import (
 var _ store.ProjectStore = (*ProjectStoreSync)(nil)
 
 // NewProjectStoreSync returns a new ProjectStoreSync.
-func NewProjectStoreSync(store *ProjectStore) *ProjectStoreSync {
-	return &ProjectStoreSync{store}
+func NewProjectStoreSync(str *ProjectStore) *ProjectStoreSync {
+	return &ProjectStoreSync{str}
 }
 
 // ProjectStoreSync synronizes read and write access to the

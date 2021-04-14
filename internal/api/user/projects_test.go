@@ -50,7 +50,7 @@ func TestProjectList(t *testing.T) {
 	}
 
 	got, want := []*types.Project{}, mockList
-	json.NewDecoder(w.Body).Decode(&got)
+	_ = json.NewDecoder(w.Body).Decode(&got)
 	if diff := cmp.Diff(got, want); len(diff) > 0 {
 		t.Errorf(diff)
 	}
@@ -80,7 +80,7 @@ func TestProjectListErr(t *testing.T) {
 	}
 
 	got, want := &render.Error{}, render.ErrNotFound
-	json.NewDecoder(w.Body).Decode(got)
+	_ = json.NewDecoder(w.Body).Decode(got)
 	if diff := cmp.Diff(got, want); len(diff) > 0 {
 		t.Errorf(diff)
 	}

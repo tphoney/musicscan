@@ -20,8 +20,8 @@ type loginCommand struct {
 
 func (c *loginCommand) run(*kingpin.ParseContext) error {
 	username, password := util.Credentials()
-	client := client.New(c.server)
-	token, err := client.Login(username, password)
+	cli := client.New(c.server)
+	token, err := cli.Login(username, password)
 	if err != nil {
 		return err
 	}

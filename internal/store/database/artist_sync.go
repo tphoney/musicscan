@@ -15,8 +15,8 @@ import (
 var _ store.ArtistStore = (*ArtistStoreSync)(nil)
 
 // NewArtistStoreSync returns a new ArtistStoreSync.
-func NewArtistStoreSync(store *ArtistStore) *ArtistStoreSync {
-	return &ArtistStoreSync{store}
+func NewArtistStoreSync(str *ArtistStore) *ArtistStoreSync {
+	return &ArtistStoreSync{str}
 }
 
 // ArtistStoreSync synronizes read and write access to the
