@@ -23,7 +23,6 @@ func HandleDelete(
 	members store.MemberStore,
 ) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		id, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
 			render.BadRequest(w, err)

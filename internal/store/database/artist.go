@@ -45,7 +45,7 @@ func (s *ArtistStore) List(ctx context.Context, id int64, opts types.Params) ([]
 func (s *ArtistStore) Create(ctx context.Context, artist *types.Artist) error {
 	query := artistInsert
 
-	if s.db.DriverName() == "postgres" {
+	if s.db.DriverName() == POSTGRESSTRING {
 		query = artistInsertPg
 	}
 
@@ -54,7 +54,7 @@ func (s *ArtistStore) Create(ctx context.Context, artist *types.Artist) error {
 		return err
 	}
 
-	if s.db.DriverName() == "postgres" {
+	if s.db.DriverName() == POSTGRESSTRING {
 		return s.db.QueryRow(query, arg...).Scan(&artist.ID)
 	}
 

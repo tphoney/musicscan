@@ -8,8 +8,8 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/tphoney/musicscan/cli/util"
 	"github.com/drone/funcmap"
+	"github.com/tphoney/musicscan/cli/util"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -21,9 +21,9 @@ desc: {{ .Desc }}
 `
 
 type listCommand struct {
-	proj int64
-	artist  int64
-	tmpl string
+	proj   int64
+	artist int64
+	tmpl   string
 }
 
 func (c *listCommand) run(*kingpin.ParseContext) error {

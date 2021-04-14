@@ -9,10 +9,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/tphoney/musicscan/internal/api/render"
 	"github.com/tphoney/musicscan/internal/api/request"
 	"github.com/tphoney/musicscan/types"
-	"github.com/dgrijalva/jwt-go"
 
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
@@ -40,7 +40,7 @@ func TestToken(t *testing.T) {
 	}
 
 	result := &types.Token{}
-	json.NewDecoder(w.Body).Decode(&result)
+	_ = json.NewDecoder(w.Body).Decode(&result)
 
 	_, err := jwt.Parse(result.Value, func(token *jwt.Token) (interface{}, error) {
 		return []byte(mockUser.Token), nil
@@ -82,8 +82,8 @@ func TestToken_UpdateError(t *testing.T) {
 	}
 
 	got, want := new(render.Error), &render.Error{Message: "Failed to generate token"}
-	json.NewDecoder(w.Body).Decode(got)
-	if diff := cmp.Diff(got, want); len(diff) != 0 {
+	_ = json.NewDecoder(w.Body).Decode(got)
+	if diff := cmp.Diff(got, want); diff != "" {
 		t.Errorf(diff)
 	}
 }

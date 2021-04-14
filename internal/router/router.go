@@ -45,7 +45,6 @@ func New(
 	userStore store.UserStore,
 	systemStore store.SystemStore,
 ) http.Handler {
-
 	// create the router with caching disabled
 	// for API endpoints
 	r := chi.NewRouter()
@@ -62,7 +61,7 @@ func New(
 		r.Use(middleware.Recoverer)
 		r.Use(logger.Middleware)
 
-		cors := cors.New(
+		c := cors.New(
 			cors.Options{
 				AllowedOrigins:   config.Cors.AllowedOrigins,
 				AllowedMethods:   config.Cors.AllowedMethods,
@@ -72,7 +71,7 @@ func New(
 				MaxAge:           config.Cors.MaxAge,
 			},
 		)
-		r.Use(cors.Handler)
+		r.Use(c.Handler)
 
 		// project endpoints
 		r.Route("/projects", func(r chi.Router) {

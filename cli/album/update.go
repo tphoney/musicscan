@@ -17,12 +17,12 @@ import (
 )
 
 type updateCommand struct {
-	proj int64
-	artist  int64
+	proj   int64
+	artist int64
 	album  int64
-	name string
-	desc string
-	tmpl string
+	name   string
+	desc   string
+	tmpl   string
 }
 
 func (c *updateCommand) run(*kingpin.ParseContext) error {

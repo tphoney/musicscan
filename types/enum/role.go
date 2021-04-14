@@ -15,15 +15,18 @@ const (
 	RoleAdmin
 )
 
+const DEVELOPER = "developer"
+const ADMIN = "admin"
+
 // String returns the Role as a string.
 func (e Role) String() string {
 	switch e {
 	case RoleDeveloper:
-		return "developer"
+		return DEVELOPER
 	case RoleAdmin:
-		return "admin"
+		return ADMIN
 	default:
-		return "developer"
+		return DEVELOPER
 	}
 }
 
@@ -35,11 +38,11 @@ func (e Role) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON unmashals a quoted json string to the enum value.
 func (e *Role) UnmarshalJSON(b []byte) error {
 	var v string
-	json.Unmarshal(b, &v)
+	_ = json.Unmarshal(b, &v)
 	switch v {
-	case "admin":
+	case ADMIN:
 		*e = RoleAdmin
-	case "developer":
+	case DEVELOPER:
 		*e = RoleDeveloper
 	default:
 		*e = RoleDeveloper

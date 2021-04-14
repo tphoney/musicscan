@@ -52,7 +52,7 @@ func (s *ProjectStore) List(ctx context.Context, user int64, opts types.Params) 
 func (s *ProjectStore) Create(ctx context.Context, project *types.Project) error {
 	query := projectInsert
 
-	if s.db.DriverName() == "postgres" {
+	if s.db.DriverName() == POSTGRESSTRING {
 		query = projectInsertPg
 	}
 
@@ -61,7 +61,7 @@ func (s *ProjectStore) Create(ctx context.Context, project *types.Project) error
 		return err
 	}
 
-	if s.db.DriverName() == "postgres" {
+	if s.db.DriverName() == POSTGRESSTRING {
 		return s.db.QueryRow(query, arg...).Scan(&project.ID)
 	}
 

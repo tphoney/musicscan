@@ -15,10 +15,10 @@ import (
 )
 
 type findCommand struct {
-	proj int64
-	artist  int64
+	proj   int64
+	artist int64
 	album  int64
-	tmpl string
+	tmpl   string
 }
 
 func (c *findCommand) run(*kingpin.ParseContext) error {

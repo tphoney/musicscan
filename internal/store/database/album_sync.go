@@ -15,8 +15,8 @@ import (
 var _ store.AlbumStore = (*AlbumStoreSync)(nil)
 
 // NewAlbumStoreSync returns a new AlbumStoreSync.
-func NewAlbumStoreSync(store *AlbumStore) *AlbumStoreSync {
-	return &AlbumStoreSync{store}
+func NewAlbumStoreSync(str *AlbumStore) *AlbumStoreSync {
+	return &AlbumStoreSync{str}
 }
 
 // AlbumStoreSync synronizes read and write access to the

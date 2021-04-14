@@ -33,7 +33,7 @@ func ProvideDatabase(config *types.Config) (*sqlx.DB, error) {
 // ProvideUserStore provides a user store.
 func ProvideUserStore(db *sqlx.DB) store.UserStore {
 	switch db.DriverName() {
-	case "postgres":
+	case POSTGRESSTRING:
 		return NewUserStore(db)
 	default:
 		return NewUserStoreSync(
@@ -45,7 +45,7 @@ func ProvideUserStore(db *sqlx.DB) store.UserStore {
 // ProvideProjectStore provides a project store.
 func ProvideProjectStore(db *sqlx.DB) store.ProjectStore {
 	switch db.DriverName() {
-	case "postgres":
+	case POSTGRESSTRING:
 		return NewProjectStore(db)
 	default:
 		return NewProjectStoreSync(
@@ -57,7 +57,7 @@ func ProvideProjectStore(db *sqlx.DB) store.ProjectStore {
 // ProvideMemberStore provides a member store.
 func ProvideMemberStore(db *sqlx.DB) store.MemberStore {
 	switch db.DriverName() {
-	case "postgres":
+	case POSTGRESSTRING:
 		return NewMemberStore(db)
 	default:
 		return NewMemberStoreSync(
@@ -69,7 +69,7 @@ func ProvideMemberStore(db *sqlx.DB) store.MemberStore {
 // ProvideArtistStore provides a artist store.
 func ProvideArtistStore(db *sqlx.DB) store.ArtistStore {
 	switch db.DriverName() {
-	case "postgres":
+	case POSTGRESSTRING:
 		return NewArtistStore(db)
 	default:
 		return NewArtistStoreSync(
@@ -81,7 +81,7 @@ func ProvideArtistStore(db *sqlx.DB) store.ArtistStore {
 // ProvideAlbumStore provides a album store.
 func ProvideAlbumStore(db *sqlx.DB) store.AlbumStore {
 	switch db.DriverName() {
-	case "postgres":
+	case POSTGRESSTRING:
 		return NewAlbumStore(db)
 	default:
 		return NewAlbumStoreSync(

@@ -38,19 +38,19 @@ func HandleUpdate(users store.UserStore) http.HandlerFunc {
 			return
 		}
 
-		if in.Password.IsZero() == false {
-			hash, err := hashPassword([]byte(in.Password.String), bcrypt.DefaultCost)
-			if err != nil {
-				render.InternalError(w, err)
+		if !in.Password.IsZero() {
+			hash, hashErr := hashPassword([]byte(in.Password.String), bcrypt.DefaultCost)
+			if hashErr != nil {
+				render.InternalError(w, hashErr)
 				logger.FromRequest(r).
-					WithError(err).
+					WithError(hashErr).
 					Debugln("cannot hash password")
 				return
 			}
 			viewer.Password = string(hash)
 		}
 
-		if in.Username.IsZero() == false {
+		if !in.Username.IsZero() {
 			viewer.Email = in.Username.String
 		}
 

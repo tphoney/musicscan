@@ -18,7 +18,7 @@ func TestProjectFindID(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -41,7 +41,7 @@ func TestProjectFindToken(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -64,7 +64,7 @@ func TestProjectList(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -93,7 +93,7 @@ func TestProjectCreate(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -102,7 +102,7 @@ func TestProjectCreate(t *testing.T) {
 		Name:  "vault",
 		Token: "74a03674ab3a6da96ca2ae22532d225c",
 	}
-	if err := store.Create(noContext, create); err != nil {
+	if err = store.Create(noContext, create); err != nil {
 		t.Error(err)
 		return
 	}
@@ -127,7 +127,7 @@ func TestProjectUpdate(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -161,7 +161,7 @@ func TestProjectDelete(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}

@@ -16,11 +16,11 @@ import (
 )
 
 type createCommand struct {
-	proj int64
-	artist  int64
-	name string
-	desc string
-	tmpl string
+	proj   int64
+	artist int64
+	name   string
+	desc   string
+	tmpl   string
 }
 
 func (c *createCommand) run(*kingpin.ParseContext) error {

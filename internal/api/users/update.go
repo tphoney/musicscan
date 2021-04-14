@@ -48,7 +48,7 @@ func HandleUpdate(users store.UserStore) http.HandlerFunc {
 			return
 		}
 
-		if in.Username.IsZero() == false {
+		if !in.Username.IsZero() {
 			user.Email = in.Username.String
 		}
 
@@ -56,12 +56,12 @@ func HandleUpdate(users store.UserStore) http.HandlerFunc {
 			user.Admin = in.Admin.Bool
 		}
 
-		if in.Password.IsZero() == false {
-			hash, err := bcrypt.GenerateFromPassword([]byte(in.Password.String), bcrypt.DefaultCost)
-			if err != nil {
-				render.InternalError(w, err)
+		if !in.Password.IsZero() {
+			hash, genErr := bcrypt.GenerateFromPassword([]byte(in.Password.String), bcrypt.DefaultCost)
+			if genErr != nil {
+				render.InternalError(w, genErr)
 				logger.FromRequest(r).
-					WithError(err).
+					WithError(genErr).
 					Debugln("cannot hash password")
 				return
 			}

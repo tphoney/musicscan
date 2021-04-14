@@ -26,8 +26,8 @@ func Must(users store.UserStore) func(http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
 			str := extractToken(r)
-			if len(str) == 0 {
-				render.ErrorCode(w, errors.New("Requires authentication"), 401)
+			if str == "" {
+				render.ErrorCode(w, errors.New("requires authentication"), 401)
 				return
 			}
 
@@ -52,19 +52,19 @@ func Must(users store.UserStore) func(http.Handler) http.Handler {
 				render.ErrorCode(w, err, 401)
 				return
 			}
-			if token.Valid == false {
-				render.ErrorCode(w, errors.New("Invalid token"), 401)
+			if !token.Valid {
+				render.ErrorCode(w, errors.New("invalid token"), 401)
 				return
 			}
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				render.ErrorCode(w, errors.New("Invalid token"), 401)
+				render.ErrorCode(w, errors.New("invalid token"), 401)
 				return
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok {
 				if v, ok := claims["exp"]; ok {
 					if time.Now().Unix() > int64(v.(float64)) {
-						render.ErrorCode(w, errors.New("Expired token"), 401)
+						render.ErrorCode(w, errors.New("expired token"), 401)
 						return
 					}
 				}

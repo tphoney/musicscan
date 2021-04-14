@@ -5,7 +5,6 @@
 package cli
 
 import (
-	"context"
 	"os"
 
 	"github.com/tphoney/musicscan/cli/album"
@@ -22,7 +21,7 @@ import (
 )
 
 // empty context
-var nocontext = context.Background()
+// var nocontext = context.Background()
 
 // application name
 var application = "musicscan"

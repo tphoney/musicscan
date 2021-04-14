@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/tphoney/musicscan/internal/api/render"
 	"github.com/tphoney/musicscan/internal/logger"
 	"github.com/tphoney/musicscan/internal/store"
 	"github.com/tphoney/musicscan/types"
-	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/dchest/uniuri"
@@ -43,7 +43,7 @@ func HandleRegister(users store.UserStore, system store.SystemStore) http.Handle
 			Updated:  time.Now().Unix(),
 		}
 
-		if err := users.Create(ctx, user); err != nil {
+		if err = users.Create(ctx, user); err != nil {
 			render.InternalError(w, err)
 			logger.FromRequest(r).
 				WithError(err).
@@ -57,7 +57,7 @@ func HandleRegister(users store.UserStore, system store.SystemStore) http.Handle
 		// user system admin access.
 		if user.ID == 1 {
 			user.Admin = true
-			if err := users.Update(ctx, user); err != nil {
+			if err = users.Update(ctx, user); err != nil {
 				logger.FromRequest(r).
 					WithError(err).
 					WithField("id", user.ID).

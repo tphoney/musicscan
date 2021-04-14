@@ -18,7 +18,7 @@ func TestUserCount(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -40,7 +40,7 @@ func TestUserFindID(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -62,7 +62,7 @@ func TestUserFindEmail(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -84,7 +84,7 @@ func TestUserFindToken(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -106,7 +106,7 @@ func TestUserFindEmailNocase(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -128,7 +128,7 @@ func TestUserList(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -211,7 +211,7 @@ func TestUserUpdate(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}
@@ -245,7 +245,7 @@ func TestUserDelete(t *testing.T) {
 		return
 	}
 	defer db.Close()
-	if err := seed(db); err != nil {
+	if err = seed(db); err != nil {
 		t.Error(err)
 		return
 	}

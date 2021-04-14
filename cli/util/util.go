@@ -19,7 +19,7 @@ import (
 	"github.com/adrg/xdg"
 	"github.com/tphoney/musicscan/client"
 	"github.com/tphoney/musicscan/types"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 // Client returns a client that is configured from file.
@@ -39,11 +39,11 @@ func Client() (*client.HTTPClient, error) {
 	if time.Now().Unix() > token.Expires.Unix() {
 		return nil, errors.New("token is expired, please login")
 	}
-	client := client.NewToken(token.Address, token.Value)
+	cli := client.NewToken(token.Address, token.Value)
 	if os.Getenv("DEBUG") == "true" {
-		client.SetDebug(true)
+		cli.SetDebug(true)
 	}
-	return client, nil
+	return cli, nil
 }
 
 // Config returns the configuration file path.
@@ -54,7 +54,7 @@ func Config() (string, error) {
 }
 
 // Credentials returns the username and password from stdin.
-func Credentials() (string, string) {
+func Credentials() (username, password string) {
 	return Username(), Password()
 }
 
@@ -71,7 +71,7 @@ func Username() string {
 // Password returns the password from stdin.
 func Password() string {
 	fmt.Print("Enter Password: ")
-	passwordb, _ := terminal.ReadPassword(int(syscall.Stdin))
+	passwordb, _ := term.ReadPassword(syscall.Stdin)
 	password := string(passwordb)
 
 	return strings.TrimSpace(password)

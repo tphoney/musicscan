@@ -322,9 +322,9 @@ func (c *HTTPClient) post(rawurl string, in, out interface{}) error {
 }
 
 // helper function for making an http PUT request.
-func (c *HTTPClient) put(rawurl string, in, out interface{}) error {
-	return c.do(rawurl, "PUT", in, out)
-}
+// func (c *HTTPClient) put(rawurl string, in, out interface{}) error {
+// 	return c.do(rawurl, "PUT", in, out)
+// }
 
 // helper function for making an http PATCH request.
 func (c *HTTPClient) patch(rawurl string, in, out interface{}) error {
@@ -357,7 +357,7 @@ func (c *HTTPClient) do(rawurl, method string, in, out interface{}) error {
 }
 
 // helper function to stream an http request
-func (c *HTTPClient) stream(rawurl, method string, in, out interface{}) (io.ReadCloser, error) {
+func (c *HTTPClient) stream(rawurl, method string, in, _ interface{}) (io.ReadCloser, error) {
 	uri, err := url.Parse(rawurl)
 	if err != nil {
 		return nil, err
@@ -370,9 +370,13 @@ func (c *HTTPClient) stream(rawurl, method string, in, out interface{}) (io.Read
 		buf = new(bytes.Buffer)
 		// if posting form data, encode the form values.
 		if form, ok := in.(*url.Values); ok {
-			io.WriteString(buf, form.Encode())
+			_, err = io.WriteString(buf, form.Encode())
+			if err != nil {
+				return nil, err
+			}
 		} else {
-			if err := json.NewEncoder(buf).Encode(in); err != nil {
+			err = json.NewEncoder(buf).Encode(in)
+			if err != nil {
 				return nil, err
 			}
 		}
@@ -401,7 +405,7 @@ func (c *HTTPClient) stream(rawurl, method string, in, out interface{}) (io.Read
 		fmt.Println(method, rawurl)
 		fmt.Println(string(dump))
 	}
-	if resp.StatusCode > 299 {
+	if resp.StatusCode >= http.StatusMultipleChoices {
 		defer resp.Body.Close()
 		err := new(remoteError)
 		json.NewDecoder(resp.Body).Decode(err)

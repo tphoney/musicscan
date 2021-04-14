@@ -26,7 +26,7 @@ func ProjectAccess(members store.MemberStore) func(http.Handler) http.Handler {
 			ctx := r.Context()
 			user, ok := request.UserFrom(ctx)
 			if !ok {
-				render.ErrorCode(w, errors.New("Requires authentication"), 401)
+				render.ErrorCode(w, errors.New("requires authentication"), 401)
 				return
 			}
 
@@ -74,7 +74,7 @@ func ProjectAdmin(members store.MemberStore) func(http.Handler) http.Handler {
 			ctx := r.Context()
 			user, ok := request.UserFrom(ctx)
 			if !ok {
-				render.ErrorCode(w, errors.New("Requires authentication"), 401)
+				render.ErrorCode(w, errors.New("requires authentication"), 401)
 				return
 			}
 
@@ -104,7 +104,7 @@ func ProjectAdmin(members store.MemberStore) func(http.Handler) http.Handler {
 			}
 
 			if member.Role != enum.RoleAdmin {
-				render.ErrorCode(w, errors.New("Forbidden"), 403)
+				render.ErrorCode(w, errors.New("forbidden"), 403)
 				logger.FromRequest(r).
 					WithError(err).
 					Debugln("insufficient privileges")
@@ -124,11 +124,11 @@ func SystemAdmin() func(http.Handler) http.Handler {
 			ctx := r.Context()
 			user, ok := request.UserFrom(ctx)
 			if !ok {
-				render.ErrorCode(w, errors.New("Requires authentication"), 401)
+				render.ErrorCode(w, errors.New("requires authentication"), 401)
 				return
 			}
 			if !user.Admin {
-				render.ErrorCode(w, errors.New("Forbidden"), 403)
+				render.ErrorCode(w, errors.New("forbidden"), 403)
 				return
 			}
 			next.ServeHTTP(w, r)
