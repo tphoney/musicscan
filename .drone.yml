@@ -1,0 +1,36 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: frontend
+  image: node:15
+  commands:
+  - cd web
+  - npm install
+  - npm run build
+  - cd ..
+
+- name: backend
+  image: golang:1.16
+  commands:
+  - go test -v -cover ./...
+  - go build -ldflags '-extldflags "-static"' -o release/linux/amd64/musicscan
+
+- name: publish
+  image: plugins/docker
+  pull: if-not-exists
+  settings:
+    file: docker/Dockerfile
+    repo: tphoney/musicscan
+    auto_tag: true
+    auto_tag_suffix: linux-amd64
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    dry_run: true
+  when:
+    event:
+    - push
+    - tag

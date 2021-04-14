@@ -1,0 +1,9 @@
+NOTES*
+.env*
+*.sqlite
+*.sqlite3
+web/.cache
+web/node_modules
+web/dist/files
+release
+musicscan

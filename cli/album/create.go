@@ -28,11 +28,11 @@ func (c *createCommand) run(*kingpin.ParseContext) error {
 	if err != nil {
 		return err
 	}
-	in := &types.album{
+	in := &types.Album{
 		Name: c.name,
 		Desc: c.desc,
 	}
-	proj, err := client.albumCreate(c.proj, c.artist, in)
+	proj, err := client.AlbumCreate(c.proj, c.artist, in)
 	if err != nil {
 		return err
 	}

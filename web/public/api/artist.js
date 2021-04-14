@@ -2,9 +2,9 @@ import { instance } from "./config.js";
 import useSWR, { mutate } from "swr";
 
 /**
- * createartist creates a new artist.
+ * createArtist creates a new artist.
  */
-export const createartist = async (params, data, fetcher) => {
+export const createArtist = async (params, data, fetcher) => {
 	const { project } = params;
 	return fetcher(`${instance}/api/v1/projects/${project}/artists`, {
 		body: JSON.stringify(data),
@@ -16,9 +16,9 @@ export const createartist = async (params, data, fetcher) => {
 };
 
 /**
- * updateartist updates an existing artist.
+ * updateArtist updates an existing artist.
  */
-export const updateartist = (params, data, fetcher) => {
+export const updateArtist = (params, data, fetcher) => {
 	const { project, artist } = params;
 	return fetcher(`${instance}/api/v1/projects/${project}/artists/${artist}`, {
 		body: JSON.stringify(data),
@@ -27,9 +27,9 @@ export const updateartist = (params, data, fetcher) => {
 };
 
 /**
- * deleteartist deletes an existing artist.
+ * deleteArtist deletes an existing artist.
  */
-export const deleteartist = (params, fetcher) => {
+export const deleteArtist = (params, fetcher) => {
 	const { project, artist } = params;
 	return fetcher(`${instance}/api/v1/projects/${project}/artists/${artist}`, {
 		method: "DELETE",
@@ -42,7 +42,7 @@ export const deleteartist = (params, fetcher) => {
 /**
  * use returns an swr hook that provides
  */
-export const useartistList = (project) => {
+export const useArtistList = (project) => {
 	const { data, error } = useSWR(
 		`${instance}/api/v1/projects/${project}/artists`
 	);
@@ -57,7 +57,7 @@ export const useartistList = (project) => {
 /**
  * use returns an swr hook that provides
  */
-export const useartist = (project, artist) => {
+export const useArtist = (project, artist) => {
 	const { data, error } = useSWR(
 		`${instance}/api/v1/projects/${project}/artists/${artist}`
 	);

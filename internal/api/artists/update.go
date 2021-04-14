@@ -19,7 +19,7 @@ import (
 
 // HandleUpdate returns an http.HandlerFunc that processes http
 // requests to update the object details.
-func HandleUpdate(artists store.artistStore) http.HandlerFunc {
+func HandleUpdate(artists store.ArtistStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		project, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
@@ -39,7 +39,7 @@ func HandleUpdate(artists store.artistStore) http.HandlerFunc {
 			return
 		}
 
-		in := new(types.artistInput)
+		in := new(types.ArtistInput)
 		err = json.NewDecoder(r.Body).Decode(in)
 		if err != nil {
 			render.BadRequest(w, err)

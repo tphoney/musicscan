@@ -222,86 +222,86 @@ func (c *HTTPClient) MemberDelete(project int64, user string) error {
 }
 
 //
-// artist endpoints
+// Artist endpoints
 //
 
-// artist returns a artist by ID.
-func (c *HTTPClient) artist(project, id int64) (*types.artist, error) {
-	out := new(types.artist)
+// Artist returns a artist by ID.
+func (c *HTTPClient) Artist(project, id int64) (*types.Artist, error) {
+	out := new(types.Artist)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d", c.base, project, id)
 	err := c.get(uri, out)
 	return out, err
 }
 
-// artistList returns a list of all artists by project id.
-func (c *HTTPClient) artistList(project int64) ([]*types.artist, error) {
-	out := []*types.artist{}
+// ArtistList returns a list of all artists by project id.
+func (c *HTTPClient) ArtistList(project int64) ([]*types.Artist, error) {
+	out := []*types.Artist{}
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists", c.base, project)
 	err := c.get(uri, &out)
 	return out, err
 }
 
-// artistCreate creates a new artist.
-func (c *HTTPClient) artistCreate(project int64, artist *types.artist) (*types.artist, error) {
-	out := new(types.artist)
+// ArtistCreate creates a new artist.
+func (c *HTTPClient) ArtistCreate(project int64, artist *types.Artist) (*types.Artist, error) {
+	out := new(types.Artist)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists", c.base, project)
 	err := c.post(uri, artist, out)
 	return out, err
 }
 
-// artistUpdate updates a artist.
-func (c *HTTPClient) artistUpdate(project, id int64, artist *types.artistInput) (*types.artist, error) {
-	out := new(types.artist)
+// ArtistUpdate updates a artist.
+func (c *HTTPClient) ArtistUpdate(project, id int64, artist *types.ArtistInput) (*types.Artist, error) {
+	out := new(types.Artist)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d", c.base, project, id)
 	err := c.patch(uri, artist, out)
 	return out, err
 }
 
-// artistDelete deletes a artist.
-func (c *HTTPClient) artistDelete(project, id int64) error {
+// ArtistDelete deletes a artist.
+func (c *HTTPClient) ArtistDelete(project, id int64) error {
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d", c.base, project, id)
 	err := c.delete(uri)
 	return err
 }
 
 //
-// album endpoints
+// Album endpoints
 //
 
-// album returns a album by ID.
-func (c *HTTPClient) album(project, artist, album int64) (*types.album, error) {
-	out := new(types.album)
+// Album returns a album by ID.
+func (c *HTTPClient) Album(project, artist, album int64) (*types.Album, error) {
+	out := new(types.Album)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d/albums/%d", c.base, project, artist, album)
 	err := c.get(uri, out)
 	return out, err
 }
 
-// albumList returns a list of all albums by project id.
-func (c *HTTPClient) albumList(project, artist int64) ([]*types.album, error) {
-	out := []*types.album{}
+// AlbumList returns a list of all albums by project id.
+func (c *HTTPClient) AlbumList(project, artist int64) ([]*types.Album, error) {
+	out := []*types.Album{}
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d/albums", c.base, project, artist)
 	err := c.get(uri, &out)
 	return out, err
 }
 
-// albumCreate creates a new album.
-func (c *HTTPClient) albumCreate(project, artist int64, input *types.album) (*types.album, error) {
-	out := new(types.album)
+// AlbumCreate creates a new album.
+func (c *HTTPClient) AlbumCreate(project, artist int64, input *types.Album) (*types.Album, error) {
+	out := new(types.Album)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d/albums", c.base, project, artist)
 	err := c.post(uri, input, out)
 	return out, err
 }
 
-// albumUpdate updates a album.
-func (c *HTTPClient) albumUpdate(project, artist, album int64, input *types.albumInput) (*types.album, error) {
-	out := new(types.album)
+// AlbumUpdate updates a album.
+func (c *HTTPClient) AlbumUpdate(project, artist, album int64, input *types.AlbumInput) (*types.Album, error) {
+	out := new(types.Album)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d/albums/%d", c.base, project, artist, album)
 	err := c.patch(uri, input, out)
 	return out, err
 }
 
-// albumDelete deletes a album.
-func (c *HTTPClient) albumDelete(project, artist, album int64) error {
+// AlbumDelete deletes a album.
+func (c *HTTPClient) AlbumDelete(project, artist, album int64) error {
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d/albums/%d", c.base, project, artist, album)
 	err := c.delete(uri)
 	return err

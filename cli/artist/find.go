@@ -25,7 +25,7 @@ func (c *findCommand) run(*kingpin.ParseContext) error {
 	if err != nil {
 		return err
 	}
-	proj, err := client.artist(c.proj, c.id)
+	proj, err := client.Artist(c.proj, c.id)
 	if err != nil {
 		return err
 	}

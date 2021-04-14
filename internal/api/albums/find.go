@@ -17,7 +17,7 @@ import (
 
 // HandleFind returns an http.HandlerFunc that writes the
 // json-encoded artist details to the response body.
-func HandleFind(artists store.artistStore, albums store.albumStore) http.HandlerFunc {
+func HandleFind(artists store.ArtistStore, albums store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		projectID, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
@@ -76,7 +76,7 @@ func HandleFind(artists store.artistStore, albums store.albumStore) http.Handler
 			return
 		}
 
-		if artist.ID != album.artist {
+		if artist.ID != album.Artist {
 			render.NotFoundf(w, "Not Found")
 			logger.FromRequest(r).
 				WithField("artist.id", artist.ID).

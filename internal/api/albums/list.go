@@ -17,7 +17,7 @@ import (
 
 // HandleList returns an http.HandlerFunc that writes a json-encoded
 // list of objects to the response body.
-func HandleList(artists store.artistStore, albums store.albumStore) http.HandlerFunc {
+func HandleList(artists store.ArtistStore, albums store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 

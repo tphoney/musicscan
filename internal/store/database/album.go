@@ -13,36 +13,36 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-var _ store.albumStore = (*albumStore)(nil)
+var _ store.AlbumStore = (*AlbumStore)(nil)
 
-// NewalbumStore returns a new albumStore.
-func NewalbumStore(db *sqlx.DB) *albumStore {
-	return &albumStore{db}
+// NewAlbumStore returns a new AlbumStore.
+func NewAlbumStore(db *sqlx.DB) *AlbumStore {
+	return &AlbumStore{db}
 }
 
-// albumStore implements a albumStore backed by a relational
+// AlbumStore implements a AlbumStore backed by a relational
 // database.
-type albumStore struct {
+type AlbumStore struct {
 	db *sqlx.DB
 }
 
 // Find finds the album by id.
-func (s *albumStore) Find(ctx context.Context, id int64) (*types.album, error) {
-	dst := new(types.album)
+func (s *AlbumStore) Find(ctx context.Context, id int64) (*types.Album, error) {
+	dst := new(types.Album)
 	err := s.db.Get(dst, albumSelectID, id)
 	return dst, err
 }
 
 // List returns a list of albums.
-func (s *albumStore) List(ctx context.Context, id int64, opts types.Params) ([]*types.album, error) {
-	dst := []*types.album{}
+func (s *AlbumStore) List(ctx context.Context, id int64, opts types.Params) ([]*types.Album, error) {
+	dst := []*types.Album{}
 	err := s.db.Select(&dst, albumSelect, id)
 	// TODO(bradrydzewski) add limit and offset
 	return dst, err
 }
 
 // Create saves the album details.
-func (s *albumStore) Create(ctx context.Context, album *types.album) error {
+func (s *AlbumStore) Create(ctx context.Context, album *types.Album) error {
 	query := albumInsert
 
 	if s.db.DriverName() == "postgres" {
@@ -70,7 +70,7 @@ func (s *albumStore) Create(ctx context.Context, album *types.album) error {
 }
 
 // Update updates the album details.
-func (s *albumStore) Update(ctx context.Context, album *types.album) error {
+func (s *AlbumStore) Update(ctx context.Context, album *types.Album) error {
 	query, arg, err := s.db.BindNamed(albumUpdate, album)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (s *albumStore) Update(ctx context.Context, album *types.album) error {
 }
 
 // Delete deletes the album.
-func (s *albumStore) Delete(ctx context.Context, album *types.album) error {
+func (s *AlbumStore) Delete(ctx context.Context, album *types.Album) error {
 	_, err := s.db.Exec(albumDelete, album.ID)
 	return err
 }

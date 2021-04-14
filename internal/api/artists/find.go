@@ -17,7 +17,7 @@ import (
 
 // HandleFind returns an http.HandlerFunc that writes the
 // json-encoded artist details to the response body.
-func HandleFind(artists store.artistStore) http.HandlerFunc {
+func HandleFind(artists store.ArtistStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		project, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {

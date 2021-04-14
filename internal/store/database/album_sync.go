@@ -12,49 +12,49 @@ import (
 	"github.com/tphoney/musicscan/types"
 )
 
-var _ store.albumStore = (*albumStoreSync)(nil)
+var _ store.AlbumStore = (*AlbumStoreSync)(nil)
 
-// NewalbumStoreSync returns a new albumStoreSync.
-func NewalbumStoreSync(store *albumStore) *albumStoreSync {
-	return &albumStoreSync{store}
+// NewAlbumStoreSync returns a new AlbumStoreSync.
+func NewAlbumStoreSync(store *AlbumStore) *AlbumStoreSync {
+	return &AlbumStoreSync{store}
 }
 
-// albumStoreSync synronizes read and write access to the
+// AlbumStoreSync synronizes read and write access to the
 // album store. This prevents race conditions when the database
 // type is sqlite3.
-type albumStoreSync struct{ *albumStore }
+type AlbumStoreSync struct{ *AlbumStore }
 
 // Find finds the album by id.
-func (s *albumStoreSync) Find(ctx context.Context, id int64) (*types.album, error) {
+func (s *AlbumStoreSync) Find(ctx context.Context, id int64) (*types.Album, error) {
 	mutex.RLock()
 	defer mutex.RUnlock()
-	return s.albumStore.Find(ctx, id)
+	return s.AlbumStore.Find(ctx, id)
 }
 
 // List returns a list of albums.
-func (s *albumStoreSync) List(ctx context.Context, id int64, opts types.Params) ([]*types.album, error) {
+func (s *AlbumStoreSync) List(ctx context.Context, id int64, opts types.Params) ([]*types.Album, error) {
 	mutex.RLock()
 	defer mutex.RUnlock()
-	return s.albumStore.List(ctx, id, opts)
+	return s.AlbumStore.List(ctx, id, opts)
 }
 
 // Create saves the album details.
-func (s *albumStoreSync) Create(ctx context.Context, album *types.album) error {
+func (s *AlbumStoreSync) Create(ctx context.Context, album *types.Album) error {
 	mutex.Lock()
 	defer mutex.Unlock()
-	return s.albumStore.Create(ctx, album)
+	return s.AlbumStore.Create(ctx, album)
 }
 
 // Update updates the album details.
-func (s *albumStoreSync) Update(ctx context.Context, album *types.album) error {
+func (s *AlbumStoreSync) Update(ctx context.Context, album *types.Album) error {
 	mutex.Lock()
 	defer mutex.Unlock()
-	return s.albumStore.Update(ctx, album)
+	return s.AlbumStore.Update(ctx, album)
 }
 
 // Delete deletes the album.
-func (s *albumStoreSync) Delete(ctx context.Context, album *types.album) error {
+func (s *AlbumStoreSync) Delete(ctx context.Context, album *types.Album) error {
 	mutex.Lock()
 	defer mutex.Unlock()
-	return s.albumStore.Delete(ctx, album)
+	return s.AlbumStore.Delete(ctx, album)
 }

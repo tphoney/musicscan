@@ -30,7 +30,7 @@ func (c *updateCommand) run(*kingpin.ParseContext) error {
 		return err
 	}
 
-	in := new(types.artistInput)
+	in := new(types.ArtistInput)
 	if v := c.name; v != "" {
 		in.Name = null.StringFrom(v)
 	}
@@ -38,7 +38,7 @@ func (c *updateCommand) run(*kingpin.ParseContext) error {
 		in.Desc = null.StringFrom(v)
 	}
 
-	artist, err := client.artistUpdate(c.proj, c.id, in)
+	artist, err := client.ArtistUpdate(c.proj, c.id, in)
 	if err != nil {
 		return err
 	}

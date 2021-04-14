@@ -19,7 +19,7 @@ import (
 
 // HandleUpdate returns an http.HandlerFunc that processes http
 // requests to update the object details.
-func HandleUpdate(artists store.artistStore, albums store.albumStore) http.HandlerFunc {
+func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		projectID, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
@@ -49,7 +49,7 @@ func HandleUpdate(artists store.artistStore, albums store.albumStore) http.Handl
 			return
 		}
 
-		in := new(types.albumInput)
+		in := new(types.AlbumInput)
 		err = json.NewDecoder(r.Body).Decode(in)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -92,7 +92,7 @@ func HandleUpdate(artists store.artistStore, albums store.albumStore) http.Handl
 			return
 		}
 
-		if artist.ID != album.artist {
+		if artist.ID != album.Artist {
 			render.NotFoundf(w, "Not Found")
 			logger.FromRequest(r).
 				WithField("artist.id", artist.ID).

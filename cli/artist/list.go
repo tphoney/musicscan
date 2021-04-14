@@ -30,7 +30,7 @@ func (c *listCommand) run(*kingpin.ParseContext) error {
 	if err != nil {
 		return err
 	}
-	list, err := client.artistList(c.proj)
+	list, err := client.ArtistList(c.proj)
 	if err != nil {
 		return err
 	}

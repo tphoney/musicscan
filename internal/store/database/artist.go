@@ -13,36 +13,36 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-var _ store.artistStore = (*artistStore)(nil)
+var _ store.ArtistStore = (*ArtistStore)(nil)
 
-// NewartistStore returns a new artistStore.
-func NewartistStore(db *sqlx.DB) *artistStore {
-	return &artistStore{db}
+// NewArtistStore returns a new ArtistStore.
+func NewArtistStore(db *sqlx.DB) *ArtistStore {
+	return &ArtistStore{db}
 }
 
-// artistStore implements a artistStore backed by a relational
+// ArtistStore implements a ArtistStore backed by a relational
 // database.
-type artistStore struct {
+type ArtistStore struct {
 	db *sqlx.DB
 }
 
 // Find finds the artist by id.
-func (s *artistStore) Find(ctx context.Context, id int64) (*types.artist, error) {
-	dst := new(types.artist)
+func (s *ArtistStore) Find(ctx context.Context, id int64) (*types.Artist, error) {
+	dst := new(types.Artist)
 	err := s.db.Get(dst, artistSelectID, id)
 	return dst, err
 }
 
 // List returns a list of artists.
-func (s *artistStore) List(ctx context.Context, id int64, opts types.Params) ([]*types.artist, error) {
-	dst := []*types.artist{}
+func (s *ArtistStore) List(ctx context.Context, id int64, opts types.Params) ([]*types.Artist, error) {
+	dst := []*types.Artist{}
 	err := s.db.Select(&dst, artistSelect, id)
 	// TODO(bradrydzewski) add limit and offset
 	return dst, err
 }
 
 // Create saves the artist details.
-func (s *artistStore) Create(ctx context.Context, artist *types.artist) error {
+func (s *ArtistStore) Create(ctx context.Context, artist *types.Artist) error {
 	query := artistInsert
 
 	if s.db.DriverName() == "postgres" {
@@ -70,7 +70,7 @@ func (s *artistStore) Create(ctx context.Context, artist *types.artist) error {
 }
 
 // Update updates the artist details.
-func (s *artistStore) Update(ctx context.Context, artist *types.artist) error {
+func (s *ArtistStore) Update(ctx context.Context, artist *types.Artist) error {
 	query, arg, err := s.db.BindNamed(artistUpdate, artist)
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (s *artistStore) Update(ctx context.Context, artist *types.artist) error {
 }
 
 // Delete deletes the artist.
-func (s *artistStore) Delete(ctx context.Context, artist *types.artist) error {
+func (s *ArtistStore) Delete(ctx context.Context, artist *types.Artist) error {
 	_, err := s.db.Exec(artistDelete, artist.ID)
 	return err
 }

@@ -1,13 +1,13 @@
 import { useState, useRef } from "react";
 import styles from "./album_list.module.css";
 import { Link } from "wouter";
-import { useartist } from "../api/artist.js";
-import { usealbumList, createalbum } from "../api/album.js";
+import { useArtist } from "../api/artist.js";
+import { useAlbumList, createAlbum } from "../api/album.js";
 import { useProject } from "../api/project.js";
 import { useSession } from "../hooks/session.js";
 
-// Renders the album List page.
-export default function albumList({ params }) {
+// Renders the Album List page.
+export default function AlbumList({ params }) {
 	const { fetcher } = useSession();
 
 	//
@@ -28,40 +28,40 @@ export default function albumList({ params }) {
 	}
 
 	//
-	// Load artist
+	// Load Artist
 	//
 
-	const { artist, isLoading: isartistLoading, isError: isartistErrror } = useartist(
+	const { artist, isLoading: isArtistLoading, isError: isArtistErrror } = useArtist(
 		params.project,
 		params.artist
 	);
 
-	if (isartistLoading) {
+	if (isArtistLoading) {
 		return renderLoading();
 	}
-	if (isartistErrror) {
-		return renderError(isartistErrror);
+	if (isArtistErrror) {
+		return renderError(isArtistErrror);
 	}
 
 	//
-	// Load album List
+	// Load Album List
 	//
 
 	const {
 		albumList,
-		isLoading: isalbumLoading,
-		isError: isalbumError,
-	} = usealbumList(params.project, params.artist);
+		isLoading: isAlbumLoading,
+		isError: isAlbumError,
+	} = useAlbumList(params.project, params.artist);
 
-	if (isalbumLoading) {
+	if (isAlbumLoading) {
 		return renderLoading();
 	}
-	if (isalbumError) {
-		return renderError(isalbumError);
+	if (isAlbumError) {
+		return renderError(isAlbumError);
 	}
 
 	//
-	// Add album Functions
+	// Add Album Functions
 	//
 
 	const [error, setError] = useState(null);
@@ -71,7 +71,7 @@ export default function albumList({ params }) {
 	const handleCreate = () => {
 		const name = nameElem.current.value;
 		const desc = descElem.current.value;
-		createalbum(project.id, artist.id, { name, desc }, fetcher).then((album) => {
+		createAlbum(project.id, artist.id, { name, desc }, fetcher).then((album) => {
 			nameElem.current.value = "";
 			descElem.current.value = "";
 		});
@@ -86,12 +86,12 @@ export default function albumList({ params }) {
 			<section className={styles.root}>
 				<ul>
 					{albumList.map((album) => (
-						<albumInfo artist={artist} album={album} project={project} />
+						<AlbumInfo artist={artist} album={album} project={project} />
 					))}
 				</ul>
 
 				<div className="actions">
-					<button onClick={handleCreate}>Add album</button>
+					<button onClick={handleCreate}>Add Album</button>
 					<input ref={nameElem} type="text" placeholder="name" />
 					<input ref={descElem} type="text" placeholder="desc" />
 				</div>
@@ -101,7 +101,7 @@ export default function albumList({ params }) {
 }
 
 // render the album information.
-const albumInfo = ({ artist, album, project }) => {
+const AlbumInfo = ({ artist, album, project }) => {
 	return (
 		<li id={artist.id}>
 			<Link

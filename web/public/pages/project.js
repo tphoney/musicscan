@@ -4,8 +4,8 @@ import { useProject } from "../api/project.js";
 
 import Link from "../shared/link.js";
 
-import artist from "./artist.js";
-import artistList from "./artist_list.js";
+import Artist from "./artist.js";
+import ArtistList from "./artist_list.js";
 import Member from "./members.js";
 
 // Renders the Project page.
@@ -25,7 +25,7 @@ export default function Project({ params }) {
 				<h1>{project && project.name}</h1>
 				<ul>
 					<li>
-						<Link href={`/projects/${project.id}`}>artists</Link>
+						<Link href={`/projects/${project.id}`}>Artists</Link>
 					</li>
 					<li>
 						<Link href={`/projects/${project.id}/members`}>Members</Link>
@@ -37,10 +37,10 @@ export default function Project({ params }) {
 			</nav>
 
 			<Switch>
-				<Route path="/projects/:project" component={artistList} />
-				<Route path="/projects/:project/artists" component={artistList} />
-				<Route path="/projects/:project/artists/:artist" component={artist} />
-				<Route path="/projects/:project/artists/path+" component={artist} />
+				<Route path="/projects/:project" component={ArtistList} />
+				<Route path="/projects/:project/artists" component={ArtistList} />
+				<Route path="/projects/:project/artists/:artist" component={Artist} />
+				<Route path="/projects/:project/artists/path+" component={Artist} />
 				<Route path="/projects/:project/members" component={Member} />
 				<Route>Not Found</Route>
 			</Switch>

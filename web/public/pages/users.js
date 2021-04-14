@@ -101,5 +101,5 @@ const renderError = (error) => {
 
 // helper function returns the empty message.
 const renderEmpty = (error) => {
-	return <div>Your artist list is empty</div>;
+	return <div>Your Artist list is empty</div>;
 };

@@ -18,8 +18,8 @@ var WireSet = wire.NewSet(
 	ProvideUserStore,
 	ProvideProjectStore,
 	ProvideMemberStore,
-	ProvideartistStore,
-	ProvidealbumStore,
+	ProvideArtistStore,
+	ProvideAlbumStore,
 )
 
 // ProvideDatabase provides a database connection.
@@ -66,26 +66,26 @@ func ProvideMemberStore(db *sqlx.DB) store.MemberStore {
 	}
 }
 
-// ProvideartistStore provides a artist store.
-func ProvideartistStore(db *sqlx.DB) store.artistStore {
+// ProvideArtistStore provides a artist store.
+func ProvideArtistStore(db *sqlx.DB) store.ArtistStore {
 	switch db.DriverName() {
 	case "postgres":
-		return NewartistStore(db)
+		return NewArtistStore(db)
 	default:
-		return NewartistStoreSync(
-			NewartistStore(db),
+		return NewArtistStoreSync(
+			NewArtistStore(db),
 		)
 	}
 }
 
-// ProvidealbumStore provides a album store.
-func ProvidealbumStore(db *sqlx.DB) store.albumStore {
+// ProvideAlbumStore provides a album store.
+func ProvideAlbumStore(db *sqlx.DB) store.AlbumStore {
 	switch db.DriverName() {
 	case "postgres":
-		return NewalbumStore(db)
+		return NewAlbumStore(db)
 	default:
-		return NewalbumStoreSync(
-			NewalbumStore(db),
+		return NewAlbumStoreSync(
+			NewAlbumStore(db),
 		)
 	}
 }
