@@ -13,8 +13,8 @@ import (
 )
 
 type (
-	// artist stores artist details.
-	artist struct {
+	// Artist stores artist details.
+	Artist struct {
 		ID      int64  `db:"artist_id"         json:"id"`
 		Project int64  `db:"artist_project_id" json:"-"`
 		Name    string `db:"artist_name"       json:"name"`
@@ -23,26 +23,26 @@ type (
 		Updated int64  `db:"artist_updated"    json:"updated"`
 	}
 
-	// artistInput store details used to create or
+	// ArtistInput store details used to create or
 	// update a artist.
-	artistInput struct {
+	ArtistInput struct {
 		Name null.String `json:"name"`
 		Desc null.String `json:"desc"`
 	}
 
-	// album stores album details.
-	album struct {
+	// Album stores album details.
+	Album struct {
 		ID      int64  `db:"album_id"      json:"id"`
-		artist     int64  `db:"album_artist_id"  json:"-"`
+		Artist     int64  `db:"album_artist_id"  json:"-"`
 		Name    string `db:"album_name"    json:"name"`
 		Desc    string `db:"album_desc"    json:"desc"`
 		Created int64  `db:"album_created" json:"created"`
 		Updated int64  `db:"album_updated" json:"updated"`
 	}
 
-	// albumInput store details used to create or
+	// AlbumInput store details used to create or
 	// update a album.
-	albumInput struct {
+	AlbumInput struct {
 		Name null.String `json:"name"`
 		Desc null.String `json:"desc"`
 	}

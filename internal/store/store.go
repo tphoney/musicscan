@@ -12,40 +12,40 @@ import (
 )
 
 type (
-	// albumStore defines album data storage.
-	albumStore interface {
+	// AlbumStore defines album data storage.
+	AlbumStore interface {
 		// Find finds the album by id.
-		Find(ctx context.Context, id int64) (*types.album, error)
+		Find(ctx context.Context, id int64) (*types.Album, error)
 
 		// List returns a list of albums by artist id.
-		List(ctx context.Context, id int64, params types.Params) ([]*types.album, error)
+		List(ctx context.Context, id int64, params types.Params) ([]*types.Album, error)
 
 		// Create saves the album details.
-		Create(ctx context.Context, album *types.album) error
+		Create(ctx context.Context, album *types.Album) error
 
 		// Update updates the album details.
-		Update(ctx context.Context, album *types.album) error
+		Update(ctx context.Context, album *types.Album) error
 
 		// Delete deletes the album.
-		Delete(ctx context.Context, album *types.album) error
+		Delete(ctx context.Context, album *types.Album) error
 	}
 
-	// artistStore defines artist data storage.
-	artistStore interface {
+	// ArtistStore defines artist data storage.
+	ArtistStore interface {
 		// Find finds the artist by id.
-		Find(ctx context.Context, id int64) (*types.artist, error)
+		Find(ctx context.Context, id int64) (*types.Artist, error)
 
 		// List returns a list of artists by account id.
-		List(ctx context.Context, id int64, params types.Params) ([]*types.artist, error)
+		List(ctx context.Context, id int64, params types.Params) ([]*types.Artist, error)
 
 		// Create saves the artist details.
-		Create(ctx context.Context, artist *types.artist) error
+		Create(ctx context.Context, artist *types.Artist) error
 
 		// Update updates the artist details.
-		Update(ctx context.Context, artist *types.artist) error
+		Update(ctx context.Context, artist *types.Artist) error
 
 		// Delete deletes the artist.
-		Delete(ctx context.Context, artist *types.artist) error
+		Delete(ctx context.Context, artist *types.Artist) error
 	}
 
 	// MemberStore defines member data storage.

@@ -66,35 +66,35 @@ type Client interface {
 	// MemberDelete deletes a project member.
 	MemberDelete(project int64, user string) error
 
-	// artist returns a artist by ID.
-	artist(project, id int64) (*types.artist, error)
+	// Artist returns a artist by ID.
+	Artist(project, id int64) (*types.Artist, error)
 
-	// artistList returns a list of all artists by project id.
-	artistList(project int64) ([]*types.artist, error)
+	// ArtistList returns a list of all artists by project id.
+	ArtistList(project int64) ([]*types.Artist, error)
 
-	// artistCreate creates a new artist.
-	artistCreate(project int64, artist *types.artist) (*types.artist, error)
+	// ArtistCreate creates a new artist.
+	ArtistCreate(project int64, artist *types.Artist) (*types.Artist, error)
 
-	// artistUpdate updates a artist.
-	artistUpdate(project, id int64, input *types.artistInput) (*types.artist, error)
+	// ArtistUpdate updates a artist.
+	ArtistUpdate(project, id int64, input *types.ArtistInput) (*types.Artist, error)
 
-	// artistDelete deletes a artist.
-	artistDelete(project, id int64) error
+	// ArtistDelete deletes a artist.
+	ArtistDelete(project, id int64) error
 
-	// album returns a album by ID.
-	album(project, artist, album int64) (*types.album, error)
+	// Album returns a album by ID.
+	Album(project, artist, album int64) (*types.Album, error)
 
-	// albumList returns a list of all albums by project id.
-	albumList(project, artist int64) ([]*types.album, error)
+	// AlbumList returns a list of all albums by project id.
+	AlbumList(project, artist int64) ([]*types.Album, error)
 
-	// albumCreate creates a new album.
-	albumCreate(project, artist int64, input *types.album) (*types.album, error)
+	// AlbumCreate creates a new album.
+	AlbumCreate(project, artist int64, input *types.Album) (*types.Album, error)
 
-	// albumUpdate updates a album.
-	albumUpdate(project, artist, album int64, input *types.albumInput) (*types.album, error)
+	// AlbumUpdate updates a album.
+	AlbumUpdate(project, artist, album int64, input *types.AlbumInput) (*types.Album, error)
 
-	// albumDelete deletes a album.
-	albumDelete(project, artist, album int64) error
+	// AlbumDelete deletes a album.
+	AlbumDelete(project, artist, album int64) error
 }
 
 // remoteError store the error payload returned

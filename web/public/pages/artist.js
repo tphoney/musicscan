@@ -1,14 +1,14 @@
 import styles from "./project.module.css";
 import { Route, Switch } from "wouter";
-import { useartist } from "../api/artist.js";
+import { useArtist } from "../api/artist.js";
 import { useProject } from "../api/project.js";
 
 import Link from "../shared/link.js";
 
-import albumList from "./album_list.js";
+import AlbumList from "./album_list.js";
 
-// Renders the artist page.
-export default function artist({ params }) {
+// Renders the Artist page.
+export default function Artist({ params }) {
 	//
 	// Load Project
 	//
@@ -27,19 +27,19 @@ export default function artist({ params }) {
 	}
 
 	//
-	// Load artist
+	// Load Artist
 	//
 
-	const { artist, isLoading: isartistLoading, isError: isartistErrror } = useartist(
+	const { artist, isLoading: isArtistLoading, isError: isArtistErrror } = useArtist(
 		params.project,
 		params.artist
 	);
 
-	if (isartistLoading) {
+	if (isArtistLoading) {
 		return renderLoading();
 	}
-	if (isartistErrror) {
-		return renderError(isartistErrror);
+	if (isArtistErrror) {
+		return renderError(isArtistErrror);
 	}
 
 	//
@@ -53,7 +53,7 @@ export default function artist({ params }) {
 				<ul>
 					<li>
 						<Link href={`/projects/${project.id}/artists/${artist.id}`}>
-							albums
+							Albums
 						</Link>
 					</li>
 					<li>
@@ -63,7 +63,7 @@ export default function artist({ params }) {
 			</nav>
 
 			<Switch>
-				<Route path="/projects/:project/artists/:artist" component={albumList} />
+				<Route path="/projects/:project/artists/:artist" component={AlbumList} />
 				<Route>Not Found</Route>
 			</Switch>
 		</>

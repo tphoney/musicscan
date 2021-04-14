@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
 import styles from "./artist_list.module.css";
 import { Link } from "wouter";
-import { useartistList, createartist, deleteartist } from "../api/artist.js";
+import { useArtistList, createArtist, deleteArtist } from "../api/artist.js";
 import { useProject } from "../api/project.js";
 import { useSession } from "../hooks/session.js";
 
-// Renders the artist List page.
-export default function artistList({ params }) {
+// Renders the Artist List page.
+export default function ArtistList({ params }) {
 	const { fetcher } = useSession();
 
 	//
@@ -27,24 +27,24 @@ export default function artistList({ params }) {
 	}
 
 	//
-	// Load artist List
+	// Load Artist List
 	//
 
 	const {
 		artistList,
-		isLoading: isartistLoading,
-		isError: isartistErrror,
-	} = useartistList(project && project.id);
+		isLoading: isArtistLoading,
+		isError: isArtistErrror,
+	} = useArtistList(project && project.id);
 
-	if (isartistLoading) {
+	if (isArtistLoading) {
 		return renderLoading();
 	}
-	if (isartistErrror) {
-		return renderError(isartistErrror);
+	if (isArtistErrror) {
+		return renderError(isArtistErrror);
 	}
 
 	//
-	// Add artist Functions
+	// Add Artist Functions
 	//
 
 	const [error, setError] = useState(null);
@@ -56,7 +56,7 @@ export default function artistList({ params }) {
 		const desc = descElem.current.value;
 		const data = { name, desc };
 		const params = { project: project.id };
-		createartist(params, data, fetcher).then((project) => {
+		createArtist(params, data, fetcher).then((project) => {
 			nameElem.current.value = "";
 			descElem.current.value = "";
 		});
@@ -68,7 +68,7 @@ export default function artistList({ params }) {
 
 	const handleDelete = (artist) => {
 		const params = { project: project.id, artist: artist.id };
-		deleteartist(params, fetcher);
+		deleteArtist(params, fetcher);
 	};
 
 	//
@@ -80,7 +80,7 @@ export default function artistList({ params }) {
 			<section className={styles.root}>
 				<ul>
 					{artistList.map((artist) => (
-						<artistInfo
+						<ArtistInfo
 							artist={artist}
 							project={project}
 							onDelete={handleDelete}
@@ -89,7 +89,7 @@ export default function artistList({ params }) {
 				</ul>
 
 				<div className="actions">
-					<button onClick={handleCreate}>Add artist</button>
+					<button onClick={handleCreate}>Add Artist</button>
 					<input ref={nameElem} type="text" placeholder="name" />
 					<input ref={descElem} type="text" placeholder="desc" />
 				</div>
@@ -99,7 +99,7 @@ export default function artistList({ params }) {
 }
 
 // render the artist information.
-const artistInfo = ({ artist, project, onDelete }) => {
+const ArtistInfo = ({ artist, project, onDelete }) => {
 	return (
 		<li id={artist.id}>
 			<Link href={`/projects/${project.id}/artists/${artist.id}`}>
@@ -122,5 +122,5 @@ const renderError = (error) => {
 
 // helper function returns the empty message.
 const renderEmpty = (error) => {
-	return <div>Your artist list is empty</div>;
+	return <div>Your Artist list is empty</div>;
 };

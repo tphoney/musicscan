@@ -17,7 +17,7 @@ import (
 
 // HandleDelete returns an http.HandlerFunc that deletes
 // the object from the datastore.
-func HandleDelete(artists store.artistStore) http.HandlerFunc {
+func HandleDelete(artists store.ArtistStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		project, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {

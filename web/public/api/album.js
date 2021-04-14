@@ -2,9 +2,9 @@ import { instance } from "./config.js";
 import useSWR, { mutate } from "swr";
 
 /**
- * createalbum creates a new album.
+ * createAlbum creates a new album.
  */
-export const createalbum = async (project, artist, data, fetcher) => {
+export const createAlbum = async (project, artist, data, fetcher) => {
 	return fetcher(
 		`${instance}/api/v1/projects/${project}/artists/${artist}/albums`,
 		{
@@ -18,9 +18,9 @@ export const createalbum = async (project, artist, data, fetcher) => {
 };
 
 /**
- * updatealbum updates an existing album.
+ * updateAlbum updates an existing album.
  */
-export const updatealbum = (project, artist, album, data, fetcher) => {
+export const updateAlbum = (project, artist, album, data, fetcher) => {
 	return fetcher(
 		`${instance}/api/v1/projects/${project}/artists/${artist}/albums/${album}`,
 		{
@@ -31,9 +31,9 @@ export const updatealbum = (project, artist, album, data, fetcher) => {
 };
 
 /**
- * deletealbum deletes an existing album.
+ * deleteAlbum deletes an existing album.
  */
-export const deletealbum = (project, artist, album, fetcher) => {
+export const deleteAlbum = (project, artist, album, fetcher) => {
 	return fetcher(
 		`${instance}/api/v1/projects/${project}/artists/${artist}/albums/${album}`,
 		{
@@ -45,7 +45,7 @@ export const deletealbum = (project, artist, album, fetcher) => {
 /**
  * use returns an swr hook that provides
  */
-export const usealbumList = (project, artist) => {
+export const useAlbumList = (project, artist) => {
 	const { data, error } = useSWR(
 		`${instance}/api/v1/projects/${project}/artists/${artist}/albums`
 	);
@@ -60,7 +60,7 @@ export const usealbumList = (project, artist) => {
 /**
  * use returns an swr hook that provides
  */
-export const usealbum = (project, artist, album) => {
+export const useAlbum = (project, artist, album) => {
 	const { data, error } = useSWR(
 		`${instance}/api/v1/projects/${project}/artists/${artist}/albums/${album}`
 	);

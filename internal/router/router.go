@@ -38,8 +38,8 @@ var nocontext = context.Background()
 // New returns a new http.Handler that routes traffic
 // to the appropriate http.Handlers.
 func New(
-	albumStore store.albumStore,
-	artistStore store.artistStore,
+	albumStore store.AlbumStore,
+	artistStore store.ArtistStore,
 	memberStore store.MemberStore,
 	projectStore store.ProjectStore,
 	userStore store.UserStore,

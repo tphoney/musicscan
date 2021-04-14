@@ -30,19 +30,19 @@ var migrations = []struct {
 	},
 	{
 		name: "create-table-artists",
-		stmt: createTableartists,
+		stmt: createTableArtists,
 	},
 	{
 		name: "create-index-artist-project-id",
-		stmt: createIndexartistProjectId,
+		stmt: createIndexArtistProjectId,
 	},
 	{
 		name: "create-table-albums",
-		stmt: createTablealbums,
+		stmt: createTableAlbums,
 	},
 	{
 		name: "create-index-album-artist-id",
-		stmt: createIndexalbumartistId,
+		stmt: createIndexAlbumArtistId,
 	},
 }
 
@@ -181,7 +181,7 @@ CREATE INDEX IF NOT EXISTS index_members_user ON members(member_user_id)
 // 005_create_table_artist.sql
 //
 
-var createTableartists = `
+var createTableArtists = `
 CREATE TABLE IF NOT EXISTS artists (
  artist_id          INTEGER PRIMARY KEY AUTOINCREMENT
 ,artist_project_id  INTEGER
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS artists (
 );
 `
 
-var createIndexartistProjectId = `
+var createIndexArtistProjectId = `
 CREATE INDEX IF NOT EXISTS index_artist_project ON artists(artist_project_id);
 `
 
@@ -200,7 +200,7 @@ CREATE INDEX IF NOT EXISTS index_artist_project ON artists(artist_project_id);
 // 007_create_table_album.sql
 //
 
-var createTablealbums = `
+var createTableAlbums = `
 CREATE TABLE IF NOT EXISTS albums (
  album_id       INTEGER PRIMARY KEY AUTOINCREMENT
 ,album_artist_id   INTEGER
@@ -211,6 +211,6 @@ CREATE TABLE IF NOT EXISTS albums (
 );
 `
 
-var createIndexalbumartistId = `
+var createIndexAlbumArtistId = `
 CREATE INDEX IF NOT EXISTS index_album_artist ON albums(album_artist_id);
 `

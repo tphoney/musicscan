@@ -31,7 +31,7 @@ func (c *listCommand) run(*kingpin.ParseContext) error {
 	if err != nil {
 		return err
 	}
-	list, err := client.albumList(c.proj, c.artist)
+	list, err := client.AlbumList(c.proj, c.artist)
 	if err != nil {
 		return err
 	}

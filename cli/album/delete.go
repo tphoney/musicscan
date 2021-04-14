@@ -21,7 +21,7 @@ func (c *deleteCommand) run(*kingpin.ParseContext) error {
 	if err != nil {
 		return err
 	}
-	return client.albumDelete(c.proj, c.artist, c.album)
+	return client.AlbumDelete(c.proj, c.artist, c.album)
 }
 
 // helper function registers the user delete command

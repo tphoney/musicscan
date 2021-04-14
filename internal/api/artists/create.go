@@ -19,7 +19,7 @@ import (
 
 // HandleCreate returns an http.HandlerFunc that creates
 // the object and persists to the datastore.
-func HandleCreate(artists store.artistStore) http.HandlerFunc {
+func HandleCreate(artists store.ArtistStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		project, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
@@ -30,7 +30,7 @@ func HandleCreate(artists store.artistStore) http.HandlerFunc {
 			return
 		}
 
-		in := new(types.artistInput)
+		in := new(types.ArtistInput)
 		err = json.NewDecoder(r.Body).Decode(in)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -41,7 +41,7 @@ func HandleCreate(artists store.artistStore) http.HandlerFunc {
 			return
 		}
 
-		artist := &types.artist{
+		artist := &types.Artist{
 			Project: project,
 			Name:    in.Name.String,
 			Desc:    in.Desc.String,
