@@ -15,7 +15,7 @@ import (
 // indent the json-encoded API responses
 var indent bool
 
-func init() {
+func init() { //nolint
 	indent, _ = strconv.ParseBool(
 		os.Getenv("HTTP_JSON_INDENT"),
 	)

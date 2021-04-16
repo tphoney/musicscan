@@ -19,8 +19,8 @@ type registerCommand struct {
 
 func (c *registerCommand) run(*kingpin.ParseContext) error {
 	username, password := util.Credentials()
-	client := client.New(c.server)
-	token, err := client.Register(username, password)
+	cli := client.New(c.server)
+	token, err := cli.Register(username, password)
 	if err != nil {
 		return err
 	}

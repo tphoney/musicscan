@@ -5,6 +5,7 @@
 package users
 
 import (
+	"fmt"
 	"os"
 	"text/template"
 
@@ -38,7 +39,8 @@ func (c *listCommand) run(*kingpin.ParseContext) error {
 		return err
 	}
 	for _, item := range list {
-		tmpl.Execute(os.Stdout, item)
+		err = tmpl.Execute(os.Stdout, item)
+		fmt.Printf("error with %s", err.Error())
 	}
 	return nil
 }

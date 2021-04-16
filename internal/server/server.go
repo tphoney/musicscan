@@ -10,6 +10,7 @@ import (
 	"crypto/tls"
 	"net/http"
 
+	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/acme/autocert"
 	"golang.org/x/sync/errgroup"
 )
@@ -41,10 +42,8 @@ func (s *Server) listenAndServe(ctx context.Context) error {
 		Handler: s.Handler,
 	}
 	g.Go(func() error {
-		select {
-		case <-ctx.Done():
-			return s1.Shutdown(ctx)
-		}
+		<-ctx.Done()
+		return s1.Shutdown(ctx)
 	})
 	g.Go(func() error {
 		return s1.ListenAndServe()
@@ -72,17 +71,21 @@ func (s *Server) listenAndServeTLS(ctx context.Context) error {
 		)
 	})
 	g.Go(func() error {
-		select {
-		case <-ctx.Done():
-			s1.Shutdown(ctx)
-			s2.Shutdown(ctx)
-			return nil
+		<-ctx.Done()
+		err := s1.Shutdown(ctx)
+		if err != nil {
+			logrus.Errorf("s1 shutdown: %s", err.Error())
 		}
+		err = s2.Shutdown(ctx)
+		if err != nil {
+			logrus.Errorf("s1 shutdown: %s", err.Error())
+		}
+		return nil
 	})
 	return g.Wait()
 }
 
-func (s Server) listenAndServeAcme(ctx context.Context) error {
+func (s *Server) listenAndServeAcme(ctx context.Context) error {
 	var g errgroup.Group
 	m := &autocert.Manager{
 		Cache:      autocert.DirCache(".cache"),
@@ -99,6 +102,7 @@ func (s Server) listenAndServeAcme(ctx context.Context) error {
 		TLSConfig: &tls.Config{
 			GetCertificate: m.GetCertificate,
 			NextProtos:     []string{"h2", "http/1.1"},
+			MinVersion:     tls.VersionTLS12,
 		},
 	}
 	g.Go(func() error {
@@ -108,12 +112,16 @@ func (s Server) listenAndServeAcme(ctx context.Context) error {
 		return s2.ListenAndServeTLS("", "")
 	})
 	g.Go(func() error {
-		select {
-		case <-ctx.Done():
-			s1.Shutdown(ctx)
-			s2.Shutdown(ctx)
-			return nil
+		<-ctx.Done()
+		err := s1.Shutdown(ctx)
+		if err != nil {
+			logrus.Errorf("s1 shutdown: %s", err.Error())
 		}
+		err = s2.Shutdown(ctx)
+		if err != nil {
+			logrus.Errorf("s1 shutdown: %s", err.Error())
+		}
+		return nil
 	})
 	return g.Wait()
 }

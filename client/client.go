@@ -6,6 +6,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -383,7 +384,7 @@ func (c *HTTPClient) stream(rawurl, method string, in, _ interface{}) (io.ReadCl
 	}
 
 	// creates a new http request.
-	req, err := http.NewRequest(method, uri.String(), buf)
+	req, err := http.NewRequestWithContext(context.Background(), method, uri.String(), buf)
 	if err != nil {
 		return nil, err
 	}
@@ -408,7 +409,7 @@ func (c *HTTPClient) stream(rawurl, method string, in, _ interface{}) (io.ReadCl
 	if resp.StatusCode >= http.StatusMultipleChoices {
 		defer resp.Body.Close()
 		err := new(remoteError)
-		json.NewDecoder(resp.Body).Decode(err)
+		_ = json.NewDecoder(resp.Body).Decode(err)
 		return nil, err
 	}
 	return resp.Body, nil

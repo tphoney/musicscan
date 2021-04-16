@@ -16,6 +16,9 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+const ADMIN = "admin"
+const DEVELOPER = "developer"
+
 type createCommand struct {
 	proj int64
 	user string
@@ -32,9 +35,9 @@ func (c *createCommand) run(*kingpin.ParseContext) error {
 	in.Project = c.proj
 	in.User = c.user
 	switch c.role {
-	case "admin":
+	case ADMIN:
 		in.Role = enum.RoleAdmin
-	case "developer":
+	case DEVELOPER:
 		in.Role = enum.RoleDeveloper
 	}
 

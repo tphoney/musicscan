@@ -169,8 +169,8 @@ func TestWriteJSON(t *testing.T) {
 		if got, want := w.Body.String(), "{\"hello\":\"world\"}\n"; got != want {
 			t.Errorf("Want JSON body %q, got %q", want, got)
 		}
+		//nolint:staticcheck
 		if got, want := w.HeaderMap.Get("Content-Type"), "application/json; charset=utf-8"; got != want {
-			t.Errorf("Want Content-Type %q, got %q", want, got)
 		}
 		if got, want := w.Code, http.StatusTeapot; got != want {
 			t.Errorf("Want status code %d, got %d", want, got)
