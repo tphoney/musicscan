@@ -226,10 +226,18 @@ func (c *HTTPClient) MemberDelete(project int64, user string) error {
 // Artist endpoints
 //
 
-// Artist returns a artist by ID.
+// Artist returns an artist by ID.
 func (c *HTTPClient) Artist(project, id int64) (*types.Artist, error) {
 	out := new(types.Artist)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d", c.base, project, id)
+	err := c.get(uri, out)
+	return out, err
+}
+
+// ArtistName returns an artiste by name.
+func (c *HTTPClient) ArtistName(project int64, name string) (*types.Artist, error) {
+	out := new(types.Artist)
+	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/search/%s", c.base, project, name)
 	err := c.get(uri, out)
 	return out, err
 }
@@ -269,10 +277,18 @@ func (c *HTTPClient) ArtistDelete(project, id int64) error {
 // Album endpoints
 //
 
-// Album returns a album by ID.
+// Album returns an album by ID.
 func (c *HTTPClient) Album(project, artist, album int64) (*types.Album, error) {
 	out := new(types.Album)
 	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d/albums/%d", c.base, project, artist, album)
+	err := c.get(uri, out)
+	return out, err
+}
+
+// Album returns an album by name.
+func (c *HTTPClient) AlbumName(project, artist int64, name string) (*types.Artist, error) {
+	out := new(types.Artist)
+	uri := fmt.Sprintf("%s/api/v1/projects/%d/artists/%d/albums/search/%s", c.base, project, artist, name)
 	err := c.get(uri, out)
 	return out, err
 }

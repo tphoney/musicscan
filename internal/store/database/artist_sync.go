@@ -31,6 +31,13 @@ func (s *ArtistStoreSync) Find(ctx context.Context, id int64) (*types.Artist, er
 	return s.ArtistStore.Find(ctx, id)
 }
 
+// Find finds the artist by string.
+func (s *ArtistStoreSync) FindByName(ctx context.Context, name string) (*types.Artist, error) {
+	mutex.RLock()
+	defer mutex.RUnlock()
+	return s.ArtistStore.FindByName(ctx, name)
+}
+
 // List returns a list of artists.
 func (s *ArtistStoreSync) List(ctx context.Context, id int64, opts types.Params) ([]*types.Artist, error) {
 	mutex.RLock()

@@ -78,6 +78,21 @@ func (mr *MockAlbumStoreMockRecorder) Find(arg0, arg1 interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockAlbumStore)(nil).Find), arg0, arg1)
 }
 
+// FindByName mocks base method.
+func (m *MockAlbumStore) FindByName(arg0 context.Context, arg1 string) (*types.Album, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByName", arg0, arg1)
+	ret0, _ := ret[0].(*types.Album)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByName indicates an expected call of FindByName.
+func (mr *MockAlbumStoreMockRecorder) FindByName(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByName", reflect.TypeOf((*MockAlbumStore)(nil).FindByName), arg0, arg1)
+}
+
 // List mocks base method.
 func (m *MockAlbumStore) List(arg0 context.Context, arg1 int64, arg2 types.Params) ([]*types.Album, error) {
 	m.ctrl.T.Helper()
@@ -171,6 +186,21 @@ func (m *MockArtistStore) Find(arg0 context.Context, arg1 int64) (*types.Artist,
 func (mr *MockArtistStoreMockRecorder) Find(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockArtistStore)(nil).Find), arg0, arg1)
+}
+
+// FindByName mocks base method.
+func (m *MockArtistStore) FindByName(arg0 context.Context, arg1 string) (*types.Artist, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByName", arg0, arg1)
+	ret0, _ := ret[0].(*types.Artist)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindByName indicates an expected call of FindByName.
+func (mr *MockArtistStoreMockRecorder) FindByName(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByName", reflect.TypeOf((*MockArtistStore)(nil).FindByName), arg0, arg1)
 }
 
 // List mocks base method.

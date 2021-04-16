@@ -31,6 +31,13 @@ func (s *AlbumStoreSync) Find(ctx context.Context, id int64) (*types.Album, erro
 	return s.AlbumStore.Find(ctx, id)
 }
 
+// Find finds the album by string.
+func (s *AlbumStoreSync) FindByName(ctx context.Context, name string) (*types.Album, error) {
+	mutex.RLock()
+	defer mutex.RUnlock()
+	return s.AlbumStore.FindByName(ctx, name)
+}
+
 // List returns a list of albums.
 func (s *AlbumStoreSync) List(ctx context.Context, id int64, opts types.Params) ([]*types.Album, error) {
 	mutex.RLock()
