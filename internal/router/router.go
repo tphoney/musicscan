@@ -37,6 +37,7 @@ var nocontext = context.Background()
 
 // New returns a new http.Handler that routes traffic
 // to the appropriate http.Handlers.
+//nolint:funlen
 func New(
 	albumStore store.AlbumStore,
 	artistStore store.ArtistStore,

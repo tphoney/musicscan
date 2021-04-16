@@ -63,7 +63,6 @@ linters:
     - deadcode
     - depguard
     - dogsled
-    - dupl
     - errcheck
     - exportloopref
     - exhaustive
@@ -99,6 +98,7 @@ linters:
 
   # don't enable:
   # - asciicheck
+  # - dupl
   # - scopelint
   # - gochecknoglobals
   # - gocognit
@@ -126,7 +126,5 @@ issues:
       text: "unnecessaryDefer:"
 
 run:
-  skip-dirs:
-    - internal/store/database/migrate
-    - internal/store/database/migrate/sqlite
-    - internal/store/database/migrate/postgres
+  skip-files:
+    - _gen\.go
