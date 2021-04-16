@@ -59,3 +59,38 @@ func HandleFind(artists store.ArtistStore) http.HandlerFunc {
 		render.JSON(w, artist, 200)
 	}
 }
+
+func HandleFindByName(artists store.ArtistStore) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		project, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
+		if err != nil {
+			render.BadRequest(w, err)
+			logger.FromRequest(r).
+				WithError(err).
+				Debugln("cannot parse project id")
+			return
+		}
+
+		name := chi.URLParam(r, "artist")
+		artist, err := artists.FindByName(r.Context(), name)
+		if err != nil {
+			render.NotFound(w, err)
+			logger.FromRequest(r).
+				WithError(err).
+				WithField("string", name).
+				Debugln("artist not found")
+			return
+		}
+
+		if artist.Project != project {
+			render.NotFoundf(w, "Not Found")
+			logger.FromRequest(r).
+				WithField("id", artist.ID).
+				WithField("project", project).
+				Debugln("project id mismatch")
+			return
+		}
+
+		render.JSON(w, artist, 200)
+	}
+}

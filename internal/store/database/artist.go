@@ -33,6 +33,13 @@ func (s *ArtistStore) Find(ctx context.Context, id int64) (*types.Artist, error)
 	return dst, err
 }
 
+// Find finds the artist by string.
+func (s *ArtistStore) FindByName(ctx context.Context, str string) (*types.Artist, error) {
+	dst := new(types.Artist)
+	err := s.db.Get(dst, artistSelectName, str)
+	return dst, err
+}
+
 // List returns a list of artists.
 func (s *ArtistStore) List(ctx context.Context, id int64, opts types.Params) ([]*types.Artist, error) {
 	dst := []*types.Artist{}
@@ -103,6 +110,10 @@ ORDER BY artist_name ASC
 
 const artistSelectID = artistBase + `
 WHERE artist_id = $1
+`
+
+const artistSelectName = artistBase + `
+WHERE artist_name = $1
 `
 
 const artistDelete = `

@@ -17,6 +17,9 @@ type (
 		// Find finds the album by id.
 		Find(ctx context.Context, id int64) (*types.Album, error)
 
+		// Find finds the album by string.
+		FindByName(ctx context.Context, name string) (*types.Album, error)
+
 		// List returns a list of albums by artist id.
 		List(ctx context.Context, id int64, params types.Params) ([]*types.Album, error)
 
@@ -34,6 +37,9 @@ type (
 	ArtistStore interface {
 		// Find finds the artist by id.
 		Find(ctx context.Context, id int64) (*types.Artist, error)
+
+		// Find finds the artist by string.
+		FindByName(ctx context.Context, name string) (*types.Artist, error)
 
 		// List returns a list of artists by account id.
 		List(ctx context.Context, id int64, params types.Params) ([]*types.Artist, error)

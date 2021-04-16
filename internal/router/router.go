@@ -92,6 +92,7 @@ func New(
 					r.Get("/", artists.HandleList(artistStore))
 					r.Post("/", artists.HandleCreate(artistStore))
 					r.Get("/{artist}", artists.HandleFind(artistStore))
+					r.Get("/search/{artist}", artists.HandleFindByName(artistStore))
 					r.Patch("/{artist}", artists.HandleUpdate(artistStore))
 					r.With(
 						access.ProjectAdmin(memberStore),
@@ -102,6 +103,7 @@ func New(
 						r.Get("/", albums.HandleList(artistStore, albumStore))
 						r.Post("/", albums.HandleCreate(artistStore, albumStore))
 						r.Get("/{album}", albums.HandleFind(artistStore, albumStore))
+						r.Get("/search/{album}", albums.HandleFindByName(artistStore, albumStore))
 						r.Patch("/{album}", albums.HandleUpdate(artistStore, albumStore))
 						r.With(
 							access.ProjectAdmin(memberStore),

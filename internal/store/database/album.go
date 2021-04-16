@@ -33,6 +33,13 @@ func (s *AlbumStore) Find(ctx context.Context, id int64) (*types.Album, error) {
 	return dst, err
 }
 
+// Find finds the album by string.
+func (s *AlbumStore) FindByName(ctx context.Context, str string) (*types.Album, error) {
+	dst := new(types.Album)
+	err := s.db.Get(dst, albumSelectName, str)
+	return dst, err
+}
+
 // List returns a list of albums.
 func (s *AlbumStore) List(ctx context.Context, id int64, opts types.Params) ([]*types.Album, error) {
 	dst := []*types.Album{}
@@ -103,6 +110,10 @@ ORDER BY album_name ASC
 
 const albumSelectID = albumBase + `
 WHERE album_id = $1
+`
+
+const albumSelectName = albumBase + `
+116 WHERE album_name = $1
 `
 
 const albumDelete = `
