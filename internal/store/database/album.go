@@ -113,7 +113,7 @@ WHERE album_id = $1
 `
 
 const albumSelectName = albumBase + `
-116 WHERE album_name = $1
+WHERE album_name = $1
 `
 
 const albumDelete = `

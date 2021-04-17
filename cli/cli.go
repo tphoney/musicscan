@@ -44,6 +44,7 @@ func Command() {
 	registerLogin(app)
 	registerLogout(app)
 	registerRegister(app)
+	registerScan(app)
 
 	kingpin.Version(version.Version.String())
 	kingpin.MustParse(app.Parse(os.Args[1:]))

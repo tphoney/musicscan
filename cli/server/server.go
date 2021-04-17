@@ -26,14 +26,14 @@ func (c *command) run(*kingpin.ParseContext) error {
 	// load environment variables from file.
 	err := godotenv.Load(c.envfile)
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Warnf("No env %s", err.Error())
 	}
 
 	// create the system configuration store by loading
 	// data from the environment.
 	config, err := load()
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Warnf("No config %s", err.Error())
 	}
 
 	// configure the log level
@@ -41,7 +41,7 @@ func (c *command) run(*kingpin.ParseContext) error {
 
 	server, err := initServer(config)
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Warn(err)
 	}
 
 	// create the http server.
