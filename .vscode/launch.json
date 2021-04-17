@@ -10,6 +10,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}",
             "args": [
                 "server"
             ]
@@ -20,6 +21,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}",
             "args": ["scan", "1"]
           },
     ]
