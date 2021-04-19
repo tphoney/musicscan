@@ -56,10 +56,10 @@ func (c *scanCommand) run(*kingpin.ParseContext) error {
 				fmt.Println("  " + albumPath.Name())
 				_, err = client.AlbumName(c.proj, foundArtist.ID, albumPath.Name())
 				if err != nil {
-					// album not found create it
+					abs := artistPath + "/" + albumPath.Name()
 					inputAlbum := &types.Album{
 						Name: albumPath.Name(),
-						Desc: albumPath.Name(),
+						Desc: abs,
 					}
 					_, err := client.AlbumCreate(c.proj, foundArtist.ID, inputAlbum)
 					if err != nil {
