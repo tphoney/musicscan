@@ -18,7 +18,7 @@ type (
 		Find(ctx context.Context, id int64) (*types.Album, error)
 
 		// Find finds the album by string.
-		FindByName(ctx context.Context, name string) (*types.Album, error)
+		FindByName(ctx context.Context, id int64, name string) (*types.Album, error)
 
 		// List returns a list of albums by artist id.
 		List(ctx context.Context, id int64, params types.Params) ([]*types.Album, error)

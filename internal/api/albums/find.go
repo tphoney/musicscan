@@ -122,7 +122,7 @@ func HandleFindByName(artists store.ArtistStore, albums store.AlbumStore) http.H
 			return
 		}
 
-		album, err := albums.FindByName(r.Context(), albumName)
+		album, err := albums.FindByName(r.Context(), artistID, albumName)
 		if err != nil {
 			render.NotFound(w, err)
 			logger.FromRequest(r).

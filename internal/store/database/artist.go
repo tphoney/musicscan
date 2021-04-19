@@ -113,7 +113,7 @@ WHERE artist_id = $1
 `
 
 const artistSelectName = artistBase + `
-WHERE artist_name = $1
+WHERE artist_name LIKE $1 
 `
 
 const artistDelete = `

@@ -34,9 +34,9 @@ func (s *AlbumStore) Find(ctx context.Context, id int64) (*types.Album, error) {
 }
 
 // Find finds the album by string.
-func (s *AlbumStore) FindByName(ctx context.Context, str string) (*types.Album, error) {
+func (s *AlbumStore) FindByName(ctx context.Context, artistID int64, str string) (*types.Album, error) {
 	dst := new(types.Album)
-	err := s.db.Get(dst, albumSelectName, str)
+	err := s.db.Get(dst, albumSelectName, artistID, str)
 	return dst, err
 }
 
@@ -113,7 +113,8 @@ WHERE album_id = $1
 `
 
 const albumSelectName = albumBase + `
-WHERE album_name = $1
+WHERE album_artist_id = $1
+AND album_name LIKE $2
 `
 
 const albumDelete = `
