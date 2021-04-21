@@ -98,6 +98,7 @@ SELECT
 ,artist_project_id
 ,artist_name
 ,artist_desc
+,artist_wanted
 ,artist_created
 ,artist_updated
 FROM artists
@@ -126,12 +127,14 @@ INSERT INTO artists (
  artist_project_id
 ,artist_name
 ,artist_desc
+,artist_wanted
 ,artist_created
 ,artist_updated
 ) values (
  :artist_project_id
 ,:artist_name
 ,:artist_desc
+,:artist_wanted
 ,:artist_created
 ,:artist_updated
 )
@@ -146,6 +149,7 @@ UPDATE artists
 SET
  artist_name    = :artist_name
 ,artist_desc    = :artist_desc
+,artist_wanted  = :artist_wanted
 ,artist_updated = :artist_updated
 WHERE artist_id = :artist_id
 `

@@ -16,10 +16,11 @@ import (
 )
 
 type createCommand struct {
-	proj int64
-	name string
-	desc string
-	tmpl string
+	proj   int64
+	name   string
+	desc   string
+	wanted bool
+	tmpl   string
 }
 
 func (c *createCommand) run(*kingpin.ParseContext) error {
@@ -28,8 +29,9 @@ func (c *createCommand) run(*kingpin.ParseContext) error {
 		return err
 	}
 	in := &types.Artist{
-		Name: c.name,
-		Desc: c.desc,
+		Name:   c.name,
+		Desc:   c.desc,
+		Wanted: c.wanted,
 	}
 	proj, err := client.ArtistCreate(c.proj, in)
 	if err != nil {
@@ -59,6 +61,9 @@ func registerCreate(app *kingpin.CmdClause) {
 
 	cmd.Flag("desc", "artist description").
 		StringVar(&c.desc)
+
+	cmd.Flag("wanted", "wanted").
+		BoolVar(&c.wanted)
 
 	cmd.Flag("format", "format the output using a Go template").
 		Default(projectTmpl).

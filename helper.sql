@@ -5,7 +5,7 @@ FROM artists
 
 
 SELECT
- album_id
+ album_name ,album_format
 
 FROM albums 
 

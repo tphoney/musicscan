@@ -187,6 +187,7 @@ CREATE TABLE IF NOT EXISTS artists (
 ,artist_project_id  INTEGER
 ,artist_name        TEXT
 ,artist_desc        TEXT
+,artist_wanted      BOOLEAN DEFAULT 1
 ,artist_created     INTEGER
 ,artist_updated     INTEGER
 );
@@ -202,12 +203,13 @@ CREATE INDEX IF NOT EXISTS index_artist_project ON artists(artist_project_id);
 
 var createTableAlbums = `
 CREATE TABLE IF NOT EXISTS albums (
- album_id       INTEGER PRIMARY KEY AUTOINCREMENT
-,album_artist_id   INTEGER
-,album_name     TEXT
-,album_desc     TEXT
-,album_created  INTEGER
-,album_updated  INTEGER
+ album_id        INTEGER PRIMARY KEY AUTOINCREMENT
+,album_artist_id INTEGER
+,album_name      TEXT
+,album_desc      TEXT
+,album_format    TEXT
+,album_created   INTEGER
+,album_updated   INTEGER
 );
 `
 

@@ -74,6 +74,7 @@ func HandleCreate(artists store.ArtistStore, albums store.AlbumStore) http.Handl
 			Artist:  artist.ID,
 			Name:    in.Name.String,
 			Desc:    in.Desc.String,
+			Format:  in.Format.String,
 			Created: time.Now().Unix(),
 			Updated: time.Now().Unix(),
 		}
