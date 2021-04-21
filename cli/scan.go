@@ -7,6 +7,7 @@ package cli
 import (
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/tphoney/musicscan/cli/util"
 	"github.com/tphoney/musicscan/types"
@@ -41,8 +42,9 @@ func (c *scanCommand) run(*kingpin.ParseContext) error {
 		if err != nil {
 			// artist not found create it
 			inArtist := &types.Artist{
-				Name: f.Name(),
-				Desc: artistPath,
+				Name:   f.Name(),
+				Desc:   artistPath,
+				Wanted: true,
 			}
 			foundArtist, err = client.ArtistCreate(c.proj, inArtist)
 			if err != nil {
@@ -57,9 +59,20 @@ func (c *scanCommand) run(*kingpin.ParseContext) error {
 				_, err = client.AlbumName(c.proj, foundArtist.ID, albumPath.Name())
 				if err != nil {
 					abs := artistPath + "/" + albumPath.Name()
+					mp3Matches, _ := filepath.Glob(abs + "/*.mp3")
+					flacMatches, _ := filepath.Glob(abs + "/*.flac")
+					format := ""
+					if len(mp3Matches) != 0 && len(flacMatches) != 0 {
+						format = "mp3+flac"
+					} else if len(mp3Matches) != 0 {
+						format = "mp3"
+					} else if len(flacMatches) != 0 {
+						format = "flac"
+					}
 					inputAlbum := &types.Album{
-						Name: albumPath.Name(),
-						Desc: abs,
+						Name:   albumPath.Name(),
+						Desc:   abs,
+						Format: format,
 					}
 					_, err := client.AlbumCreate(c.proj, foundArtist.ID, inputAlbum)
 					if err != nil {

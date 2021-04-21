@@ -45,6 +45,7 @@ func HandleCreate(artists store.ArtistStore) http.HandlerFunc {
 			Project: project,
 			Name:    in.Name.String,
 			Desc:    in.Desc.String,
+			Wanted:  in.Wanted.Bool,
 			Created: time.Now().Unix(),
 			Updated: time.Now().Unix(),
 		}
