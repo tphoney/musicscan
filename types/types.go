@@ -24,8 +24,7 @@ type (
 		Updated int64  `db:"artist_updated"    json:"updated"`
 	}
 
-	// ArtistInput store details used to create or
-	// update a artist.
+	// ArtistInput store details used to create or update a artist.
 	ArtistInput struct {
 		Name   null.String `json:"name"`
 		Desc   null.String `json:"desc"`
@@ -38,17 +37,20 @@ type (
 		Artist  int64  `db:"album_artist_id" json:"-"`
 		Name    string `db:"album_name"      json:"name"`
 		Desc    string `db:"album_desc"      json:"desc"`
+		Year    string `db:"album_year"      json:"year"`
+		Wanted  bool   `db:"album_wanted"    json:"wanted"`
 		Format  string `db:"album_format"    json:"format"`
 		Created int64  `db:"album_created"   json:"created"`
 		Updated int64  `db:"album_updated"   json:"updated"`
 	}
 
-	// AlbumInput store details used to create or
-	// update a album.
+	// AlbumInput store details used to create or update a album.
 	AlbumInput struct {
 		Name   null.String `json:"name"`
 		Desc   null.String `json:"desc"`
 		Format null.String `json:"format"`
+		Wanted null.Bool   `json:"wanted"`
+		Year   null.String `json:"year"`
 	}
 
 	// Member providers member details.

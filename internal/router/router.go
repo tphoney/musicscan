@@ -86,6 +86,7 @@ func New(
 				r.Get("/", projects.HandleFind(projectStore))
 				r.Patch("/", projects.HandleUpdate(projectStore))
 				r.Delete("/", projects.HandleDelete(projectStore))
+				r.Get("/scan", projects.HandleScan(artistStore, albumStore))
 
 				// artist endpoints
 				r.Route("/artists", func(r chi.Router) {

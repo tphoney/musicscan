@@ -1,13 +1,20 @@
 SELECT
- artist_id
+ artist_id, artist_wanted
 
 FROM artists 
 
 
 SELECT
- album_name ,album_format
-
-FROM albums 
+ album_id
+,album_artist_id
+,album_name
+,album_desc
+,album_format
+,album_year
+,album_wanted
+,album_created
+,album_updated
+FROM albums
 
 SELECT
  artist_id

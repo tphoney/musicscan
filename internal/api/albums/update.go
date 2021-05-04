@@ -17,8 +17,7 @@ import (
 	"github.com/go-chi/chi"
 )
 
-// HandleUpdate returns an http.HandlerFunc that processes http
-// requests to update the object details.
+// HandleUpdate returns an http.HandlerFunc that processes http requests to update the object details.
 func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		projectID, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
@@ -101,8 +100,11 @@ func HandleUpdate(artists store.ArtistStore, albums store.AlbumStore) http.Handl
 		if !in.Name.IsZero() {
 			album.Name = in.Name.String
 		}
-		if !in.Name.IsZero() {
+		if !in.Desc.IsZero() {
 			album.Desc = in.Desc.String
+		}
+		if !in.Year.IsZero() {
+			album.Year = in.Year.String
 		}
 
 		err = albums.Update(r.Context(), album)

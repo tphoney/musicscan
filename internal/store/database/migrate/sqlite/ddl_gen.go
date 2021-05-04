@@ -208,6 +208,8 @@ CREATE TABLE IF NOT EXISTS albums (
 ,album_name      TEXT
 ,album_desc      TEXT
 ,album_format    TEXT
+,album_wanted    BOOLEAN DEFAULT 1
+,album_year      TEXT
 ,album_created   INTEGER
 ,album_updated   INTEGER
 );

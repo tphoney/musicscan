@@ -15,8 +15,6 @@ import (
 	"github.com/go-chi/chi"
 )
 
-// HandleFind returns an http.HandlerFunc that writes the
-// json-encoded project details to the response body.
 func HandleFind(projects store.ProjectStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
