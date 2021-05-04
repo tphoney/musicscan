@@ -99,6 +99,8 @@ SELECT
 ,album_name
 ,album_desc
 ,album_format
+,album_year
+,album_wanted
 ,album_created
 ,album_updated
 FROM albums
@@ -129,6 +131,8 @@ INSERT INTO albums (
 ,album_name
 ,album_desc
 ,album_format
+,album_year
+,album_wanted
 ,album_created
 ,album_updated
 ) values (
@@ -136,6 +140,8 @@ INSERT INTO albums (
 ,:album_name
 ,:album_desc
 ,:album_format
+,:album_year
+,:album_wanted
 ,:album_created
 ,:album_updated
 )
@@ -151,6 +157,8 @@ SET
  album_name    = :album_name
 ,album_desc    = :album_desc
 ,album_format  = :album_format
+,album_wanted  = :album_wanted
+,album_year    = :album_year
 ,album_updated = :album_updated
 WHERE album_id = :album_id
 `
