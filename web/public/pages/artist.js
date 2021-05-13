@@ -49,7 +49,7 @@ export default function Artist({ params }) {
 	return (
 		<>
 			<nav>
-				<h1>{artist.name}</h1>
+				<h1>{artist.name} {artist.wanted}</h1>
 				<ul>
 					<li>
 						<Link href={`/projects/${project.id}/artists/${artist.id}`}>

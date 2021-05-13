@@ -54,9 +54,10 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 			if artistFindErr != nil {
 				// artist not found create it
 				inArtist := &types.Artist{
-					Name:   f.Name(),
-					Desc:   artistPath,
-					Wanted: true,
+					Name:    f.Name(),
+					Project: projID,
+					Desc:    artistPath,
+					Wanted:  true,
 				}
 				artistCreateErr := artistStore.Create(r.Context(), inArtist)
 				if artistCreateErr != nil {

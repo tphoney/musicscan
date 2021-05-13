@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS artists (
 ,artist_name        TEXT
 ,artist_desc        TEXT
 ,artist_wanted      BOOLEAN DEFAULT 1
+,artist_spotify     TEXT
 ,artist_created     INTEGER
 ,artist_updated     INTEGER
 );

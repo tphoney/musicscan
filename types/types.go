@@ -20,6 +20,7 @@ type (
 		Name    string `db:"artist_name"       json:"name"`
 		Desc    string `db:"artist_desc"       json:"desc"`
 		Wanted  bool   `db:"artist_wanted"     json:"wanted"`
+		Spotify string `db:"artist_spotify"    json:"spotify"`
 		Created int64  `db:"artist_created"    json:"created"`
 		Updated int64  `db:"artist_updated"    json:"updated"`
 	}
@@ -39,6 +40,7 @@ type (
 		Desc    string `db:"album_desc"      json:"desc"`
 		Year    string `db:"album_year"      json:"year"`
 		Wanted  bool   `db:"album_wanted"    json:"wanted"`
+		Spotify string `db:"album_spotify"    json:"spotify"`
 		Format  string `db:"album_format"    json:"format"`
 		Created int64  `db:"album_created"   json:"created"`
 		Updated int64  `db:"album_updated"   json:"updated"`
