@@ -1,7 +1,9 @@
 SELECT
- artist_id, artist_wanted
+ artist_id, artist_name, artist_wanted, artist_spotify
 
 FROM artists 
+
+where artist_name LIKE '%radiohead%'
 
 
 SELECT
@@ -17,12 +19,11 @@ SELECT
 FROM albums
 
 SELECT
- artist_id
-,artist_project_id
-,artist_name
-,artist_desc
-,artist_created
-,artist_updated
-FROM artists
-
-WHERE artist_name LIKE "10cc"
+    artists.artist_name,
+    albums.album_name,
+    albums.album_format
+from
+    albums
+    INNER JOIN artists on artists.artist_id = albums.album_artist_id
+WHERE
+    albums.album_format != 'flac'

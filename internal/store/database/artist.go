@@ -99,6 +99,7 @@ SELECT
 ,artist_name
 ,artist_desc
 ,artist_wanted
+,artist_spotify
 ,artist_created
 ,artist_updated
 FROM artists
@@ -128,6 +129,7 @@ INSERT INTO artists (
 ,artist_name
 ,artist_desc
 ,artist_wanted
+,artist_spotify
 ,artist_created
 ,artist_updated
 ) values (
@@ -135,6 +137,7 @@ INSERT INTO artists (
 ,:artist_name
 ,:artist_desc
 ,:artist_wanted
+,:artist_spotify
 ,:artist_created
 ,:artist_updated
 )
@@ -150,6 +153,7 @@ SET
  artist_name    = :artist_name
 ,artist_desc    = :artist_desc
 ,artist_wanted  = :artist_wanted
+,artist_spotify = :artist_spotify
 ,artist_updated = :artist_updated
 WHERE artist_id = :artist_id
 `

@@ -1,0 +1,21 @@
+BACKEND
+    matcher
+        write matched albums to db
+        write an update script to ignore artists
+        run matches against all artists
+    queries
+        show all artists/albums that have a release in year ?
+        show all artists/albums that have a missing album 
+    scanner
+        case insensitive search for mp3
+        update folders if they have changed
+
+UI
+    add scan button
+    add "list non flac albums"
+    add wanted check box to artist
+
+DONE
+add spotify id to artist
+add logic to not lookup spotifyid if it exists
+add albums lookups for artist ID

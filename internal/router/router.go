@@ -93,6 +93,7 @@ func New(
 					r.Get("/", artists.HandleList(artistStore))
 					r.Post("/", artists.HandleCreate(artistStore))
 					r.Get("/{artist}", artists.HandleFind(artistStore))
+					r.Get("/lookup/{artist}", artists.Lookup(artistStore, albumStore))
 					r.Get("/search/{artist}", artists.HandleFindByName(artistStore))
 					r.Patch("/{artist}", artists.HandleUpdate(artistStore))
 					r.With(
