@@ -11,12 +11,12 @@ import (
 	"github.com/tphoney/musicscan/types"
 )
 
-const oauth = "BQBX3tRhADAZEGZ9bCvs8tgnjDlhsPIfpv3fM9R1tmJBVPLFZ0NPJt_r0zXsxXh3sqmZrOB2QUmnEzGLMSMRHgxCYBmNs046ndrg3i2TltF_M-UxkTRHz2efPwr44tSo4sSvpTPr6Q2lMrbhMHIHxd1Rzyxtt0k"
+const oauthTest = "BQBX3tRhADAZEGZ9bCvs8tgnjDlhsPIfpv3fM9R1tmJBVPLFZ0NPJt_r0zXsxXh3sqmZrOB2QUmnEzGLMSMRHgxCYBmNs046ndrg3i2TltF_M-UxkTRHz2efPwr44tSo4sSvpTPr6Q2lMrbhMHIHxd1Rzyxtt0k"
 
 func Test_lookupArtist(t *testing.T) {
 	artistName := "abba"
 
-	gotSpotifyID, err := lookupArtist(artistName, oauth)
+	gotSpotifyID, err := spotifyLookupArtist(artistName, oauthTest)
 	assert.Equal(t, "0LcJLqbBmaGUft1e9Mm8HV", gotSpotifyID, "got a match for abba")
 	assert.Nil(t, err, "no errors")
 }
@@ -24,7 +24,7 @@ func Test_lookupArtist(t *testing.T) {
 func Test_lookupArtistAlbums(t *testing.T) {
 	artistSpotify := "0LcJLqbBmaGUft1e9Mm8HV"
 
-	albums, err := lookupArtistAlbums(artistSpotify, oauth)
+	albums, err := spotifyLookupArtistAlbums(artistSpotify, oauthTest)
 	assert.Equal(t, 13, len(albums.Items), "got albums")
 	assert.Nil(t, err, "no errors")
 }
