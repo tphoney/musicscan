@@ -1,6 +1,5 @@
 BACKEND
-    matcher 
-        write an update script to ignore artists
+    matcher
     queries
         show all artists/albums that have a release in year ?
         show all artists/albums that have a missing album 
@@ -19,3 +18,5 @@ add logic to not lookup spotifyid if it exists
 add albums lookups for artist ID
 write matched albums back to db
 run matches against all artists
+write an update script to ignore artists
+show all artists/albums that have a release in year ?
