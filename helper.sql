@@ -41,6 +41,21 @@ from
 WHERE
     albums.album_format == 'spotify'
     AND
-    albums.album_year == 2021
+    albums.album_year == 2014
     AND
     artists.artist_wanted == 1
+    AND
+    album_name NOT LIKE '%live%'
+    AND
+    album_name NOT LIKE '%anniversary%'
+    AND
+    album_name NOT LIKE '%deluxe%'
+
+UPDATE artists
+set artist_wanted = 0 
+WHERE artist_name IN ("Antonio Vivaldi", "Aretha Franklin", "Beethoven", "Bernard Herrmann", "Bing Crosby", 
+"Charlie Parker", "Chopin", "Clint Mansell",
+"Claude Debussy", "Elvis Presley", "Ennio Morricone", "Eric Clapton", "Franz Schubert", "George Gershwin", 
+"Giuseppe Verdi", "Hans Zimmer", 
+"Johann Sebastian Bach", "John Williams", "Lou Reed", "Louis Armstrong", "Mozart", "Richard Wagner", 
+"Peter Tchaikovsky", "Strauss", "Van Morrison");
