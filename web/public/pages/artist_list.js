@@ -99,12 +99,14 @@ export default function ArtistList({ params }) {
 }
 
 // render the artist information.
+// <input type="checkbox" value={artist.wanted}></input>
 const ArtistInfo = ({ artist, project, onDelete }) => {
 	return (
 		<li id={artist.id}>
 			<Link href={`/projects/${project.id}/artists/${artist.id}`}>
 				{artist.name}
 			</Link>
+			<label> Wanted</label><input type="checkbox" checked={artist.wanted}></input>
 			<button onClick={onDelete.bind(this, artist)}>Delete</button>
 		</li>
 	);

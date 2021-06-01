@@ -28,7 +28,7 @@ from
     albums
     INNER JOIN artists on artists.artist_id = albums.album_artist_id
 WHERE
-    albums.album_format != 'flac'
+    albums.album_format != 'flac' AND albums.album_format != 'spotify'
 
 SELECT
     artists.artist_name,

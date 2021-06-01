@@ -38,3 +38,27 @@ func HandleFind(projects store.ProjectStore) http.HandlerFunc {
 		}
 	}
 }
+
+func HandleFindBadAlbums(projects store.ProjectStore) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
+		if err != nil {
+			render.BadRequest(w, err)
+			logger.FromRequest(r).
+				WithError(err).
+				Debugln("cannot parse project id")
+			return
+		}
+
+		project, err := projects.FindBadAlbums(r.Context(), id)
+		if err != nil {
+			render.NotFound(w, err)
+			logger.FromRequest(r).
+				WithError(err).
+				WithField("id", id).
+				Debugln("project not found")
+		} else {
+			render.JSON(w, project, 200)
+		}
+	}
+}

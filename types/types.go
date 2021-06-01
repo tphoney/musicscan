@@ -94,6 +94,12 @@ type (
 		Updated int64  `db:"project_updated" json:"updated"`
 	}
 
+	BadAlbum struct {
+		ArtistName null.String `db:"artist_name" json:"artist_name"`
+		AlbumName  null.String `db:"album_name" json:"album_name"`
+		Format     null.String `db:"album_format" json:"format"`
+	}
+
 	// ProjectInput store user project details used to
 	// create or update a project.
 	ProjectInput struct {
