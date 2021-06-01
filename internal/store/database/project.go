@@ -33,6 +33,13 @@ func (s *ProjectStore) Find(ctx context.Context, id int64) (*types.Project, erro
 	return dst, err
 }
 
+// Find finds the project by id.
+func (s *ProjectStore) FindBadAlbums(ctx context.Context, id int64) ([]*types.BadAlbum, error) {
+	dst := []*types.BadAlbum{}
+	err := s.db.Select(&dst, projectBadAlbums)
+	return dst, err
+}
+
 // FindToken finds the project by token.
 func (s *ProjectStore) FindToken(ctx context.Context, token string) (*types.Project, error) {
 	dst := new(types.Project)
@@ -115,6 +122,18 @@ ORDER BY project_name
 
 const projectSelectID = projectBase + `
 WHERE project_id = $1
+`
+
+const projectBadAlbums = `
+SELECT
+    artists.artist_name,
+    albums.album_name,
+    albums.album_format
+from
+    albums
+    INNER JOIN artists on artists.artist_id = albums.album_artist_id
+WHERE
+    albums.album_format != 'flac' AND albums.album_format != 'spotify'
 `
 
 const projectSelectToken = projectBase + `

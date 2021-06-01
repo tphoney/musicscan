@@ -50,6 +50,18 @@ export const useProjectList = () => {
 	};
 };
 
+export const useAlbumBadList = (id) => {
+	const { data, error } = useSWR(
+		`${instance}/api/v1/projects/${id}/find_bad_albums`
+	);
+
+	return {
+		badAlbumList: data,
+		isLoading: !error && !data,
+		isError: error,
+	};
+};
+
 /**
  * useProject returns an swr hook that provides the project.
  */
