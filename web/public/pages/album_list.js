@@ -109,7 +109,7 @@ const AlbumInfo = ({ artist, album, project }) => {
 			>
 				{album.name}
 			</Link>
-			<label>, Format </label>{album.format}<label>, Year </label>{album.year}<label>, Wanted</label><input type="checkbox" checked={artist.wanted}></input>
+			<label>, Format </label>{album.format}<label>, Year </label>{album.year}<label>, Wanted</label><input type="checkbox" checked={album.wanted}></input>
 		</li>
 	);
 };

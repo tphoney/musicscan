@@ -62,6 +62,13 @@ export const useAlbumBadList = (id) => {
 	};
 };
 
+export const useScan = (params, fetcher) => {
+	const { id } = params;
+	return fetcher(`${instance}/api/v1/projects/${id}/scan`, {
+	});
+};
+
+
 /**
  * useProject returns an swr hook that provides the project.
  */
