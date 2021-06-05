@@ -7,7 +7,8 @@ import Link from "../shared/link.js";
 import Artist from "./artist.js";
 import ArtistList from "./artist_list.js";
 import Member from "./members.js";
-import ProjectBadAlbumList from "./project_bad_album_list";
+import Scan from "./project_scan.js";
+import ProjectBadAlbumList from "./project_bad_album_list.js";
 
 // Renders the Project page.
 export default function Project({ params }) {
@@ -32,6 +33,9 @@ export default function Project({ params }) {
 						<Link href={`/projects/${project.id}/members`}>Members</Link>
 					</li>
 					<li>
+						<Link href={`/projects/${project.id}/project_scan`}>Scan</Link>
+					</li>
+					<li>
 						<Link href={`/projects/${project.id}/project_bad_album_list`}>Bad Albums</Link>
 					</li>
 				</ul>
@@ -43,6 +47,7 @@ export default function Project({ params }) {
 				<Route path="/projects/:project/artists/:artist" component={Artist} />
 				<Route path="/projects/:project/artists/path+" component={Artist} />
 				<Route path="/projects/:project/members" component={Member} />
+				<Route path="/projects/:project/project_scan" component={Scan} />
 				<Route path="/projects/:project/project_bad_album_list" component={ProjectBadAlbumList} />
 				<Route>Not Found</Route>
 			</Switch>

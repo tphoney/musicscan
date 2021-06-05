@@ -23,12 +23,24 @@ albums.album_artist_id == 5
 SELECT
     artists.artist_name,
     albums.album_name,
-    albums.album_format
+    albums.album_format,
+    albums.album_wanted
 from
     albums
     INNER JOIN artists on artists.artist_id = albums.album_artist_id
 WHERE
     albums.album_format != 'flac' AND albums.album_format != 'spotify'
+
+SELECT
+    artists.artist_name,
+    albums.album_name,
+    albums.album_format,
+    albums.album_wanted
+from
+    albums
+    INNER JOIN artists on artists.artist_id = albums.album_artist_id
+WHERE
+    albums.album_format == 'flac'
 
 SELECT
     artists.artist_name,
@@ -41,7 +53,7 @@ from
 WHERE
     albums.album_format == 'spotify'
     AND
-    albums.album_year == 2014
+    albums.album_year == 2021
     AND
     artists.artist_wanted == 1
     AND
@@ -50,6 +62,10 @@ WHERE
     album_name NOT LIKE '%anniversary%'
     AND
     album_name NOT LIKE '%deluxe%'
+
+UPDATE albums
+set album_wanted = 1
+WHERE album_format != 'flac'
 
 UPDATE artists
 set artist_wanted = 0 

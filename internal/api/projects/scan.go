@@ -42,6 +42,7 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 		}
 		newArtists := 0
 		newAlbums := 0
+		changedAlbums := 0
 		for _, f := range basePath {
 			if !f.IsDir() {
 				continue
@@ -81,8 +82,9 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 			albumPaths, _ := ioutil.ReadDir(artistPath)
 			for _, albumPath := range albumPaths {
 				if albumPath.IsDir() {
-					_, findAlbumErr := albumStore.FindByName(r.Context(), foundArtist.ID, albumPath.Name())
+					dbAlbum, findAlbumErr := albumStore.FindByName(r.Context(), foundArtist.ID, albumPath.Name())
 					if findAlbumErr != nil {
+						// new album
 						abs := artistPath + "/" + albumPath.Name()
 						mp3Matches, _ := filepath.Glob(abs + "/*.mp3")
 						flacMatches, _ := filepath.Glob(abs + "/*.flac")
@@ -99,6 +101,7 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 							Artist: foundArtist.ID,
 							Desc:   abs,
 							Format: format,
+							Wanted: false,
 						}
 						createAlbumErr := albumStore.Create(r.Context(), inputAlbum)
 						if createAlbumErr != nil {
@@ -109,6 +112,36 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 								Debugln("unable to create album")
 						}
 						newAlbums++
+					} else {
+						// lets see if anything has changed
+						abs := artistPath + "/" + albumPath.Name()
+						mp3Matches, _ := filepath.Glob(abs + "/*.mp3")
+						flacMatches, _ := filepath.Glob(abs + "/*.flac")
+						format := ""
+						if len(mp3Matches) != 0 && len(flacMatches) != 0 {
+							format = "mp3+flac"
+						} else if len(mp3Matches) != 0 {
+							format = "mp3"
+						} else if len(flacMatches) != 0 {
+							format = "flac"
+						}
+						change := false
+						if dbAlbum.Format != format {
+							change = true
+						}
+						if change {
+							dbAlbum.Format = format
+							dbAlbum.Wanted = false
+							updateAlbumErr := albumStore.Update(r.Context(), dbAlbum)
+							if updateAlbumErr != nil {
+								render.InternalError(w, updateAlbumErr)
+								logger.FromRequest(r).
+									WithError(updateAlbumErr).
+									WithField("id", projID).
+									Debugln("unable to update album")
+							}
+							changedAlbums++
+						}
 					}
 				}
 			}
