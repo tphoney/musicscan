@@ -1,0 +1,28 @@
+.root {
+	appearance: none;
+	display: inline-flex;
+	user-select: none;
+	outline: none;
+	border: none;
+	border-radius: 3px;
+	background: #0f172a;
+	color: #ffffff;
+	padding: 8px 12px;
+	cursor: pointer;
+	box-shadow: none;
+
+	&:active,
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px #1e293b;
+	}
+
+	&:hover {
+		background: #334155;
+	}
+
+	&[disabled] {
+		background: #cbd5e1;
+		cursor: not-allowed;
+	}
+}

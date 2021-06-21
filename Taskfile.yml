@@ -30,6 +30,17 @@ tasks:
       - cmd: docker kill postgres
         silent: true
 
+  cleanup:
+    cmds:
+    - rm -rf release
+    - rm -rf web/.cache
+    - rm -rf web/dist/files
+    - rm -rf web/node_modules
+    - rm -rf web/.env.development.local
+    - rm -rf musicscan
+    - rm -rf database.sqlite3
+    - rm -rf .env
+
   docker-build:
     cmds:
     - docker build -t tphoney/musicscan:linux-amd64 -f docker/Dockerfile .

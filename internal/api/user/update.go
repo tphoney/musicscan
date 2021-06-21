@@ -50,8 +50,12 @@ func HandleUpdate(users store.UserStore) http.HandlerFunc {
 			viewer.Password = string(hash)
 		}
 
-		if !in.Username.IsZero() {
-			viewer.Email = in.Username.String
+		if !in.Name.IsZero() {
+			viewer.Name = in.Name.String
+		}
+
+		if !in.Company.IsZero() {
+			viewer.Company = in.Company.String
 		}
 
 		err = users.Update(r.Context(), viewer)

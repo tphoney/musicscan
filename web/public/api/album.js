@@ -39,7 +39,10 @@ export const deleteAlbum = (project, artist, album, fetcher) => {
 		{
 			method: "DELETE",
 		}
-	);
+	).then((_) => {
+		mutate(`${instance}/api/v1/projects/${project}/artists/${artist}/albums`);
+		return;
+	});
 };
 
 /**

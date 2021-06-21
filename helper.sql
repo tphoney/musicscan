@@ -73,7 +73,7 @@ set artist_wanted = 0
 WHERE artist_name IN ("Al Stewart", "Andy Williams", "Antonio Vivaldi", "Aretha Franklin", "Beethoven", "Bernard Herrmann", "Bill Evans", "Bing Crosby", "Bob Dylan", "Bryan Adams",
 "Charlie Parker", "Chopin", "Chris Rea", "Clint Mansell",
 "Claude Debussy", "Cliff Richard", "Dean Martin", "Doris Day", "Dr. Feelgood", "Duke Ellington", "Elvis Presley", "Ennio Morricone", "Erasure", "Eric Clapton", "Foreigner", "Frank Sinatra", "Franz Schubert", "George Gershwin", 
-"Giuseppe Verdi", "Groove Armada", "Hall & Oates", "Hans Zimmer", "Hawkwind", "James Brown", "Jimi Hendrix"
+"Giuseppe Verdi", "Groove Armada", "Hall & Oates", "Hans Zimmer", "Hawkwind", "James Brown", "Jimi Hendrix",
 "Johann Sebastian Bach", "John Williams", "John Martyn", "Johnny Cash", "Kylie Minogue", "Ladysmith Black Mambazo", "Linkin Park", "Lionel Richie", "Lou Reed", "Louis Armstrong", "Lynyrd Skynyrd", "Madonna", "Miles Davis", "Ministry", "Mozart", "Nancy Sinatra", "Nat King Cole", "Neil Diamond", "Neil Young", "New York Dolls", "Nickelback", "Nils Lofgren", "Prince", "Richard Wagner", "Rod Stewart", "Roxette",
 "Peter Tchaikovsky","Santana", "Strauss", "The Beach Boys", "The Black Eyed Peas", "Van Morrison", "Vangelis", 
 "Willie Nelson");

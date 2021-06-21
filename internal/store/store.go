@@ -80,6 +80,9 @@ type (
 		// Find albums that need replaced
 		FindBadAlbums(ctx context.Context, id int64) ([]*types.BadAlbum, error)
 
+		// Find albums from a year
+		FindWantedAlbums(ctx context.Context, id int64, year int64) ([]*types.BadAlbum, error)
+
 		// FindToken finds the project by token.
 		FindToken(ctx context.Context, token string) (*types.Project, error)
 

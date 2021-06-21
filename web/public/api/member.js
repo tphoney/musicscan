@@ -33,6 +33,9 @@ export const updateMember = (project, member, data, fetcher) => {
 export const deleteMember = (project, member, fetcher) => {
 	return fetcher(`${instance}/api/v1/projects/${project}/members/${member}`, {
 		method: "DELETE",
+	}).then((response) => {
+		mutate(`${instance}/api/v1/projects/${project}/members`);
+		return response;
 	});
 };
 

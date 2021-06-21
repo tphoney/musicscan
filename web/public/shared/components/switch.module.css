@@ -1,0 +1,46 @@
+.root {
+	display: inline-block;
+
+	appearance: none;
+	box-sizing: border-box;
+	align-items: flex-start;
+	border: none;
+	padding: 0px;
+	width: 25px;
+	height: 15px;
+	background-color: #9ca3af;
+	border-radius: 25px;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px #bfdbfe;
+	}
+
+	&[data-state="checked"] {
+		background-color: #2563eb;
+	}
+
+	&[disabled] {
+		cursor: not-allowed;
+		background-color: #f3f4f6;
+	}
+}
+
+.thumb {
+	display: block;
+	width: 13px;
+	height: 13px;
+	background-color: white;
+	border-radius: 50%;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 2px;
+	transition: transform 100ms;
+	transform: translateX(1px);
+	will-change: transform;
+
+	&[data-state="checked"] {
+		transform: translateX(11px);
+	}
+}

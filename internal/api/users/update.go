@@ -11,23 +11,21 @@ import (
 	"github.com/tphoney/musicscan/internal/api/render"
 	"github.com/tphoney/musicscan/internal/logger"
 	"github.com/tphoney/musicscan/internal/store"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/tphoney/musicscan/types"
 
 	"github.com/go-chi/chi"
-	"gopkg.in/guregu/null.v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
-type userUpdateInput struct {
-	Username null.String `json:"email"`
-	Password null.String `json:"password"`
-	Admin    null.Bool   `json:"admin"`
-}
+// GenerateFromPassword returns the bcrypt hash of the
+// password at the given cost.
+var hashPassword = bcrypt.GenerateFromPassword
 
 // HandleUpdate returns an http.HandlerFunc that processes an http.Request
 // to update a user account.
 func HandleUpdate(users store.UserStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		in := new(userUpdateInput)
+		in := new(types.UserInput)
 		err := json.NewDecoder(r.Body).Decode(in)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -48,8 +46,24 @@ func HandleUpdate(users store.UserStore) http.HandlerFunc {
 			return
 		}
 
-		if !in.Username.IsZero() {
-			user.Email = in.Username.String
+		if !in.Password.IsZero() {
+			hash, hashErr := hashPassword([]byte(in.Password.String), bcrypt.DefaultCost)
+			if hashErr != nil {
+				render.InternalError(w, hashErr)
+				logger.FromRequest(r).
+					WithError(hashErr).
+					Debugln("cannot hash password")
+				return
+			}
+			user.Password = string(hash)
+		}
+
+		if !in.Name.IsZero() {
+			user.Name = in.Name.String
+		}
+
+		if !in.Company.IsZero() {
+			user.Company = in.Company.String
 		}
 
 		if in.Admin.Ptr() != nil {

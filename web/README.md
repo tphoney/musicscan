@@ -29,5 +29,5 @@ npm run start
 The web application can be run in isolation, outside of the Go binary. Create a `.env.development.local` file with the remote server address (no trailing slash).
 
 ```text
-SERVER=https://localhost:3000
+SERVER=http://localhost:3000
 ```

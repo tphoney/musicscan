@@ -9,9 +9,9 @@ export const createArtist = async (params, data, fetcher) => {
 	return fetcher(`${instance}/api/v1/projects/${project}/artists`, {
 		body: JSON.stringify(data),
 		method: "POST",
-	}).then((artist) => {
+	}).then((response) => {
 		mutate(`${instance}/api/v1/projects/${project}/artists`);
-		return artist;
+		return response;
 	});
 };
 
@@ -23,6 +23,10 @@ export const updateArtist = (params, data, fetcher) => {
 	return fetcher(`${instance}/api/v1/projects/${project}/artists/${artist}`, {
 		body: JSON.stringify(data),
 		method: "PATCH",
+	}).then((response) => {
+		mutate(`${instance}/api/v1/projects/${project}/artists`);
+		mutate(`${instance}/api/v1/projects/${project}/artists/${artist}`);
+		return response;
 	});
 };
 
@@ -33,9 +37,9 @@ export const deleteArtist = (params, fetcher) => {
 	const { project, artist } = params;
 	return fetcher(`${instance}/api/v1/projects/${project}/artists/${artist}`, {
 		method: "DELETE",
-	}).then((_) => {
+	}).then((response) => {
 		mutate(`${instance}/api/v1/projects/${project}/artists`);
-		return;
+		return response;
 	});
 };
 

@@ -1,0 +1,603 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "defines the swagger specification.",
+    "version": "1.0.0"
+  },
+  "basePath": "/api/v1",
+  "paths": {
+    "/projects": {
+      "post": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Create a new project.",
+        "operationId": "createProject",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/ProjectInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/project"
+          }
+        }
+      }
+    },
+    "/projects/{project}": {
+      "get": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Get the project with the matching project id.",
+        "operationId": "findProject",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "ID",
+            "name": "project",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/project"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Delete the project with the matching project id.",
+        "operationId": "deleteProject",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "ID",
+            "name": "project",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Update the project with the matching project id.",
+        "operationId": "updateProject",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "ID",
+            "name": "project",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/ProjectInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/project"
+          }
+        }
+      }
+    },
+    "/projects/{project}/members": {
+      "get": {
+        "tags": [
+          "member"
+        ],
+        "summary": "Get the list of all project members.",
+        "operationId": "getMemberList",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Project",
+            "name": "project",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/memberList"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "member"
+        ],
+        "summary": "Create a new project member.",
+        "operationId": "createMember",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Project",
+            "name": "project",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/MembershipInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/member"
+          }
+        }
+      }
+    },
+    "/projects/{project}/members/{user}": {
+      "get": {
+        "tags": [
+          "member"
+        ],
+        "summary": "Get the project member with the matching email address.",
+        "operationId": "getMember",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Project",
+            "name": "project",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Email",
+            "name": "user",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/member"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "member"
+        ],
+        "summary": "Delete the project member.",
+        "operationId": "deleteMember",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Project",
+            "name": "project",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Email",
+            "name": "user",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "member"
+        ],
+        "summary": "Update the project member.",
+        "operationId": "updateMember",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Project",
+            "name": "project",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "Email",
+            "name": "user",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/MembershipInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/member"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get the authenticated user.",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/user"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get the list of all registered users.",
+        "operationId": "getUserList",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/userList"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create a new user.",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/user"
+          }
+        }
+      }
+    },
+    "/users/projects": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get the currently authenticated user's project list.",
+        "operationId": "getProjectList",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/projectList"
+          }
+        }
+      }
+    },
+    "/users/{user}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get the user with the matching email address.",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Email",
+            "name": "user",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/user"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete the user with the matching email address.",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Email",
+            "name": "user",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update the user with the matching email address.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "Email",
+            "name": "user",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/user"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Bool": {
+      "description": "It does not consider false values to be null.\nIt will decode to null, not false, if null.",
+      "type": "object",
+      "title": "Bool is a nullable bool.",
+      "properties": {
+        "Bool": {
+          "type": "boolean"
+        },
+        "Valid": {
+          "type": "boolean"
+        }
+      },
+      "x-go-package": "gopkg.in/guregu/null.v4"
+    },
+    "Member": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        }
+      }
+    },
+    "MembershipInput": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Project"
+        },
+        "role": {
+          "$ref": "#/definitions/Role"
+        },
+        "user": {
+          "type": "string",
+          "x-go-name": "User"
+        }
+      }
+    },
+    "Project": {
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "boolean",
+          "x-go-name": "Active"
+        },
+        "created": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Created"
+        },
+        "desc": {
+          "type": "string",
+          "x-go-name": "Desc"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "updated": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Updated"
+        }
+      }
+    },
+    "ProjectInput": {
+      "type": "object",
+      "properties": {
+        "desc": {
+          "$ref": "#/definitions/String"
+        },
+        "name": {
+          "$ref": "#/definitions/String"
+        }
+      }
+    },
+    "Role": {
+      "type": "integer",
+      "format": "int64",
+      "title": "Role defines the member role."
+    },
+    "String": {
+      "description": "It will marshal to null if null. Blank string input will be considered null.",
+      "type": "object",
+      "title": "String is a nullable string. It supports SQL and JSON serialization.",
+      "properties": {
+        "String": {
+          "type": "string"
+        },
+        "Valid": {
+          "type": "boolean"
+        }
+      },
+      "x-go-package": "gopkg.in/guregu/null.v4"
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "admin": {
+          "type": "boolean",
+          "x-go-name": "Admin"
+        },
+        "authed": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Authed"
+        },
+        "created": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Created"
+        },
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ID"
+        },
+        "updated": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Updated"
+        }
+      }
+    },
+    "UserInput": {
+      "type": "object",
+      "properties": {
+        "admin": {
+          "$ref": "#/definitions/Bool"
+        },
+        "email": {
+          "$ref": "#/definitions/String"
+        },
+        "password": {
+          "$ref": "#/definitions/String"
+        }
+      }
+    }
+  },
+  "responses": {
+    "member": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/Member"
+      }
+    },
+    "memberList": {
+      "description": "",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/Member"
+        }
+      }
+    },
+    "project": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/Project"
+      }
+    },
+    "projectList": {
+      "description": "",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/Project"
+        }
+      }
+    },
+    "user": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/User"
+      }
+    },
+    "userList": {
+      "description": "",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/User"
+        }
+      }
+    }
+  }
+}

@@ -17,8 +17,7 @@ type key int
 
 const (
 	userKey key = iota
-
-//	projKey
+	projKey
 )
 
 // WithUser returns a copy of parent in which the user

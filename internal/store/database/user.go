@@ -125,6 +125,8 @@ const userBase = `
 SELECT
  user_id
 ,user_email
+,user_name
+,user_company
 ,user_password
 ,user_token
 ,user_admin
@@ -159,6 +161,8 @@ WHERE user_id = $1
 const userInsert = `
 INSERT INTO users (
  user_email
+,user_name
+,user_company
 ,user_password
 ,user_token
 ,user_admin
@@ -168,6 +172,8 @@ INSERT INTO users (
 ,user_authed
 ) values (
  :user_email
+,:user_name
+,:user_company
 ,:user_password
 ,:user_token
 ,:user_admin
@@ -186,6 +192,8 @@ const userUpdate = `
 UPDATE users
 SET
  user_email     = :user_email
+,user_name      = :user_name
+,user_company   = :user_company
 ,user_password  = :user_password
 ,user_token     = :user_token
 ,user_admin     = :user_admin

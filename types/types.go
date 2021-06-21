@@ -98,10 +98,10 @@ type (
 		ArtistName null.String `db:"artist_name" json:"artist_name"`
 		AlbumName  null.String `db:"album_name" json:"album_name"`
 		Format     null.String `db:"album_format" json:"format"`
+		Year       null.String `db:"album_year" json:"year"`
 	}
 
-	// ProjectInput store user project details used to
-	// create or update a project.
+	// ProjectInput store user project details used to create or update a project.
 	ProjectInput struct {
 		Name null.String `json:"name"`
 		Desc null.String `json:"desc"`
@@ -120,6 +120,8 @@ type (
 		Email    string `db:"user_email"     json:"email"`
 		Password string `db:"user_password"  json:"-"`
 		Token    string `db:"user_token"     json:"-"`
+		Name     string `db:"user_name"      json:"name"`
+		Company  string `db:"user_company"   json:"company"`
 		Admin    bool   `db:"user_admin"     json:"admin"`
 		Blocked  bool   `db:"user_blocked"   json:"-"`
 		Created  int64  `db:"user_created"   json:"created"`
@@ -132,6 +134,8 @@ type (
 	UserInput struct {
 		Username null.String `json:"email"`
 		Password null.String `json:"password"`
+		Name     null.String `json:"name"`
+		Company  null.String `json:"company"`
 		Admin    null.Bool   `json:"admin"`
 	}
 

@@ -9,7 +9,6 @@ package router
 import (
 	"context"
 	"net/http"
-	"path/filepath"
 
 	"github.com/tphoney/musicscan/internal/api/access"
 	"github.com/tphoney/musicscan/internal/api/albums"
@@ -24,6 +23,7 @@ import (
 	"github.com/tphoney/musicscan/internal/api/users"
 	"github.com/tphoney/musicscan/internal/logger"
 	"github.com/tphoney/musicscan/internal/store"
+	"github.com/tphoney/musicscan/internal/swagger"
 	"github.com/tphoney/musicscan/web/dist"
 
 	"github.com/go-chi/chi"
@@ -83,12 +83,12 @@ func New(
 			r.Route("/{project}", func(r chi.Router) {
 				r.Use(access.ProjectAccess(memberStore))
 
-				r.Get("/", projects.HandleFind(projectStore))
+				r.Get("/", projects.HandleFind(projectStore, memberStore))
 				r.Patch("/", projects.HandleUpdate(projectStore))
 				r.Delete("/", projects.HandleDelete(projectStore))
 				r.Get("/scan", projects.HandleScan(artistStore, albumStore))
 				r.Get("/find_bad_albums", projects.HandleFindBadAlbums(projectStore))
-
+				r.Get("/wanted_albums/{year}", projects.HandleFindWantedAlbums(projectStore))
 				// artist endpoints
 				r.Route("/artists", func(r chi.Router) {
 					r.Get("/", artists.HandleList(artistStore))
@@ -133,8 +133,8 @@ func New(
 			r.Use(auth)
 
 			r.Get("/", user.HandleFind())
+			r.Patch("/", user.HandleUpdate(userStore))
 			r.Get("/projects", user.HandleProjects(projectStore))
-			r.Patch("/user", user.HandleUpdate(userStore))
 			r.Post("/token", user.HandleToken(userStore))
 		})
 
@@ -163,6 +163,10 @@ func New(
 		r.Post("/register", register.HandleRegister(userStore, systemStore))
 	})
 
+	// serve swagger for embedded filesystem.
+	r.Handle("/swagger", http.RedirectHandler("/swagger/", http.StatusSeeOther))
+	r.Handle("/swagger/*", http.StripPrefix("/swagger/", swagger.Handler()))
+
 	// create middleware to enforce security best practices.
 	sec := secure.New(
 		secure.Options{
@@ -184,22 +188,9 @@ func New(
 		},
 	)
 
-	// server all other routes from the filesystem.
-	fs := http.FileServer(dist.FileSystem())
+	// serve all other routes from the embedded filesystem.
 	r.With(sec.Handler).NotFound(
-		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// because this is a single page application,
-			// we need to always load the index.html file
-			// in the root of the project, unless the path
-			// points to a file with an extension (css, js, etc)
-			if filepath.Ext(r.URL.Path) == "" {
-				// HACK: alter the path to point to the
-				// root of the project.
-				r.URL.Path = "/"
-			}
-			// and finally server the file.
-			fs.ServeHTTP(w, r)
-		}),
+		dist.Handler(),
 	)
 
 	return r
