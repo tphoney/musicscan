@@ -5,12 +5,11 @@ BACKEND
         show all artists/albums that have a missing album 
     scanner
         case insensitive search for mp3
-        update folders if they have changed
-
-UI  
+        remove albums / artists if the directory has been removed :(
+UI
     wire wanted check box to artist
     scan page - display scan information
-    scan page - read path to scan 
+    scan page - read path to scan
 
 DONE
 add spotify id to artist
