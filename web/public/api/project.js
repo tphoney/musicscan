@@ -22,6 +22,10 @@ export const updateProject = (params, data, fetcher) => {
 	return fetcher(`${instance}/api/v1/projects/${id}`, {
 		body: JSON.stringify(data),
 		method: "PATCH",
+	}).then((_) => {
+		mutate(`${instance}/api/v1/user/projects`);
+		mutate(`${instance}/api/v1/user/projects/${id}`);
+		return;
 	});
 };
 
@@ -50,6 +54,20 @@ export const useProjectList = () => {
 	};
 };
 
+/**
+ * useProject returns an swr hook that provides the project.
+ */
+export const useProject = (id) => {
+	const { data, error } = useSWR(
+		`${instance}/api/v1/projects/${id}?token=true`
+	);
+	return {
+		project: data,
+		isLoading: !error && !data,
+		isError: error,
+	};
+};
+
 export const useAlbumBadList = (id) => {
 	const { data, error } = useSWR(
 		`${instance}/api/v1/projects/${id}/find_bad_albums`
@@ -62,21 +80,27 @@ export const useAlbumBadList = (id) => {
 	};
 };
 
+export const useAlbumWantedList = (id, year) => {
+	const { data, error } = useSWR(
+		`${instance}/api/v1/projects/${id}/wanted_albums/${year}`
+	);
+
+	return {
+		wantedAlbumList: data,
+		isLoading: !error && !data,
+		isError: error,
+	};
+};
+
+
 export const useScan = (params, fetcher) => {
 	const { id } = params;
 	return fetcher(`${instance}/api/v1/projects/${id}/scan`, {
 	});
 };
 
-
-/**
- * useProject returns an swr hook that provides the project.
- */
-export const useProject = (id) => {
-	const { data, error } = useSWR(`${instance}/api/v1/projects/${id}`);
-	return {
-		project: data,
-		isLoading: !error && !data,
-		isError: error,
-	};
+export const useLookup = (params, fetcher) => {
+	const { id } = params;
+	return fetcher(`${instance}/api/v1/projects/${id}/artists/lookup`, {
+	});
 };

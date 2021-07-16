@@ -1,0 +1,30 @@
+.root {
+	display: block;
+}
+
+.header {
+	box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
+	background: #ffffff;
+	height: 62px;
+	padding: 0px 24px;
+	display: flex;
+	align-items: center;
+
+	a {
+		display: flex;
+		align-items: center;
+	}
+
+	img {
+		width: 34px;
+		height: 34px;
+	}
+}
+
+.menu {
+	flex: 1 1 auto;
+}
+
+.logout {
+	padding-right: 10px;
+}

@@ -30,6 +30,19 @@ export const deleteUser = (data, fetcher) => {
 };
 
 /**
+ * updateCurrentUser updates the currently authenticated user.
+ */
+export const updateCurrentUser = (data, fetcher) => {
+	return fetcher(`${instance}/api/v1/user`, {
+		body: JSON.stringify(data),
+		method: "PATCH",
+	}).then((response) => {
+		mutate(`${instance}/api/v1/user`);
+		return response;
+	});
+};
+
+/**
  * registerUser registers a new user account.
  */
 export const registerUser = (data, fetcher) => {

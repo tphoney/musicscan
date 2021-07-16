@@ -4,69 +4,84 @@
 
 package user
 
-// func TestProjectList(t *testing.T) {
-// 	controller := gomock.NewController(t)
-// 	defer controller.Finish()
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-// 	mockUser := &types.User{
-// 		ID:    1,
-// 		Email: "octocat@github.com",
-// 	}
+	"github.com/tphoney/musicscan/internal/api/render"
+	"github.com/tphoney/musicscan/internal/api/request"
+	"github.com/tphoney/musicscan/mocks"
+	"github.com/tphoney/musicscan/types"
 
-// 	mockList := []*types.Project{
-// 		{
-// 			Name: "test",
-// 			Desc: "desc",
-// 		},
-// 	}
+	"github.com/golang/mock/gomock"
+	"github.com/google/go-cmp/cmp"
+)
 
-// 	projs := mocks.NewMockProjectStore(controller)
-// 	projs.EXPECT().List(gomock.Any(), mockUser.ID, gomock.Any()).Return(mockList, nil)
+func TestProjectList(t *testing.T) {
+	controller := gomock.NewController(t)
+	defer controller.Finish()
 
-// 	w := httptest.NewRecorder()
-// 	r := httptest.NewRequest("GET", "/", nil)
-// 	r = r.WithContext(
-// 		request.WithUser(r.Context(), mockUser),
-// 	)
+	mockUser := &types.User{
+		ID:    1,
+		Email: "octocat@github.com",
+	}
 
-// 	HandleProjects(projs)(w, r)
-// 	if got, want := w.Code, http.StatusOK; want != got {
-// 		t.Errorf("Want response code %d, got %d", want, got)
-// 	}
+	mockList := []*types.Project{
+		{
+			Name: "test",
+			Desc: "desc",
+		},
+	}
 
-// 	got, want := []*types.Project{}, mockList
-// 	_ = json.NewDecoder(w.Body).Decode(&got)
-// 	if diff := cmp.Diff(got, want); len(diff) > 0 {
-// 		t.Errorf(diff)
-// 	}
-// }
+	projs := mocks.NewMockProjectStore(controller)
+	projs.EXPECT().List(gomock.Any(), mockUser.ID, gomock.Any()).Return(mockList, nil)
 
-// func TestProjectListErr(t *testing.T) {
-// 	controller := gomock.NewController(t)
-// 	defer controller.Finish()
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest("GET", "/", nil)
+	r = r.WithContext(
+		request.WithUser(r.Context(), mockUser),
+	)
 
-// 	mockUser := &types.User{
-// 		ID:    1,
-// 		Email: "octocat@github.com",
-// 	}
+	HandleProjects(projs)(w, r)
+	if got, want := w.Code, http.StatusOK; want != got {
+		t.Errorf("Want response code %d, got %d", want, got)
+	}
 
-// 	projs := mocks.NewMockProjectStore(controller)
-// 	projs.EXPECT().List(gomock.Any(), mockUser.ID, gomock.Any()).Return(nil, render.ErrNotFound)
+	got, want := []*types.Project{}, mockList
+	json.NewDecoder(w.Body).Decode(&got)
+	if diff := cmp.Diff(got, want); len(diff) > 0 {
+		t.Errorf(diff)
+	}
+}
 
-// 	w := httptest.NewRecorder()
-// 	r := httptest.NewRequest("GET", "/", nil)
-// 	r = r.WithContext(
-// 		request.WithUser(r.Context(), mockUser),
-// 	)
+func TestProjectListErr(t *testing.T) {
+	controller := gomock.NewController(t)
+	defer controller.Finish()
 
-// 	HandleProjects(projs)(w, r)
-// 	if got, want := w.Code, http.StatusInternalServerError; want != got {
-// 		t.Errorf("Want response code %d, got %d", want, got)
-// 	}
+	mockUser := &types.User{
+		ID:    1,
+		Email: "octocat@github.com",
+	}
 
-// 	got, want := &render.Error{}, render.ErrNotFound
-// 	_ = json.NewDecoder(w.Body).Decode(got)
-// 	if diff := cmp.Diff(got, want); len(diff) > 0 {
-// 		t.Errorf(diff)
-// 	}
-// }
+	projs := mocks.NewMockProjectStore(controller)
+	projs.EXPECT().List(gomock.Any(), mockUser.ID, gomock.Any()).Return(nil, render.ErrNotFound)
+
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest("GET", "/", nil)
+	r = r.WithContext(
+		request.WithUser(r.Context(), mockUser),
+	)
+
+	HandleProjects(projs)(w, r)
+	if got, want := w.Code, http.StatusInternalServerError; want != got {
+		t.Errorf("Want response code %d, got %d", want, got)
+	}
+
+	got, want := &render.Error{}, render.ErrNotFound
+	json.NewDecoder(w.Body).Decode(got)
+	if diff := cmp.Diff(got, want); len(diff) > 0 {
+		t.Errorf(diff)
+	}
+}

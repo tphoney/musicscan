@@ -40,6 +40,13 @@ func (s *ProjectStore) FindBadAlbums(ctx context.Context, id int64) ([]*types.Ba
 	return dst, err
 }
 
+// Find finds the project by id.
+func (s *ProjectStore) FindWantedAlbums(ctx context.Context, id int64, year int64) ([]*types.BadAlbum, error) {
+	dst := []*types.BadAlbum{}
+	err := s.db.Select(&dst, projectWantedAlbums, year)
+	return dst, err
+}
+
 // FindToken finds the project by token.
 func (s *ProjectStore) FindToken(ctx context.Context, token string) (*types.Project, error) {
 	dst := new(types.Project)
@@ -128,12 +135,37 @@ const projectBadAlbums = `
 SELECT
     artists.artist_name,
     albums.album_name,
-    albums.album_format
+    albums.album_format,
+	albums.album_year
 from
     albums
     INNER JOIN artists on artists.artist_id = albums.album_artist_id
 WHERE
     albums.album_format != 'flac' AND albums.album_format != 'spotify'
+`
+
+const projectWantedAlbums = `
+SELECT
+    artists.artist_name,
+    albums.album_name,
+    albums.album_format,
+    albums.album_year
+from
+    albums
+    INNER JOIN artists on artists.artist_id = albums.album_artist_id
+WHERE
+    albums.album_format == 'spotify'
+    AND
+    albums.album_year == $1
+    AND
+    artists.artist_wanted == 1
+    AND
+    album_name NOT LIKE '%live%'
+    AND
+    album_name NOT LIKE '%anniversary%'
+    AND
+    album_name NOT LIKE '%deluxe%'
+ORDER BY album_year DESC
 `
 
 const projectSelectToken = projectBase + `

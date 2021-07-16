@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS members (
 ,PRIMARY KEY(member_project_id, member_user_id)
 );
 
--- name: create-index-members-project-ID
+-- name: create-index-members-project-id
 
 CREATE INDEX IF NOT EXISTS index_members_project ON members(member_project_id)
 
--- name: create-index-members-user-ID
+-- name: create-index-members-user-id
 
 CREATE INDEX IF NOT EXISTS index_members_user ON members(member_user_id)

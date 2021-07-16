@@ -5,7 +5,9 @@ export default function Link(props) {
 	const [isActive] = useRoute(props.href);
 	return (
 		<RouterLink {...props}>
-			<a className={isActive ? "active" : ""}>{props.children}</a>
+			<a className={isActive ? "active" : ""} data-active={isActive}>
+				{props.children}
+			</a>
 		</RouterLink>
 	);
 }

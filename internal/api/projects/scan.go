@@ -147,6 +147,7 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 			}
 		}
 		outputMessage := fmt.Sprintf("New artists %d, New Albums %d", newArtists, newAlbums)
+		fmt.Printf("New artists %d, New Albums %d", newArtists, newAlbums)
 		render.JSON(w, outputMessage, 200)
 	}
 }

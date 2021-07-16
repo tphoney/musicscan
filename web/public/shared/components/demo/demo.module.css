@@ -1,0 +1,29 @@
+.root {
+	display: block;
+
+	section {
+		padding: 20px;
+		border-top: 1px solid #cccccc;
+	}
+
+	section > div {
+		margin-bottom: 5px;
+	}
+
+	section:first-of-type {
+		border-top-width: 0px;
+	}
+
+	h2 {
+		font-weight: 500;
+		font-size: 18px;
+		margin-bottom: 20px;
+	}
+
+	textarea,
+	input[type="text"],
+	input[type="password"],
+	select {
+		width: 350px;
+	}
+}

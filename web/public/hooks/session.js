@@ -37,6 +37,13 @@ function useProvideSession() {
 		setSession(null);
 	};
 
+	// update updates the user account details stored
+	// in the current session.
+	const update = (session) => {
+		localStorage.setItem("session", JSON.stringify(session));
+		setSession(session);
+	};
+
 	const fetcher = async (endpoint, initConfig) => {
 		const credentials = "same-origin";
 		const headers = new Headers(
@@ -45,6 +52,14 @@ function useProvideSession() {
 				: {}
 		);
 		const res = await fetch(endpoint, { ...initConfig, headers, credentials });
+
+		// if the response status is 401 it indicates the
+		// session token is expired. redirect the user to
+		// the login screen.
+		if (res.status === 401) {
+			signout();
+			return res;
+		}
 
 		// if the response succeeds but returns no content
 		// return the response. do not attempt to unmarshal
@@ -81,5 +96,6 @@ function useProvideSession() {
 		signin,
 		signout,
 		fetcher,
+		update,
 	};
 }

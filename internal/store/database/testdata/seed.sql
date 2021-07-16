@@ -3,8 +3,8 @@
 --
 
 INSERT INTO users VALUES
-(1, 'jane@example.com', '', '12345', true, false, 1286668800, 1602374400, 1602460800),
-(2, 'john@example.com', '', '54321', false, true, 1286668800, 1602374400, 1602460800);
+(1, 'jane@example.com', '', '12345', 'Jane', 'Acme', true, false, 1286668800, 1602374400, 1602460800),
+(2, 'john@example.com', '', '54321', 'John', 'Acme', false, true, 1286668800, 1602374400, 1602460800);
 
 --
 -- PROJECTS

@@ -21,12 +21,12 @@ var migrations = []struct {
 		stmt: createTableMembers,
 	},
 	{
-		name: "create-index-members-project-ID",
-		stmt: createIndexMembersProjectID,
+		name: "create-index-members-project-id",
+		stmt: createIndexMembersProjectId,
 	},
 	{
-		name: "create-index-members-user-ID",
-		stmt: createIndexMembersUserID,
+		name: "create-index-members-user-id",
+		stmt: createIndexMembersUserId,
 	},
 	{
 		name: "create-table-artists",
@@ -129,6 +129,8 @@ CREATE TABLE IF NOT EXISTS users (
 ,user_email         TEXT COLLATE NOCASE
 ,user_password      TEXT
 ,user_token         TEXT
+,user_name          TEXT
+,user_company       TEXT
 ,user_admin         BOOLEAN
 ,user_blocked       BOOLEAN
 ,user_created       INTEGER
@@ -169,11 +171,11 @@ CREATE TABLE IF NOT EXISTS members (
 );
 `
 
-var createIndexMembersProjectID = `
+var createIndexMembersProjectId = `
 CREATE INDEX IF NOT EXISTS index_members_project ON members(member_project_id)
 `
 
-var createIndexMembersUserID = `
+var createIndexMembersUserId = `
 CREATE INDEX IF NOT EXISTS index_members_user ON members(member_user_id)
 `
 

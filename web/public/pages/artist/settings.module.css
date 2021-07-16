@@ -1,0 +1,59 @@
+.root {
+	display: block;
+	max-width: 600px;
+	margin: 0px auto;
+	padding-top: 60px;
+	padding-bottom: 40px;
+
+	pre {
+		word-break: break-word;
+		white-space: pre-wrap;
+		line-height: 18px;
+		font-size: 13px;
+		padding: 12px;
+		background: #f7fafc;
+		border-radius: 6px;
+		color: #10182a;
+		font-family: "Roboto Mono";
+	}
+
+	.card {
+		padding: 20px 24px;
+		box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
+		border-radius: 6px;
+		margin-bottom: 20px;
+		background: #fff;
+	}
+
+	.field {
+		margin-top: 12px;
+		margin-bottom: 8px;
+	}
+
+	.field label {
+		display: block;
+		margin-bottom: 8px;
+		color: #64748b;
+	}
+
+	.field input {
+		width: 100%;
+	}
+
+	.actions {
+		margin-top: 20px;
+	}
+
+	h2 {
+		font-size: 20px;
+		font-weight: 500;
+		margin-bottom: 24px;
+	}
+
+	p {
+		display: block;
+		margin-bottom: 10px;
+		font-size: 14px;
+		color: #64748b;
+	}
+}

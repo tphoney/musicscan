@@ -1,0 +1,26 @@
+.root {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	overflow: hidden;
+	user-select: none;
+}
+
+.image {
+	flex: 1 1 auto;
+	width: inherit;
+	height: inherit;
+}
+
+.fallback {
+	flex: 1;
+	background: #0f172a;
+	color: #ffffff;
+	width: inherit;
+	height: inherit;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: uppercase;
+}

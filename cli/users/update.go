@@ -5,9 +5,11 @@
 package users
 
 import (
+	"fmt"
 	"os"
 	"text/template"
 
+	"github.com/dchest/uniuri"
 	"github.com/tphoney/musicscan/cli/util"
 	"github.com/tphoney/musicscan/types"
 
@@ -17,11 +19,13 @@ import (
 )
 
 type updateCommand struct {
-	id     string
-	email  string
-	admin  bool
-	demote bool
-	tmpl   string
+	id      string
+	email   string
+	admin   bool
+	demote  bool
+	passgen bool
+	pass    string
+	tmpl    string
 }
 
 func (c *updateCommand) run(*kingpin.ParseContext) error {
@@ -34,13 +38,20 @@ func (c *updateCommand) run(*kingpin.ParseContext) error {
 	if v := c.email; v != "" {
 		in.Username = null.StringFrom(v)
 	}
+	if v := c.pass; v != "" {
+		in.Password = null.StringFrom(v)
+	}
 	if v := c.admin; v {
 		in.Admin = null.BoolFrom(v)
 	}
 	if v := c.demote; v {
 		in.Admin = null.BoolFrom(false)
 	}
-
+	if c.passgen {
+		v := uniuri.NewLen(8)
+		in.Password = null.StringFrom(v)
+		fmt.Printf("generated temporary password: %s\n", v)
+	}
 	user, err := client.UserUpdate(c.id, in)
 	if err != nil {
 		return err
@@ -65,6 +76,12 @@ func registerUpdate(app *kingpin.CmdClause) {
 
 	cmd.Flag("email", "update user email").
 		StringVar(&c.email)
+
+	cmd.Flag("password", "update user password").
+		StringVar(&c.pass)
+
+	cmd.Flag("password-gen", "generate and update user password").
+		BoolVar(&c.passgen)
 
 	cmd.Flag("promote", "promote user to admin").
 		BoolVar(&c.admin)

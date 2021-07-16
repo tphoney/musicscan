@@ -82,6 +82,7 @@ func (c *scanCommand) run(*kingpin.ParseContext) error {
 			}
 		}
 	}
+	fmt.Println("scan complete")
 	return nil
 }
 

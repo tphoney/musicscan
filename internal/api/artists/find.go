@@ -102,7 +102,7 @@ type WebAlbums struct {
 	}
 }
 
-var oauth string = "BQCy9YkTOglsg4N1sYPInzcqKWHrgkvyD6fYyEjz9dNMfuph1A1Oe76v90BOndp5w4dt60GJ2YTjPSD71YQZb_OXOvboVz6pPb2WeceJ_ijX0d9g0sFn3vlXznwTIwZr-feG1PyDBXxcx1z-94bJnuSEJvNZTgE"
+var oauth string = "BQCuGLisve-vcvTD8X4UbHh8PssSu2Y2le56_KnRXEpd9gpHwXhCKwaTxDjEW8Xf8U-FrkaeB8F6ye3Q1FhPkF5LIa7WwCxP5r2kq_s2k-K7VGPresmkNxX86Oqp8wNQkEsSB__UFSlkUXFTfX6VtP2CGX4P5XQ"
 
 func spotifyLookupArtist(artistName, oauth string) (spotifyID string, err error) {
 	urlEncodedArtist := url.QueryEscape(artistName)
