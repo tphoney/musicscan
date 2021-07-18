@@ -77,3 +77,5 @@ WHERE artist_name IN ("Al Stewart", "Andy Williams", "Antonio Vivaldi", "Aretha 
 "Johann Sebastian Bach", "John Williams", "John Martyn", "Johnny Cash", "Kylie Minogue", "Ladysmith Black Mambazo", "Linkin Park", "Lionel Richie", "Lou Reed", "Louis Armstrong", "Lynyrd Skynyrd", "Madonna", "Miles Davis", "Ministry", "Mozart", "Nancy Sinatra", "Nat King Cole", "Neil Diamond", "Neil Young", "New York Dolls", "Nickelback", "Nils Lofgren", "Prince", "Richard Wagner", "Rod Stewart", "Roxette",
 "Peter Tchaikovsky","Santana", "Strauss", "The Beach Boys", "The Black Eyed Peas", "Van Morrison", "Vangelis", 
 "Willie Nelson");
+
+SELECT artist_name FROM artists WHERE artist_wanted = 0;

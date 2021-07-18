@@ -95,6 +95,7 @@ type (
 	}
 
 	BadAlbum struct {
+		ArtistID   null.String `db:"artist_id" json:"artist_id"`
 		ArtistName null.String `db:"artist_name" json:"artist_name"`
 		AlbumName  null.String `db:"album_name" json:"album_name"`
 		Format     null.String `db:"album_format" json:"format"`
