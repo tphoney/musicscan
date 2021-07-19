@@ -133,6 +133,7 @@ WHERE project_id = $1
 
 const projectBadAlbums = `
 SELECT
+    artists.artist_id,
     artists.artist_name,
     albums.album_name,
     albums.album_format,
@@ -146,6 +147,7 @@ WHERE
 
 const projectWantedAlbums = `
 SELECT
+	artists.artist_id,
     artists.artist_name,
     albums.album_name,
     albums.album_format,

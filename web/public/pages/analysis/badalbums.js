@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import styles from "./badalbums.module.css";
 import { Link } from "wouter";
 
-import {useAlbumBadList, useProject } from "../../api/project.js";
+import { useAlbumBadList, useProject } from "../../api/project.js";
 import { useSession } from "../../hooks/session.js";
 
 import Avatar from "../../shared/components/avatar";
@@ -33,8 +33,6 @@ export default function BadAlbumList({ params }) {
 	if (isProjectError) {
 		return renderError(isProjectError);
 	}
-
-	
 	//
 	// Load Album List
 	//
@@ -71,8 +69,8 @@ export default function BadAlbumList({ params }) {
 				<h1>Bad Albums</h1>
 				<ul className={styles.list}>
 					{badAlbumList.map((badAlbum) => (
-						<BadAlbumInfo
-						badAlbum={badAlbum}
+						<BadAlbumInfo project={project}
+							badAlbum={badAlbum}
 						/>
 					))}
 				</ul>
@@ -102,11 +100,11 @@ export default function BadAlbumList({ params }) {
 }
 
 // render the album information.
-const BadAlbumInfo = ({ badAlbum }) => {
+const BadAlbumInfo = ({ project, badAlbum }) => {
 	return (
 		<li id={badAlbum.artist_name} className={styles.item}>
 			<Avatar text={badAlbum.artist_name} className={styles.avatar} />
-			{badAlbum.artist_name}, {badAlbum.album_name}, {badAlbum.format}
+			<Link href={`/projects/${project.id}/artists/${badAlbum.artist_id}`} className={styles.fill}>{badAlbum.artist_name}, {badAlbum.album_name}</Link>, {badAlbum.format}
 		</li>
 	);
 };
