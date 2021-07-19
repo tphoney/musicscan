@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import styles from "./artists.module.css";
 import { Link } from "wouter";
-import { useArtistList, createArtist, deleteArtist } from "../../api/artist.js";
+import { useArtistList, createArtist, updateArtist, deleteArtist } from "../../api/artist.js";
 import { useProject } from "../../api/project.js";
 import { useSession } from "../../hooks/session.js";
 
@@ -71,8 +71,17 @@ export default function ArtistList({ params }) {
 	};
 
 	//
-	// Handle Deletions
+	// Handle changes
 	//
+
+	const handleWanted = (updatedArtist) => {
+		updatedArtist.wanted = !updatedArtist.wanted;
+		const params = {
+			project: project.id,
+			artist: updatedArtist.id,
+		};
+		updateArtist(params, updatedArtist, fetcher);
+	};
 
 	const handleDelete = (artist) => {
 		const params = { project: project.id, artist: artist.id };
@@ -91,6 +100,7 @@ export default function ArtistList({ params }) {
 						<ArtistInfo
 							artist={artist}
 							project={project}
+							onWanted={handleWanted}
 							onDelete={handleDelete}
 						/>
 					))}
@@ -124,17 +134,17 @@ export default function ArtistList({ params }) {
 }
 
 // render the artist information.
-const ArtistInfo = ({ artist, project, onDelete }) => {
+const ArtistInfo = ({ artist, project, onWanted, onDelete }) => {
 	return (
 		<li id={artist.id} className={styles.item}>
 			<Avatar text={artist.name} className={styles.avatar} />
+			<input type="checkbox" onChange={onWanted.bind(this, artist)} checked={artist.wanted}></input>
 			<Link
 				href={`/projects/${project.id}/artists/${artist.id}`}
 				className={styles.fill}
 			>
 				{artist.name}
 			</Link>
-			<input type="checkbox" checked={artist.wanted}></input>
 			<Button onClick={onDelete.bind(this, artist)}>Delete</Button>
 		</li>
 	);

@@ -1,13 +1,11 @@
 BACKEND
     matcher
     queries
-        show all artists/albums that have a release in year ?
         show all artists/albums that have a missing album 
     scanner
         case insensitive search for mp3
         remove albums / artists if the directory has been removed :(
 UI
-    wire wanted check box to artist
     scan page - display scan information
     scan page - read path to scan
 
@@ -23,3 +21,4 @@ UI add "list non flac albums"
 UI add scan button
 scanner remove wanted if we have a flac
 scanner update folders if they have changed
+wire wanted check box to artist

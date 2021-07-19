@@ -76,6 +76,9 @@ func HandleUpdate(artists store.ArtistStore) http.HandlerFunc {
 		if !in.Desc.IsZero() {
 			artist.Desc = in.Desc.String
 		}
+		if !in.Wanted.IsZero() {
+			artist.Wanted = in.Wanted.Bool
+		}
 
 		err = artists.Update(r.Context(), artist)
 		if err != nil {
