@@ -15,27 +15,16 @@ export default function Analysis({ params }) {
 	// Load Project
 	//
 
-	const handleScan = () => {
-		var data = useScan(project, fetcher);
-		return (<>
-			<section className={styles.root}>
-				<div>Scan complete</div>
-			</section>
-		</>);
-	};
-
-	const handleLookup = () => {
-		var data = useLookup(project, fetcher);
-		return (<>
-			<section className={styles.root}>
-				<div>Lookup complete</div>
-			</section>
-		</>);
-	};
 
 	const { project } = useProject(params.project);
 
-	const [year, setYear] = useState(" ");
+	const [scanFolder, setScanFolder] = useState("/media/tp/stuff/Music");
+
+	const handleUpdateScanFolder = (event) => {
+		setScanFolder(event.target.value);
+	};
+
+	const [year, setYear] = useState("2021");
 
 	const handleUpdateYear = (event) => {
 		setYear(event.target.value);
@@ -43,6 +32,30 @@ export default function Analysis({ params }) {
 
 	const [projectData, setProjectData] = useState({});
 	useEffect(() => project && setProjectData(project), [project]);
+
+	const handleScan = () => {
+		 if (scanFolder == "") {
+			window.alert(`Please select a scan folder`);
+			return;
+		 }
+		var data = useScan(project, scanFolder, fetcher);
+		return (<>
+			window.
+		</>);
+	};
+
+	const handleLookup = () => {
+		if (scanFolder == "") {
+			window.alert(`Please select a year for wanted albums`);
+			return;
+		 }
+		var data = useLookup(project, fetcher);
+		return (<>
+			<section className={styles.root}>
+				<div>Lookup complete</div>
+			</section>
+		</>);
+	};
 
 	return (
 		<>
@@ -64,6 +77,10 @@ export default function Analysis({ params }) {
 				</div>
 				<div className={styles.card}>
 					<h2>Scan Disk</h2>
+					<div className={styles.field}>
+						<label>Folder</label>
+						<Input type="text" onChange={handleUpdateScanFolder} placeholder="/media/tp/stuff/Music" />
+					</div>
 					<p>Scans the hard disk looking for artists and albums.</p>
 					<Button onClick={handleScan}>Scan Disk</Button>
 				</div>

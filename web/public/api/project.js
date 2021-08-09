@@ -93,9 +93,9 @@ export const useAlbumWantedList = (id, year) => {
 };
 
 
-export const useScan = (params, fetcher) => {
+export const useScan = (params, scanFolder, fetcher) => {
 	const { id } = params;
-	return fetcher(`${instance}/api/v1/projects/${id}/scan`, {
+	return fetcher(`${instance}/api/v1/projects/${id}/scan?scan_folder=${scanFolder}`, {
 	});
 };
 
