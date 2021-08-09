@@ -95,12 +95,10 @@ export const useAlbumWantedList = (id, year) => {
 
 export const useScan = (params, scanFolder, fetcher) => {
 	const { id } = params;
-	return fetcher(`${instance}/api/v1/projects/${id}/scan?scan_folder=${scanFolder}`, {
-	});
+	return fetcher(`${instance}/api/v1/projects/${id}/scan?scan_folder=${scanFolder}`, {});
 };
 
-export const useLookup = (params, fetcher) => {
+export const useLookup = (params, spotifyKey, fetcher) => {
 	const { id } = params;
-	return fetcher(`${instance}/api/v1/projects/${id}/artists/lookup`, {
-	});
+	return fetcher(`${instance}/api/v1/projects/${id}/artists/lookup?spotify_key=${spotifyKey}`, {});
 };
