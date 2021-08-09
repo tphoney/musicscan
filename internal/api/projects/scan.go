@@ -23,6 +23,11 @@ import (
 // json-encoded project details to the response body.
 func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query()
+		startDirectory := query.Get("scan_folder")
+		if startDirectory == "" {
+			startDirectory = "/media/tp/stuff/Music"
+		}
 		projID, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -32,7 +37,7 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 			return
 		}
 
-		basePath, err := ioutil.ReadDir("/media/tp/stuff/Music")
+		basePath, err := ioutil.ReadDir(startDirectory)
 		if err != nil {
 			render.InternalError(w, err)
 			logger.FromRequest(r).
@@ -49,7 +54,7 @@ func HandleScan(artistStore store.ArtistStore, albumStore store.AlbumStore) http
 			}
 
 			var foundArtist *types.Artist
-			artistPath := fmt.Sprintf("/media/tp/stuff/Music/%s", f.Name())
+			artistPath := fmt.Sprintf("%s/%s", startDirectory, f.Name())
 			// try to find the artist
 			foundArtist, artistFindErr := artistStore.FindByName(r.Context(), f.Name())
 			if artistFindErr != nil {
