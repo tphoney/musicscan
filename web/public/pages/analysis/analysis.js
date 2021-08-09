@@ -24,6 +24,12 @@ export default function Analysis({ params }) {
 		setScanFolder(event.target.value);
 	};
 
+	const [spotifyKey, setSpotifyKey] = useState("");
+
+	const handleUpdateSpotifyKey = (event) => {
+		setSpotifyKey(event.target.value);
+	};
+
 	const [year, setYear] = useState("2021");
 
 	const handleUpdateYear = (event) => {
@@ -45,11 +51,11 @@ export default function Analysis({ params }) {
 	};
 
 	const handleLookup = () => {
-		if (scanFolder == "") {
-			window.alert(`Please select a year for wanted albums`);
+		if (spotifyKey == "") {
+			window.alert(`Please insert your spotify API key`);
 			return;
 		 }
-		var data = useLookup(project, fetcher);
+		var data = useLookup(project, spotifyKey, fetcher);
 		return (<>
 			<section className={styles.root}>
 				<div>Lookup complete</div>
@@ -86,7 +92,8 @@ export default function Analysis({ params }) {
 				</div>
 				<div className={styles.card}>
 					<h2>Spotify Lookup</h2>
-					<p>Scans Spotifylooking up artists and matching albums.</p>
+					<Input type="text" onChange={handleUpdateSpotifyKey} />
+					<p>Scans Spotify looking up artists and matching albums.</p>
 					<Button onClick={handleLookup}>Spotify Lookup</Button>
 				</div>
 			</section>

@@ -102,8 +102,6 @@ type WebAlbums struct {
 	}
 }
 
-var oauth string = "BQCuGLisve-vcvTD8X4UbHh8PssSu2Y2le56_KnRXEpd9gpHwXhCKwaTxDjEW8Xf8U-FrkaeB8F6ye3Q1FhPkF5LIa7WwCxP5r2kq_s2k-K7VGPresmkNxX86Oqp8wNQkEsSB__UFSlkUXFTfX6VtP2CGX4P5XQ"
-
 func spotifyLookupArtist(artistName, oauth string) (spotifyID string, err error) {
 	urlEncodedArtist := url.QueryEscape(artistName)
 	artistURL := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=artist&limit=1", urlEncodedArtist)
@@ -262,6 +260,9 @@ func lookup(artistID int64, oauth string, artists store.ArtistStore, albums stor
 
 func LookupSingleArtist(artists store.ArtistStore, albums store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query()
+		oauth := query.Get("spotify_key")
+
 		artistID, err := strconv.ParseInt(chi.URLParam(r, "artist"), 10, 64)
 		if err != nil {
 			render.BadRequest(w, err)
@@ -286,6 +287,9 @@ func LookupSingleArtist(artists store.ArtistStore, albums store.AlbumStore) http
 func LookupAllArtists(artistStore store.ArtistStore, albumStore store.AlbumStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
+
+		query := r.URL.Query()
+		oauth := query.Get("spotify_key")
 
 		id, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
