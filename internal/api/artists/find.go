@@ -94,6 +94,13 @@ type AlbumsResponse struct {
 	Total    int64       `json:"total"`
 }
 
+type SimilarArtistsResponse struct {
+	Artists []struct {
+		Name string `json:"name"`
+		ID   string `json:"id"`
+	}
+}
+
 type WebAlbums struct {
 	Items []struct {
 		Name    string
@@ -102,13 +109,13 @@ type WebAlbums struct {
 	}
 }
 
-func spotifyLookupArtist(artistName, oauth string) (spotifyID string, err error) {
+func spotifyLookupArtist(ctx context.Context, artistName, oauth string) (spotifyID string, err error) {
 	urlEncodedArtist := url.QueryEscape(artistName)
-	artistURL := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=artist&limit=1", urlEncodedArtist)
+	artistURL := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=artist&limit=10", urlEncodedArtist)
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	req, _ := http.NewRequestWithContext(context.Background(), http.MethodGet, artistURL, nil)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, artistURL, nil)
 	bearer := fmt.Sprintf("Bearer %s", oauth)
 	req.Header.Add("Authorization", bearer)
 	response, err := client.Do(req)
@@ -120,22 +127,22 @@ func spotifyLookupArtist(artistName, oauth string) (spotifyID string, err error)
 	if err != nil {
 		return "", fmt.Errorf("lookupArtist: unable to parse response from spotify: %s", err.Error())
 	}
-	//fmt.Println(string(body))
 	var artistResponse ArtistResponse
 	_ = json.Unmarshal(body, &artistResponse)
-	if len(artistResponse.Artists.Items) == 0 {
-		return "", fmt.Errorf("no artists match '%s', on spotify", artistName)
+	for i := range artistResponse.Artists.Items {
+		if stringMatcher(artistResponse.Artists.Items[i].Name, artistName) {
+			return artistResponse.Artists.Items[i].ID, nil
+		}
 	}
-	//fmt.Println(artistResponse.Artists.Items[0].ID)
-	return artistResponse.Artists.Items[0].ID, nil
+	return "", fmt.Errorf("no artists match '%s' on spotify", artistName)
 }
 
-func spotifyLookupArtistAlbums(artistSpotify, oauth string) (albums WebAlbums, err error) {
+func spotifyLookupArtistAlbums(ctx context.Context, artistSpotify, oauth string) (albums WebAlbums, err error) {
 	albumURL := fmt.Sprintf("https://api.spotify.com/v1/artists/%s/albums?include_groups=album&market=us&limit=50&", artistSpotify)
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	req, _ := http.NewRequestWithContext(context.Background(), http.MethodGet, albumURL, nil)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, albumURL, nil)
 	bearer := fmt.Sprintf("Bearer %s", oauth)
 	req.Header.Add("Authorization", bearer)
 	response, err := client.Do(req)
@@ -162,6 +169,36 @@ func spotifyLookupArtistAlbums(artistSpotify, oauth string) (albums WebAlbums, e
 	return albums, nil
 }
 
+func spotifyLookupArtistSimilar(ctx context.Context, artistSpotify, oauth string) (similar SimilarArtistsResponse, err error) {
+	similarArtistURL := fmt.Sprintf("https://api.spotify.com/v1/artists/%s/related-artists", artistSpotify)
+	client := &http.Client{
+		Timeout: time.Second * 10,
+	}
+	req, httpErr := http.NewRequestWithContext(ctx, http.MethodGet, similarArtistURL, nil)
+	if httpErr != nil {
+		return similar, fmt.Errorf("spotifyLookupArtistSimilar: get failed from spotify: %s", httpErr.Error())
+	}
+	bearer := fmt.Sprintf("Bearer %s", oauth)
+	req.Header.Add("Authorization", bearer)
+	response, err := client.Do(req)
+	if err != nil {
+		return similar, fmt.Errorf("spotifyLookupArtistSimilar: get failed from spotify: %s", err.Error())
+	}
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return similar, fmt.Errorf("spotifyLookupArtistSimilar: unable to parse response from spotify: %s", err.Error())
+	}
+
+	var similarArtistsResponse SimilarArtistsResponse
+	jsonErr := json.Unmarshal(body, &similarArtistsResponse)
+	if jsonErr != nil {
+		return similar, fmt.Errorf("spotifyLookupArtistSimilar: unable to unmarshal response from spotify: %s", jsonErr.Error())
+	}
+	similar.Artists = similarArtistsResponse.Artists
+	return similarArtistsResponse, nil
+}
+
 func stringMatcher(dbName, webName string) (matched bool) {
 	// first attempt at a match check everything lower case
 	cleanedDB := strings.ToLower(dbName)
@@ -184,13 +221,34 @@ func stringMatcher(dbName, webName string) (matched bool) {
 			return true
 		}
 	}
-	//fmt.Println(trailer)
 	return false
 }
 
+func matchSimilarArtists(ctx context.Context, artistStore store.ArtistStore, webArtists SimilarArtistsResponse) (err error) {
+	artists, _ := artistStore.List(ctx, 1, types.Params{})
+	for i := range webArtists.Artists {
+		foundArtist := false
+		for j := range artists {
+			if stringMatcher(artists[j].Spotify, webArtists.Artists[i].ID) {
+				foundArtist = true
+				artists[j].Popularity++
+				updateErr := artistStore.Update(ctx, artists[j])
+				if updateErr != nil {
+					return fmt.Errorf("lookup: unable to update artist: %s", updateErr.Error())
+				}
+			}
+		}
+		if !foundArtist {
+			createErr := artistStore.Create(ctx, &types.Artist{Project: artists[0].Project, Name: webArtists.Artists[i].Name, Desc: "", Spotify: webArtists.Artists[i].ID})
+			if createErr != nil {
+				return fmt.Errorf("lookup: unable to create artist: %s", createErr.Error())
+			}
+		}
+	}
+	return err
+}
+
 func matchAlbums(dbAlbums []*types.Album, webAlbums WebAlbums) []*types.Album {
-	//	spew.Dump(dbAlbums)
-	//	spew.Dump(webAlbums)
 	for i := range webAlbums.Items {
 		weGotAMatch := false
 		for d := range dbAlbums {
@@ -216,46 +274,65 @@ func matchAlbums(dbAlbums []*types.Album, webAlbums WebAlbums) []*types.Album {
 	return dbAlbums
 }
 
-func lookup(artistID int64, oauth string, artists store.ArtistStore, albums store.AlbumStore, r *http.Request) (matchedAlbums []*types.Album, err error) {
-	artist, err := artists.Find(r.Context(), artistID)
+func lookupArtistandAlbums(artistID int64, oauth string, artistStore store.ArtistStore, albums store.AlbumStore, r *http.Request) (matchedAlbums []*types.Album, err error) {
+	ctx := r.Context()
+	artist, err := artistStore.Find(ctx, artistID)
 	if err != nil {
 		return nil, fmt.Errorf("lookup: could not find artist in db: %s", err.Error())
 	}
 	// perform first lookup for artist.
 	if artist.Spotify == "" {
-		spotifyID, lookupArtistErr := spotifyLookupArtist(artist.Name, oauth)
+		spotifyID, lookupArtistErr := spotifyLookupArtist(ctx, artist.Name, oauth)
 		if lookupArtistErr != nil {
 			return nil, fmt.Errorf("lookup: could not find artist in db: %s", lookupArtistErr.Error())
 		}
 		artist.Spotify = spotifyID
-		updateErr := artists.Update(r.Context(), artist)
+		updateErr := artistStore.Update(ctx, artist)
 		if updateErr != nil {
 			return nil, fmt.Errorf("lookup: unable to update artist: %s", updateErr.Error())
 		}
 	}
+
 	// lookup the db for the albums
-	dbAlbums, err := albums.List(r.Context(), artistID, types.Params{})
+	dbAlbums, err := albums.List(ctx, artistID, types.Params{})
 	if err != nil {
 		return nil, fmt.Errorf("lookup: unable to artists albums: %s", err.Error())
 	}
 	// lookup spotify for the albums
-	webAlbums, err := spotifyLookupArtistAlbums(artist.Spotify, oauth)
+	webAlbums, err := spotifyLookupArtistAlbums(ctx, artist.Spotify, oauth)
 	if err != nil {
 		return nil, fmt.Errorf("lookup: unable to look up artists spotify albums: %s", err.Error())
 	}
-
 	matchedAlbums = matchAlbums(dbAlbums, webAlbums)
 	// lets write all this info back to the db
 	for _, matchedAlbum := range matchedAlbums {
 		if matchedAlbum.ID != 0 {
 			// update an album
-			_ = albums.Update(r.Context(), matchedAlbum)
+			_ = albums.Update(ctx, matchedAlbum)
 		} else {
 			// add a new album
-			_ = albums.Create(r.Context(), matchedAlbum)
+			_ = albums.Create(ctx, matchedAlbum)
 		}
 	}
 	return matchedAlbums, nil
+}
+
+func lookupSimilarArtists(oauth string, artistList []*types.Artist, artistStore store.ArtistStore, r *http.Request) (err error) {
+	ctx := r.Context()
+	// now lookup similar artists
+	for i := range artistList {
+		if artistList[i].Spotify != "" {
+			similarArtists, lookupSimilarArtistErr := spotifyLookupArtistSimilar(ctx, artistList[i].Spotify, oauth)
+			if lookupSimilarArtistErr != nil {
+				return fmt.Errorf("lookup: could not find similar artists in spotify: %s", lookupSimilarArtistErr.Error())
+			}
+			matchSimilarArtistsErr := matchSimilarArtists(ctx, artistStore, similarArtists)
+			if matchSimilarArtistsErr != nil {
+				return fmt.Errorf("lookup: could not match similar artists: %s", matchSimilarArtistsErr.Error())
+			}
+		}
+	}
+	return nil
 }
 
 func LookupSingleArtist(artists store.ArtistStore, albums store.AlbumStore) http.HandlerFunc {
@@ -271,7 +348,7 @@ func LookupSingleArtist(artists store.ArtistStore, albums store.AlbumStore) http
 				Debugln("cannot parse artist id")
 			return
 		}
-		matchedAlbums, matchErr := lookup(artistID, oauth, artists, albums, r)
+		matchedAlbums, matchErr := lookupArtistandAlbums(artistID, oauth, artists, albums, r)
 		if matchErr != nil {
 			render.BadRequest(w, matchErr)
 			logger.FromRequest(r).
@@ -280,7 +357,7 @@ func LookupSingleArtist(artists store.ArtistStore, albums store.AlbumStore) http
 				Errorln("cannot match artist")
 			return
 		}
-		render.JSON(w, matchedAlbums, 200)
+		render.JSON(w, matchedAlbums, http.StatusOK)
 	}
 }
 
@@ -291,7 +368,7 @@ func LookupAllArtists(artistStore store.ArtistStore, albumStore store.AlbumStore
 		query := r.URL.Query()
 		oauth := query.Get("spotify_key")
 
-		id, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
+		projectID, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
 			render.BadRequest(w, err)
 			logger.FromRequest(r).
@@ -299,25 +376,54 @@ func LookupAllArtists(artistStore store.ArtistStore, albumStore store.AlbumStore
 				Debugln("cannot parse project id")
 			return
 		}
-
-		artists, err := artistStore.List(ctx, id, types.Params{})
+		cleanArtists, err := artistStore.List(ctx, projectID, types.Params{})
 		if err != nil {
 			render.InternalError(w, err)
 			logger.FromRequest(r).
 				WithError(err).
 				Errorf("cannot retrieve list")
 		}
-		for _, artist := range artists {
-			match, lookupErr := lookup(artist.ID, oauth, artistStore, albumStore, r)
+		// before we start the lookup lets reset artist popularity, and remove recommended artists
+		for _, artist := range cleanArtists {
+			if artist.Desc == "" {
+				deleteErr := artistStore.Delete(ctx, artist)
+				if deleteErr != nil {
+					logger.FromRequest(r).
+						WithError(deleteErr).
+						Errorf("cannot delete recommended artist")
+				}
+				continue
+			}
+			artist.Popularity = 0
+			updateErr := artistStore.Update(r.Context(), artist)
+			if updateErr != nil {
+				fmt.Printf("unable to reset popularity: %s", updateErr.Error())
+			}
+		}
+		// list again now we dont have recommended artists
+		cleanArtists, _ = artistStore.List(ctx, projectID, types.Params{})
+		// lets lookup the artists
+		for _, artist := range cleanArtists {
+			match, lookupErr := lookupArtistandAlbums(artist.ID, oauth, artistStore, albumStore, r)
 			if lookupErr != nil {
 				logger.FromRequest(r).
 					WithError(lookupErr).
 					WithField("name", artist.Name).
 					Errorf("no match for artist")
 			} else {
-				fmt.Printf("%s:%d,", artist.Name, len(match))
+				fmt.Printf("'%s':%d,", artist.Name, len(match))
 			}
 		}
+		// lookup similar artists
+		fmt.Println("artist/album lookup complete, search for similar artists")
+		cleanArtists, _ = artistStore.List(ctx, projectID, types.Params{})
+		similarErr := lookupSimilarArtists(oauth, cleanArtists, artistStore, r)
+		if similarErr != nil {
+			logger.FromRequest(r).
+				WithError(similarErr).
+				Errorf("cannot lookup similar artists")
+		}
+		fmt.Println("All Lookups complete")
 	}
 }
 
@@ -361,7 +467,7 @@ func HandleFind(artists store.ArtistStore) http.HandlerFunc {
 			return
 		}
 
-		render.JSON(w, artist, 200)
+		render.JSON(w, artist, http.StatusOK)
 	}
 }
 
@@ -396,6 +502,6 @@ func HandleFindByName(artists store.ArtistStore) http.HandlerFunc {
 			return
 		}
 
-		render.JSON(w, artist, 200)
+		render.JSON(w, artist, http.StatusOK)
 	}
 }

@@ -5,6 +5,7 @@
 package artists
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,7 +17,7 @@ const oauthTest = "BQBX3tRhADAZEGZ9bCvs8tgnjDlhsPIfpv3fM9R1tmJBVPLFZ0NPJt_r0zXsx
 func Test_lookupArtist(t *testing.T) {
 	artistName := "abba"
 
-	gotSpotifyID, err := spotifyLookupArtist(artistName, oauthTest)
+	gotSpotifyID, err := spotifyLookupArtist(context.Background(), artistName, oauthTest)
 	assert.Equal(t, "0LcJLqbBmaGUft1e9Mm8HV", gotSpotifyID, "got a match for abba")
 	assert.Nil(t, err, "no errors")
 }
@@ -24,7 +25,7 @@ func Test_lookupArtist(t *testing.T) {
 func Test_lookupArtistAlbums(t *testing.T) {
 	artistSpotify := "0LcJLqbBmaGUft1e9Mm8HV"
 
-	albums, err := spotifyLookupArtistAlbums(artistSpotify, oauthTest)
+	albums, err := spotifyLookupArtistAlbums(context.Background(), artistSpotify, oauthTest)
 	assert.Equal(t, 13, len(albums.Items), "got albums")
 	assert.Nil(t, err, "no errors")
 }

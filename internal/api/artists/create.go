@@ -59,7 +59,7 @@ func HandleCreate(artists store.ArtistStore) http.HandlerFunc {
 				WithField("project", project).
 				Errorln("cannot create artist")
 		} else {
-			render.JSON(w, artist, 200)
+			render.JSON(w, artist, http.StatusCreated)
 		}
 	}
 }

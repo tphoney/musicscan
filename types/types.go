@@ -15,14 +15,15 @@ import (
 type (
 	// Artist stores artist details.
 	Artist struct {
-		ID      int64  `db:"artist_id"         json:"id"`
-		Project int64  `db:"artist_project_id" json:"-"`
-		Name    string `db:"artist_name"       json:"name"`
-		Desc    string `db:"artist_desc"       json:"desc"`
-		Wanted  bool   `db:"artist_wanted"     json:"wanted"`
-		Spotify string `db:"artist_spotify"    json:"spotify"`
-		Created int64  `db:"artist_created"    json:"created"`
-		Updated int64  `db:"artist_updated"    json:"updated"`
+		ID         int64  `db:"artist_id"         json:"id"`
+		Project    int64  `db:"artist_project_id" json:"-"`
+		Name       string `db:"artist_name"       json:"name"`
+		Desc       string `db:"artist_desc"       json:"desc"`
+		Wanted     bool   `db:"artist_wanted"     json:"wanted"`
+		Popularity int64  `db:"artist_popularity"     json:"popularity"`
+		Spotify    string `db:"artist_spotify"    json:"spotify"`
+		Created    int64  `db:"artist_created"    json:"created"`
+		Updated    int64  `db:"artist_updated"    json:"updated"`
 	}
 
 	// ArtistInput store details used to create or update a artist.
