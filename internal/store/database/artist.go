@@ -107,7 +107,7 @@ FROM artists
 `
 
 const artistSelect = artistBase + `
-WHERE artist_project_id = $1
+WHERE artist_project_id = $1 AND artist_desc != ''
 ORDER BY artist_name ASC
 `
 

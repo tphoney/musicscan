@@ -1,6 +1,18 @@
 SELECT * FROM artists 
 where artist_name LIKE '%dirty%'
 
+
+SELECT
+    artist_id,
+    artist_name,
+	artist_popularity
+FROM
+    artists
+WHERE
+    artist_desc == ''
+
+ORDER BY artist_popularity DESC
+
 SELECT * FROM artists 
 where  artist_desc != ''
 ORDER BY artist_popularity DESC
