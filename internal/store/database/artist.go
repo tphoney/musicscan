@@ -99,6 +99,7 @@ SELECT
 ,artist_name
 ,artist_desc
 ,artist_wanted
+,artist_popularity
 ,artist_spotify
 ,artist_created
 ,artist_updated
@@ -129,6 +130,7 @@ INSERT INTO artists (
 ,artist_name
 ,artist_desc
 ,artist_wanted
+,artist_popularity
 ,artist_spotify
 ,artist_created
 ,artist_updated
@@ -137,6 +139,7 @@ INSERT INTO artists (
 ,:artist_name
 ,:artist_desc
 ,:artist_wanted
+,:artist_popularity
 ,:artist_spotify
 ,:artist_created
 ,:artist_updated
@@ -150,10 +153,11 @@ RETURNING artist_id
 const artistUpdate = `
 UPDATE artists
 SET
- artist_name    = :artist_name
-,artist_desc    = :artist_desc
-,artist_wanted  = :artist_wanted
-,artist_spotify = :artist_spotify
-,artist_updated = :artist_updated
-WHERE artist_id = :artist_id
+ artist_name        = :artist_name
+,artist_desc        = :artist_desc
+,artist_wanted      = :artist_wanted
+,artist_popularity  = :artist_popularity
+,artist_spotify     = :artist_spotify
+,artist_updated     = :artist_updated
+WHERE artist_id     = :artist_id
 `

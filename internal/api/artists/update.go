@@ -89,7 +89,7 @@ func HandleUpdate(artists store.ArtistStore) http.HandlerFunc {
 				WithField("id", id).
 				Errorln("cannot update the artist")
 		} else {
-			render.JSON(w, artist, 200)
+			render.JSON(w, artist, http.StatusOK)
 		}
 	}
 }

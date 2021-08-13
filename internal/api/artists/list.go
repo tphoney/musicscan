@@ -37,7 +37,7 @@ func HandleList(artists store.ArtistStore) http.HandlerFunc {
 				WithError(err).
 				Errorf("cannot retrieve list")
 		} else {
-			render.JSON(w, artists, 200)
+			render.JSON(w, artists, http.StatusOK)
 		}
 	}
 }
