@@ -41,7 +41,14 @@ func (s *ProjectStore) FindBadAlbums(ctx context.Context, id int64) ([]*types.Ba
 }
 
 // Find finds the project by id.
-func (s *ProjectStore) FindWantedAlbums(ctx context.Context, id int64, year int64) ([]*types.BadAlbum, error) {
+func (s *ProjectStore) FindRecommendedArtists(ctx context.Context, id int64) ([]*types.Artist, error) {
+	dst := []*types.Artist{}
+	err := s.db.Select(&dst, projectRecommendedArtists, id)
+	return dst, err
+}
+
+// Find finds the project by id.
+func (s *ProjectStore) FindWantedAlbums(ctx context.Context, id, year int64) ([]*types.BadAlbum, error) {
 	dst := []*types.BadAlbum{}
 	err := s.db.Select(&dst, projectWantedAlbums, year)
 	return dst, err
@@ -168,6 +175,19 @@ WHERE
     AND
     album_name NOT LIKE '%deluxe%'
 ORDER BY album_year DESC
+`
+const projectRecommendedArtists = `
+SELECT
+    artist_id,
+    artist_name,
+	artist_popularity
+FROM
+    artists
+WHERE
+    artist_desc == ''
+AND
+	artist_project_id = $1
+ORDER BY artist_popularity DESC
 `
 
 const projectSelectToken = projectBase + `

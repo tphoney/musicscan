@@ -14,8 +14,6 @@ export default function Analysis({ params }) {
 	//
 	// Load Project
 	//
-
-
 	const { project } = useProject(params.project);
 
 	const [scanFolder, setScanFolder] = useState("/media/tp/stuff/Music");
@@ -66,7 +64,6 @@ export default function Analysis({ params }) {
 	return (
 		<>
 			<section className={styles.root}>
-
 				<div className={styles.card}>
 					<h2>Bad albums</h2>
 					<p>MP3 albums that should be replaced.</p>
@@ -82,6 +79,11 @@ export default function Analysis({ params }) {
 					<Button onClick={() => setLocation(`/projects/${project.id}/analysis/wanted_album_list/${year}`)}>Wanted albums</Button>
 				</div>
 				<div className={styles.card}>
+					<h2>Recommended Artists</h2>
+					<p>List of artits you do not have currently.</p>
+					<Button onClick={() => setLocation(`/projects/${project.id}/analysis/recommended_artist_list`)}>Recommended Artists</Button>
+				</div>
+				<div className={styles.card}>
 					<h2>Scan Disk</h2>
 					<div className={styles.field}>
 						<label>Folder</label>
@@ -93,7 +95,7 @@ export default function Analysis({ params }) {
 				<div className={styles.card}>
 					<h2>Spotify Lookup</h2>
 					<Input type="text" onChange={handleUpdateSpotifyKey} />
-					<p>Scans Spotify looking up artists and matching albums.</p>
+					<p>Scans Spotify looking up artists/albums and Similar Artists.</p>
 					<Button onClick={handleLookup}>Spotify Lookup</Button>
 				</div>
 			</section>

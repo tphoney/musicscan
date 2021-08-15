@@ -87,7 +87,8 @@ func New(
 				r.Patch("/", projects.HandleUpdate(projectStore))
 				r.Delete("/", projects.HandleDelete(projectStore))
 				r.Get("/scan", projects.HandleScan(artistStore, albumStore))
-				r.Get("/find_bad_albums", projects.HandleFindBadAlbums(projectStore))
+				r.Get("/bad_albums", projects.HandleFindBadAlbums(projectStore))
+				r.Get("/recommended_artists", projects.HandleFindRecommendedArtists(projectStore))
 				r.Get("/wanted_albums/{year}", projects.HandleFindWantedAlbums(projectStore))
 				// artist endpoints
 				r.Route("/artists", func(r chi.Router) {

@@ -70,7 +70,7 @@ export const useProject = (id) => {
 
 export const useAlbumBadList = (id) => {
 	const { data, error } = useSWR(
-		`${instance}/api/v1/projects/${id}/find_bad_albums`
+		`${instance}/api/v1/projects/${id}/bad_albums`
 	);
 
 	return {
@@ -92,6 +92,17 @@ export const useAlbumWantedList = (id, year) => {
 	};
 };
 
+export const useRecommendedArtistList = (id) => {
+	const { data, error } = useSWR(
+		`${instance}/api/v1/projects/${id}/recommended_artists`
+	);
+
+	return {
+		recommendedArtistList: data,
+		isLoading: !error && !data,
+		isError: error,
+	};
+};
 
 export const useScan = (params, scanFolder, fetcher) => {
 	const { id } = params;

@@ -9,6 +9,7 @@ import Settings from "./settings.js";
 import Analysis from "../analysis/analysis.js";
 import BadAlbumList from "../analysis/badalbums.js";
 import WantedAlbumList from "../analysis/wantedalbums.js";
+import RecommendedArtistList from "../analysis/recommendedartists.js";
 
 // Renders the Project page.
 export default function Project({ params }) {
@@ -33,6 +34,7 @@ export default function Project({ params }) {
 				<Route path="/projects/:project/analysis" component={Analysis} />
 				<Route path="/projects/:project/analysis/bad_album_list" component={BadAlbumList} />
 				<Route path="/projects/:project/analysis/wanted_album_list/:year" component={WantedAlbumList} />
+				<Route path="/projects/:project/analysis/recommended_artist_list" component={RecommendedArtistList} />
 				<Route path="/projects/:project/members" component={Member} />
 				<Route path="/projects/:project/settings" component={Settings} />
 				<Route>Not Found</Route>
