@@ -97,7 +97,7 @@ const RecommendedArtistInfo = ({ project, recommendedArtist }) => {
 	return (
 		<li id={recommendedArtist.name} className={styles.item}>
 			<Avatar text={recommendedArtist.name} className={styles.avatar} />
-			{recommendedArtist.name}, {recommendedArtist.popularity}
+			<a href={`https://open.spotify.com/artist/${recommendedArtist.spotify}`} target="_blank" rel="noopener noreferrer">{recommendedArtist.name}</a>, {recommendedArtist.popularity}
 		</li>
 	);
 };
