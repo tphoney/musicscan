@@ -80,7 +80,7 @@ export default function Analysis({ params }) {
 				</div>
 				<div className={styles.card}>
 					<h2>Recommended Artists</h2>
-					<p>List of artits you do not have currently.</p>
+					<p>List of artists you do not have currently.</p>
 					<Button onClick={() => setLocation(`/projects/${project.id}/analysis/recommended_artist_list`)}>Recommended Artists</Button>
 				</div>
 				<div className={styles.card}>

@@ -113,7 +113,23 @@ export default function AlbumList({ params }) {
 						{artist && artist.name}
 					</Link>
 				</Breadcrumb>
-
+			</section>
+			<section className={styles.card}>
+				<h1>Artist Infromation</h1>
+				<div>
+					<p><label>Location: {artist.desc}</label></p>
+				</div>
+				<div>
+					<p><label>Spotify: <a href={`https://open.spotify.com/artist/${artist.spotify}`} target="_blank" rel="noopener noreferrer">{artist.spotify}</a></label></p>
+				</div>
+				<div>
+					<p><label>Relative Popularity: {artist.popularity}</label></p>
+				</div>
+				<div>
+					<p><label>Wanted</label><input type="checkbox"  checked={artist.wanted}></input></p>
+				</div>
+			</section>
+			<section className={styles.card}>
 				<h1>Albums</h1>
 				<ul className={styles.list}>
 					{albumList.map((album) => (
@@ -125,7 +141,6 @@ export default function AlbumList({ params }) {
 						/>
 					))}
 				</ul>
-
 				<Button className={styles.button} onClick={() => setOpen(true)}>
 					New Album
 				</Button>

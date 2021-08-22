@@ -1,5 +1,5 @@
 SELECT * FROM artists 
-where artist_name LIKE '%dirty%'
+where artist_name LIKE '%Boston%'
 
 
 SELECT
@@ -78,6 +78,24 @@ WHERE
     AND
     album_name NOT LIKE '%deluxe%'
 ORDER BY album_year DESC
+
+SELECT
+    artists.artist_name, artists.artist_spotify,
+    sum(case when  albums.album_format = 'spotify' then 1 else 0 end) as WantedAlbums,
+    sum(case when  albums.album_format = 'flac' then 1 else 0 end) as OwnedAlbums
+from
+    albums
+    INNER JOIN artists on artists.artist_id = albums.album_artist_id
+WHERE
+    artists.artist_wanted == 1
+    AND
+    album_name NOT LIKE '%live%'
+    AND
+    album_name NOT LIKE '%anniversary%'
+    AND
+    album_name NOT LIKE '%deluxe%'
+GROUP BY albums.album_artist_id
+
 
 UPDATE albums
 set album_wanted = 1
