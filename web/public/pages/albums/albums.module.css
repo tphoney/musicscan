@@ -32,6 +32,26 @@
 	}
 }
 
+.card {
+	padding: 20px 24px;
+	box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
+	border-radius: 6px;
+	margin-bottom: 20px;
+	background: #fff;
+	p {
+		margin-bottom: 20px;
+		line-height: 20px;
+		color: #64748b;
+		font-size: 15px;
+	}
+	h1 {
+		font-weight: 600;
+		font-size: 24px;
+		margin-bottom: 20px;
+		margin-top: 5px;
+	}
+}
+
 .list {
 	margin-bottom: 20px;
 }
