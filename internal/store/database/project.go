@@ -180,6 +180,7 @@ const projectRecommendedArtists = `
 SELECT
     artist_id,
     artist_name,
+	artist_spotify,
 	artist_popularity
 FROM
     artists
