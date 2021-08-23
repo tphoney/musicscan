@@ -106,9 +106,23 @@ SELECT
 FROM artists
 `
 
-const artistSelect = artistBase + `
-WHERE artist_project_id = $1 AND artist_desc != ''
-ORDER BY artist_name ASC
+const artistSelect = `
+SELECT
+    artists.artist_id, artists.artist_name, artists.artist_spotify, artists.artist_wanted,
+    sum(case when albums.album_format = "flac" then 1 else 0 end) as artist_wanted_albums,
+    count(albums.album_format) as artist_owned_albums,
+    ROUND(1.0 * sum(case when albums.album_format = "flac" then 1 else 0 end) / count(albums.album_format) * 100) as artist_percentage_owned
+from
+    albums
+    INNER JOIN artists on artists.artist_id = albums.album_artist_id
+WHERE
+
+    album_name NOT LIKE "%live%"
+    AND
+    album_name NOT LIKE "%anniversary%"
+    AND
+    album_name NOT LIKE "%deluxe%"
+GROUP BY albums.album_artist_id
 `
 
 const artistSelectID = artistBase + `

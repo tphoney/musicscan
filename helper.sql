@@ -81,8 +81,9 @@ ORDER BY album_year DESC
 
 SELECT
     artists.artist_name, artists.artist_spotify,
-    sum(case when  albums.album_format = 'spotify' then 1 else 0 end) as WantedAlbums,
-    sum(case when  albums.album_format = 'flac' then 1 else 0 end) as OwnedAlbums
+    sum(case when  albums.album_format = 'flac' then 1 else 0 end) as WantedAlbums,
+    count(albums.album_format) as OwnedAlbums,
+    1.0 * sum(case when  albums.album_format = 'flac' then 1 else 0 end) / count(albums.album_format) as PercentageOwned
 from
     albums
     INNER JOIN artists on artists.artist_id = albums.album_artist_id
