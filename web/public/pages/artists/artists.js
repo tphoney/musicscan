@@ -143,7 +143,7 @@ const ArtistInfo = ({ artist, project, onWanted, onDelete }) => {
 				href={`/projects/${project.id}/artists/${artist.id}`}
 				className={styles.fill}
 			>
-				{artist.name}
+				{artist.name}, {artist.wanted_albums}/{artist.owned_albums}, {artist.percentage_owned}%
 			</Link>
 			<Button onClick={onDelete.bind(this, artist)}>Delete</Button>
 		</li>

@@ -15,15 +15,18 @@ import (
 type (
 	// Artist stores artist details.
 	Artist struct {
-		ID         int64  `db:"artist_id"         json:"id"`
-		Project    int64  `db:"artist_project_id" json:"-"`
-		Name       string `db:"artist_name"       json:"name"`
-		Desc       string `db:"artist_desc"       json:"desc"`
-		Wanted     bool   `db:"artist_wanted"     json:"wanted"`
-		Popularity int64  `db:"artist_popularity"     json:"popularity"`
-		Spotify    string `db:"artist_spotify"    json:"spotify"`
-		Created    int64  `db:"artist_created"    json:"created"`
-		Updated    int64  `db:"artist_updated"    json:"updated"`
+		ID              int64   `db:"artist_id"         json:"id"`
+		Project         int64   `db:"artist_project_id" json:"-"`
+		Name            string  `db:"artist_name"       json:"name"`
+		Desc            string  `db:"artist_desc"       json:"desc"`
+		Wanted          bool    `db:"artist_wanted"     json:"wanted"`
+		Popularity      int64   `db:"artist_popularity" json:"popularity"`
+		WantedAlbums    int64   `db:"artist_wanted_albums" json:"wanted_albums"`
+		OwnedAlbums     int64   `db:"artist_owned_albums"  json:"owned_albums"`
+		PercentageOwned float32 `db:"artist_percentage_owned" json:"percentage_owned"`
+		Spotify         string  `db:"artist_spotify"    json:"spotify"`
+		Created         int64   `db:"artist_created"    json:"created"`
+		Updated         int64   `db:"artist_updated"    json:"updated"`
 	}
 
 	// ArtistInput store details used to create or update a artist.
@@ -41,7 +44,7 @@ type (
 		Desc    string `db:"album_desc"      json:"desc"`
 		Year    string `db:"album_year"      json:"year"`
 		Wanted  bool   `db:"album_wanted"    json:"wanted"`
-		Spotify string `db:"album_spotify"    json:"spotify"`
+		Spotify string `db:"album_spotify"   json:"spotify"`
 		Format  string `db:"album_format"    json:"format"`
 		Created int64  `db:"album_created"   json:"created"`
 		Updated int64  `db:"album_updated"   json:"updated"`
