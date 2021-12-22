@@ -408,6 +408,21 @@ func (mr *MockProjectStoreMockRecorder) FindBadAlbums(arg0, arg1 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindBadAlbums", reflect.TypeOf((*MockProjectStore)(nil).FindBadAlbums), arg0, arg1)
 }
 
+// FindRecommendedArtists mocks base method.
+func (m *MockProjectStore) FindRecommendedArtists(arg0 context.Context, arg1 int64) ([]*types.Artist, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindRecommendedArtists", arg0, arg1)
+	ret0, _ := ret[0].([]*types.Artist)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindRecommendedArtists indicates an expected call of FindRecommendedArtists.
+func (mr *MockProjectStoreMockRecorder) FindRecommendedArtists(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindRecommendedArtists", reflect.TypeOf((*MockProjectStore)(nil).FindRecommendedArtists), arg0, arg1)
+}
+
 // FindToken mocks base method.
 func (m *MockProjectStore) FindToken(arg0 context.Context, arg1 string) (*types.Project, error) {
 	m.ctrl.T.Helper()
