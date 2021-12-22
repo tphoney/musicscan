@@ -135,7 +135,7 @@ WHERE artist_name LIKE $1
 
 const artistDelete = `
 DELETE FROM artists
-WHERE artist_id = $1
+WHERE artist_id = $1 and artist_desc == ""
 `
 
 const artistInsert = `
