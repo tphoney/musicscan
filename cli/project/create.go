@@ -11,8 +11,8 @@ import (
 	"github.com/tphoney/musicscan/cli/util"
 	"github.com/tphoney/musicscan/types"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/drone/funcmap"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type createCommand struct {

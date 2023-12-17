@@ -7,4 +7,4 @@ web/node_modules
 web/dist/files
 release
 musicscan
-__debug_bin
+__debug_bin*

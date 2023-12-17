@@ -8,9 +8,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/tphoney/musicscan/cli/util"
 	"github.com/tphoney/musicscan/client"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type registerCommand struct {

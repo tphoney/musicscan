@@ -8,7 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -109,32 +109,73 @@ type WebAlbums struct {
 	}
 }
 
+// function that gets an oauth token from spotify from the client id and secret
+func spotifyOauthToken(ctx context.Context, clientID, clientSecret string) (oauth string, err error) {
+	// get oauth token
+	oauthURL := "https://accounts.spotify.com/api/token"
+	client := &http.Client{
+		Timeout: time.Second * 10,
+	}
+	data := url.Values{}
+	data.Set("grant_type", "client_credentials")
+	data.Set("client_id", clientID)
+	data.Set("client_secret", clientSecret)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, oauthURL, strings.NewReader(data.Encode()))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	response, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("spotifyOauthToken: get failed from spotify: %s", err.Error())
+	}
+	defer response.Body.Close()
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return "", fmt.Errorf("spotifyOauthToken: unable to read response from spotify: %s", err.Error())
+	}
+	var oauthResponse struct {
+		AccessToken string `json:"access_token"`
+		TokenType   string `json:"token_type"`
+	}
+	err = json.Unmarshal(body, &oauthResponse)
+	if err != nil {
+		return "", fmt.Errorf("getOauthToken: unable to parse response from spotify: %s", err.Error())
+	}
+	return oauthResponse.AccessToken, nil
+}
+
 func spotifyLookupArtist(ctx context.Context, artistName, oauth string) (spotifyID string, err error) {
 	urlEncodedArtist := url.QueryEscape(artistName)
 	artistURL := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=artist&limit=10", urlEncodedArtist)
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, artistURL, nil)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, artistURL, http.NoBody)
 	bearer := fmt.Sprintf("Bearer %s", oauth)
 	req.Header.Add("Authorization", bearer)
 	response, err := client.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("lookupArtist: get failed from spotify: %s", err.Error())
 	}
+	if response.StatusCode == 429 {
+		return "", fmt.Errorf("lookupArtist: rate limited by spotify")
+	}
 	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", fmt.Errorf("lookupArtist: unable to parse response from spotify: %s", err.Error())
 	}
 	var artistResponse ArtistResponse
-	_ = json.Unmarshal(body, &artistResponse)
+	jsonErr := json.Unmarshal(body, &artistResponse)
+	if jsonErr != nil {
+		return "", fmt.Errorf("lookupArtist: unable to parse response from spotify: %s", jsonErr.Error())
+	}
+	similarArtistList := make([]string, 0)
 	for i := range artistResponse.Artists.Items {
-		if stringMatcher(artistResponse.Artists.Items[i].Name, artistName) {
+		if artistStringMatcher(artistName, artistResponse.Artists.Items[i].Name) {
 			return artistResponse.Artists.Items[i].ID, nil
 		}
+		similarArtistList = append(similarArtistList, artistResponse.Artists.Items[i].Name, ",")
 	}
-	return "", fmt.Errorf("no artists match '%s' on spotify", artistName)
+	return "", fmt.Errorf("no artists match '%q' on spotify it could be one of %v", artistName, similarArtistList)
 }
 
 func spotifyLookupArtistAlbums(ctx context.Context, artistSpotify, oauth string) (albums WebAlbums, err error) {
@@ -142,7 +183,7 @@ func spotifyLookupArtistAlbums(ctx context.Context, artistSpotify, oauth string)
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, albumURL, nil)
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, albumURL, http.NoBody)
 	bearer := fmt.Sprintf("Bearer %s", oauth)
 	req.Header.Add("Authorization", bearer)
 	response, err := client.Do(req)
@@ -150,7 +191,7 @@ func spotifyLookupArtistAlbums(ctx context.Context, artistSpotify, oauth string)
 		return albums, fmt.Errorf("lookupArtistAlbums: get failed from spotify: %s", err.Error())
 	}
 	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return albums, fmt.Errorf("lookupArtistAlbums: unable to parse response from spotify: %s", err.Error())
 	}
@@ -174,7 +215,7 @@ func spotifyLookupArtistSimilar(ctx context.Context, artistSpotify, oauth string
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	req, httpErr := http.NewRequestWithContext(ctx, http.MethodGet, similarArtistURL, nil)
+	req, httpErr := http.NewRequestWithContext(ctx, http.MethodGet, similarArtistURL, http.NoBody)
 	if httpErr != nil {
 		return similar, fmt.Errorf("spotifyLookupArtistSimilar: get failed from spotify: %s", httpErr.Error())
 	}
@@ -185,7 +226,7 @@ func spotifyLookupArtistSimilar(ctx context.Context, artistSpotify, oauth string
 		return similar, fmt.Errorf("spotifyLookupArtistSimilar: get failed from spotify: %s", err.Error())
 	}
 	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return similar, fmt.Errorf("spotifyLookupArtistSimilar: unable to parse response from spotify: %s", err.Error())
 	}
@@ -197,6 +238,16 @@ func spotifyLookupArtistSimilar(ctx context.Context, artistSpotify, oauth string
 	}
 	similar.Artists = similarArtistsResponse.Artists
 	return similarArtistsResponse, nil
+}
+
+func artistStringMatcher(dbName, webName string) bool {
+	// check if the names are the same, ignoring case and punctuation
+	dbName = strings.ToLower(dbName)
+	webName = strings.ToLower(webName)
+	dbName = strings.NewReplacer(".", "", " ", "", ",", "", "\"", "").Replace(dbName)
+	webName = strings.NewReplacer(".", "", " ", "", ",", "", "\"", "").Replace(webName)
+
+	return dbName == webName
 }
 
 func stringMatcher(dbName, webName string) (matched bool) {
@@ -284,7 +335,7 @@ func lookupArtistandAlbums(artistID int64, oauth string, artistStore store.Artis
 	if artist.Spotify == "" {
 		spotifyID, lookupArtistErr := spotifyLookupArtist(ctx, artist.Name, oauth)
 		if lookupArtistErr != nil {
-			return nil, fmt.Errorf("lookup: could not find artist in db: %s", lookupArtistErr.Error())
+			return nil, fmt.Errorf("lookup: could not find artist on spotify: %s", lookupArtistErr.Error())
 		}
 		artist.Spotify = spotifyID
 		updateErr := artistStore.Update(ctx, artist)
@@ -366,7 +417,16 @@ func LookupAllArtists(artistStore store.ArtistStore, albumStore store.AlbumStore
 		ctx := r.Context()
 
 		query := r.URL.Query()
-		oauth := query.Get("spotify_key")
+		secret := query.Get("spotify_secret")
+		clientID := query.Get("spotify_client")
+		oauth, err := spotifyOauthToken(ctx, clientID, secret)
+		if err != nil {
+			render.BadRequest(w, err)
+			logger.FromRequest(r).
+				WithError(err).
+				Debugln("cannot get oauth token")
+			return
+		}
 
 		projectID, err := strconv.ParseInt(chi.URLParam(r, "project"), 10, 64)
 		if err != nil {
