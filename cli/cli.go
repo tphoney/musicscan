@@ -17,7 +17,7 @@ import (
 	"github.com/tphoney/musicscan/cli/users"
 	"github.com/tphoney/musicscan/version"
 
-	"gopkg.in/alecthomas/kingpin.v2"
+	"github.com/alecthomas/kingpin/v2"
 )
 
 // empty context

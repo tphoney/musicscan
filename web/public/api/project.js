@@ -109,7 +109,7 @@ export const useScan = (params, scanFolder, fetcher) => {
 	return fetcher(`${instance}/api/v1/projects/${id}/scan?scan_folder=${scanFolder}`, {});
 };
 
-export const useLookup = (params, spotifyKey, fetcher) => {
+export const useLookup = (params, spotifyClient, spotifySecret, fetcher) => {
 	const { id } = params;
-	return fetcher(`${instance}/api/v1/projects/${id}/artists/lookup?spotify_key=${spotifyKey}`, {});
+	return fetcher(`${instance}/api/v1/projects/${id}/artists/lookup?spotify_client=${spotifyClient}&spotify_secret=${spotifySecret}`, {});
 };

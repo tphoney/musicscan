@@ -12,10 +12,10 @@ import (
 	"github.com/tphoney/musicscan/types"
 	"github.com/tphoney/musicscan/version"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/joho/godotenv"
 	"github.com/mattn/go-isatty"
 	"github.com/sirupsen/logrus"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type command struct {
@@ -55,9 +55,8 @@ func (c *command) run(*kingpin.ParseContext) error {
 		WithField("revision", version.GitCommit).
 		WithField("repository", version.GitRepository).
 		WithField("version", version.Version).
-		Infof("server listening at %s", config.Server.Bind)
-
-	// starts the http server.
+		Infof("server listening at address %s://%s%s", config.Server.Proto, config.Server.Host, config.Server.Bind)
+	// starts the http server.s
 	return server.ListenAndServe(context.Background())
 }
 

@@ -22,13 +22,20 @@ export default function Analysis({ params }) {
 		setScanFolder(event.target.value);
 	};
 
-	const [spotifyKey, setSpotifyKey] = useState("");
+	const [spotifyClient, setSpotifyClient] = useState("4bfbcdb641bb4409ad6e1a39a67d752b");
 
-	const handleUpdateSpotifyKey = (event) => {
-		setSpotifyKey(event.target.value);
+	const handleUpdateSpotifyClient = (event) => {
+		setSpotifyClient(event.target.value);
 	};
 
-	const [year, setYear] = useState("2021");
+	const [spotifySecret, setSpotifySecret] = useState("d5239a128ef443a68d6fef2aa609920e");
+
+	const handleUpdateSpotifySecret = (event) => {
+		setSpotifySecret(event.target.value);
+	};
+
+	// use the current year as the default
+	const [year, setYear] = useState(new Date().getFullYear());
 
 	const handleUpdateYear = (event) => {
 		setYear(event.target.value);
@@ -38,10 +45,10 @@ export default function Analysis({ params }) {
 	useEffect(() => project && setProjectData(project), [project]);
 
 	const handleScan = () => {
-		 if (scanFolder == "") {
+		if (scanFolder == "") {
 			window.alert(`Please select a scan folder`);
 			return;
-		 }
+		}
 		var data = useScan(project, scanFolder, fetcher);
 		return (<>
 			window.
@@ -49,11 +56,15 @@ export default function Analysis({ params }) {
 	};
 
 	const handleLookup = () => {
-		if (spotifyKey == "") {
-			window.alert(`Please insert your spotify API key`);
+		if (spotifyClient == "") {
+			window.alert(`Please insert your spotify client`);
 			return;
-		 }
-		var data = useLookup(project, spotifyKey, fetcher);
+		}
+		if (spotifySecret == "") {
+			window.alert(`Please insert your spotify secret`);
+			return;
+		}
+		var data = useLookup(project, spotifyClient, spotifySecret, fetcher);
 		return (<>
 			<section className={styles.root}>
 				<div>Lookup complete</div>
@@ -73,7 +84,7 @@ export default function Analysis({ params }) {
 					<h2>Wanted albums</h2>
 					<div className={styles.field}>
 						<label>Year</label>
-						<Input type="text" onChange={handleUpdateYear} placeholder="2021" />
+						<Input type="text" onChange={handleUpdateYear} placeholder="2023" />
 					</div>
 					<p>List unowned albums for a year</p>
 					<Button onClick={() => setLocation(`/projects/${project.id}/analysis/wanted_album_list/${year}`)}>Wanted albums</Button>
@@ -94,7 +105,14 @@ export default function Analysis({ params }) {
 				</div>
 				<div className={styles.card}>
 					<h2>Spotify Lookup</h2>
-					<Input type="text" onChange={handleUpdateSpotifyKey} />
+					<div className={styles.field}>
+						<label>client id</label>
+						<Input type="text" onChange={handleUpdateSpotifyClient} />
+					</div>
+					<div className={styles.field}>
+						<label>secret</label>	
+						<Input type="text" onChange={handleUpdateSpotifySecret} />
+					</div>
 					<p>Scans Spotify looking up artists/albums and Similar Artists.</p>
 					<Button onClick={handleLookup}>Spotify Lookup</Button>
 				</div>

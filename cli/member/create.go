@@ -12,8 +12,8 @@ import (
 	"github.com/tphoney/musicscan/types"
 	"github.com/tphoney/musicscan/types/enum"
 
+	"github.com/alecthomas/kingpin/v2"
 	"github.com/drone/funcmap"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 const ADMIN = "admin"

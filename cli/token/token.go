@@ -7,7 +7,7 @@ package token
 import (
 	"github.com/tphoney/musicscan/cli/util"
 
-	"gopkg.in/alecthomas/kingpin.v2"
+	"github.com/alecthomas/kingpin/v2"
 )
 
 type command struct {

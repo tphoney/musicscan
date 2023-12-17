@@ -14,8 +14,8 @@ type Config struct {
 	// Server defines the server configuration parameters.
 	Server struct {
 		Bind  string `envconfig:"APP_HTTP_BIND" default:":3000"`
-		Proto string `envconfig:"APP_HTTP_PROTO"`
-		Host  string `envconfig:"APP_HTTP_HOST"`
+		Proto string `envconfig:"APP_HTTP_PROTO" default:"http"`
+		Host  string `envconfig:"APP_HTTP_HOST" default:"localhost"`
 
 		// Acme defines Acme configuration parameters.
 		Acme struct {
